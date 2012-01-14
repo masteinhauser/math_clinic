@@ -12,12 +12,18 @@ exports.disconnect = function(callback){
   mongo.disconnect(callback);
 };
 
-exports.setup = function(callback){callback(null); };
+exports.setup = function(callback){ 
+   callback(null); 
+};
 
 var User = require('./User');
 var Class = require('./Class');
 var Problem = require('./Problem');
+var Question = require('./Question');
 var Test = require('./Test');
+
+// END of database setup, below is excess code
+
 
 exports.add = function(author, note, callback){
   var newNote = new Note();

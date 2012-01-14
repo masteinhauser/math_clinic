@@ -2,6 +2,8 @@ var util = require('util');
 var mongo = require('mongoose');
 var Schema = mongo.Schema;
 
+var User = require('./User');
+
 // Class Schema and declaration
 var ClassSchema = new Schema({
    classname: String,
