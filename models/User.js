@@ -21,9 +21,11 @@ exports.emptyUser = {
 
 exports.add = function(username, fname, lname, callback){
    var newUser = new User();
+
    newUser.username = username;
    newUser.fname = fname;
    newUser.lname = lname;
+
    newUser.save(function(err){
       if(err){
          util.log('FATAL '+err);
@@ -54,6 +56,7 @@ exports.edit = function(id, username, fname, lname, callback){
       doc.username = username || doc.username;
       doc.fname = fname || doc.fname;
       doc.lname = lname || doc.lname;
+
       doc.save(function(err){
         if(err){
           util.log('FATAL '+err);
@@ -85,7 +88,7 @@ exports.forAll = function(doEach, done){
   });
 };
 
-var findUserById = exports.findUserById = function(id, callback){
+var findById = exports.findById = function(id, callback){
   User.findOne({ _id: id }, function(err, doc){
     if(err){
       util.log('FATAL '+err);
