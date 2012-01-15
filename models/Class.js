@@ -76,11 +76,11 @@ exports.edit = function(classname, school, teacher, students, callback){
 };
 
 exports.allClasses = function(callback){
-  User.find({}, callback);
+  Class.find({}, callback);
 };
 
 exports.forAll = function(doEach, done){
-  User.find({}, function(err, docs){
+  Class.find({}, function(err, docs){
     if(err){
       util.log('FATAL '+err);
       done(err, null);
