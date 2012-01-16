@@ -7,35 +7,112 @@
 var parse = exports.parse = function(equation, count, callback){
    var eq = [];
    var numbers = [], operators = [];
+   var i = 0;
+
+// Start to parser
+   util.log("Equation: "+eq+'<br/>');
+
+   // Remove operators
+   var s = eq.replace(/[\+\-\*\/]/g, '');
+
+   // Match number: ranges, etc.
+   var m = s.match(/((?:\[\d[^\]]+\])+)/);
+
+   // Remove first and last bracket
+   var substr = m[1].substring(1, m[1].length - 1);
+
+   // Split equation into parts
+   numbers = substr.split("][");
+
+   // Strip out non-operators
+   var o = eq.replace(/((?:\[\d[^\]]+\])+)/g, '');
+
+   // Split operators into array
+   operators = s.split("");
+
+   callback(numbers, operators);
+};
+
+// Calculate range defined in number
+var range = function(number, callback){
+   var range = [];
+   var regLower = /\d+/;
+   var regUpper = /\.+\d+/;
+   var lower = number.match(regLower)[0]; // Grab first match
+   var upper = number.match(regUpper)[0].replace('.','');
+   var i = 0;
+
+   for(i=lower; i<=upper; i++){
+      range.push(i);
+   }
+
+   callback(range);
+};
+
+// Calculate range of specific numbers defined in number
+var specific = function(number, callback){
+   var reg = /\d,*/g;
+   var specific = number.match(reg);
+
+   for(i=0; i<specific.length; i++){
+          specific[i] = specific[i].replace(/,/g, '');
+   }
+
+   callback(specific);
+};
+
+// Generate list of equations from numbers and operators then randomly choose count from total
+var generate = exports.generate = function(numbers, operators, count, callback){
+   var i = 0, j = 0, k = 0;
+   var eq = [];// Array of Arrays
    var questions = [];
 
-//   Possible start, gets close but missing operations
-   //   var s = '[0..9][1,5][0..99]';
-   //   var m = s.match(/((?:\[[^\]]+\])+)/);
-   //   document.write(m+'<br/>');
-   //   var substr = m[1].substring(1, m[1].length - 1);
-   //   document.write(substr+'<br/>');
-   //   var array = substr.split("][");
-   //   for(var i = 0; i < array.length; i++){
-   //       document.write(array[i]+'<br/>');
-   //       }
-   //       document.write('<br/>');
-   //   }]
+   var regNumber = /^[\-]?[0-9]+[\.]?[0-9]+$/;
+   var regRange = /\d+.*\d+/;
+   var regSpecific = /\d+,*\d+/;
 
-   // TODO: Fix logic with new RegEx reader
-   var i = 0;
-   for(; i < numbers.length; i++){
-      switch(numbers.length > 0){
-         case /.+/.test(numbers[i]):
-            // Range of numbers
+   // i: For each number part, generate equation and store possibilities
+   for(i=0; i<numbers.length; i++){
+      // Always enter switch
+      switch(true){
+         //Single
+         case regNumber.test(numbers[i]):
+            eq[i] = numbers[i];
             break;
-         case /,+/.test(numbers[i]):
-            // Specific numbers
+         // Range
+         case regRange.test(numbers[i]):
+            eq[i] = range(numbers[i]);
             break;
+         // Specific
+         case regSpecific.test(numbers[i]):
+            eq[i] = specific(numbers[i]);
+            break;
+         // Error or Unknown
          default:
-            util.log('WARNING: Unknown character when parsing equation');
+            util.log("ERROR: Unknown character used in "+numbers[i]);
+            break;
       }
    }
+
+
+   // j: Insert or Append each question part
+   for(j=0; j<eq.length; j++, k<eq.length ? k++ : k = 0){
+      for(k=0; ; k<eq[j].length ? k++ : k = 0){
+
+      }
+      // Append operator to question
+      questions[j] += operators[i];
+
+      // k: If we run out of pieces to append, loop over and continue
+      questions[j] += eq[k];
+   }
+
+   return questions;
 };
+
+var equation = '[09]+[1,5]-[0..99]';
+var count = 10;
+
+parse(equation, count, generate);
 
 
