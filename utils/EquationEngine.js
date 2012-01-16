@@ -24,13 +24,19 @@ var parse = exports.parse = function(equation, count, callback){
    // Split equation into parts
    numbers = substr.split("][");
 
+   // TODO: Split correct into array based on ][ brackets and not just operator
+   // TODO: i.e. Add an empty entry for ][ but add proper operator for ]+[ or ]*[
    // Strip out non-operators
    var o = eq.replace(/((?:\[\d[^\]]+\])+)/g, '');
 
    // Split operators into array
    operators = s.split("");
 
-   callback(numbers, operators);
+   if(callback){
+      callback(numbers, operators);
+   } else {
+      return [numbers, operators];
+   }
 };
 
 // Calculate range defined in number
@@ -46,7 +52,11 @@ var range = function(number, callback){
       range.push(i);
    }
 
-   callback(range);
+   if(callback){
+      callback(range);
+   } else {
+      return range;
+   }
 };
 
 // Calculate range of specific numbers defined in number
@@ -55,10 +65,14 @@ var specific = function(number, callback){
    var specific = number.match(reg);
 
    for(i=0; i<specific.length; i++){
-          specific[i] = specific[i].replace(/,/g, '');
+      specific[i] = specific[i].replace(/,/g, '');
    }
 
-   callback(specific);
+   if(callback){
+      callback(specific);
+   } else {
+      return specific;
+   }
 };
 
 // Generate list of equations from numbers and operators then randomly choose count from total
@@ -91,10 +105,10 @@ var generate = exports.generate = function(numbers, operators, count, callback){
          default:
             util.log("ERROR: Unknown character used in "+numbers[i]);
             break;
-      }
-   }
+      } // End switch
+   } // End number parts
 
-
+   // TODO: Fix to allow varying length number parts
    // j: Insert or Append each question part
    for(j=0; j<eq.length; j++, k<eq.length ? k++ : k = 0){
       for(k=0; ; k<eq[j].length ? k++ : k = 0){
