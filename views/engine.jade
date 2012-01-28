@@ -38,11 +38,11 @@ if(typeof(submit) != 'undefined')
     each question in result.questions
       - if(num%5 == 0)
           tr
-        td!= question.replace(/([\+\-\*\/])/ig, "\\$1").split(/\\/).join('</br>')
+        td!= "&nbsp;" + question.replace(/([\+\-\*\/])/ig, "\\$1\&nbsp;").split(/\\/).join('</br>')
           <br/>
           != "&#151;&#151;"
           <br/>
-          = eval(question)
+          = "&nbsp;" + eval(question)
       - num++
 
 else
