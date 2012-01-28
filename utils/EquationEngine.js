@@ -66,42 +66,52 @@ var specific = function(number, callback){
 };
 
 // Add equation part to all previously built equations
-var build = exports.build = function(eqParts, idx, questions){
-   var i = 0, j = 0;
-   idx = idx || 0;
-   questions = questions || [];
-   util.log("Questions: "+ questions.length);
+var build = exports.build = function(eqParts){
+   var i = 0, j = 0, k = 0;
+   var orig, insert, inserted = 0;
+   var questions = [], newQuestions = [];
+   var message;
 
    // j: Insert or Append each question part
-   for(i=0; i< eqParts[idx].length; i++){
-      util.log("eqParts["+ idx +"]: "+ eqParts[idx].length);
+   for(i=0; i<eqParts.length; i++){
+      for(j=0; j<questions.length || j===0; j++){
+         for(k=0; k<eqParts[i].length; k++){
+            oldQuestion = (questions[j] || "");
 
-      var larger = (questions.length > eqParts[idx].length ? questions.length : eqParts[idx].length);
-      for(j=0; j<larger; j++){
-         // Append operator to question
-         questions[j] = (questions[j] || questions[j-1] || "") + eqParts[idx][i];
-      }
+            pos = j+inserted;
+            insert = oldQuestion + eqParts[i][k];
 
-      // Recursively call for next item
-      if(idx+1 === eqParts.length){
-         return questions;
-      } else {
-         return build(eqParts, ++idx, questions);
+            newQuestions.splice(pos, 1, insert);
+            inserted++;
+         }
       }
+      questions = newQuestions;
+      newQuestions = [];
    }
+
+   return questions;
 };
 
 var trim = exports.trim = function(questions, count){
-   // TODO: Cut down questions to number specified in count.
-   // Math.floor(rand);
-   //
-   // if(questions.length < count){
-   //    util.log("WARNING: Number of requested questions more than possible from equation.");
-   //    util.log("Possible Combinations: "+ questions.length);
-   //    util.log("Requested Questions: "+ count);
-   // }
-   //
-   //return questions;
+   var rand, i = 0, message = "";
+   var newQuestions = [];
+
+
+   if(questions.length < count){
+      message = "WARNING: Requested number of questions is larger than generated total. Randomly duplicating questions.";
+      for(i = 0; i < count; i++){
+         rand = Math.floor(Math.random() * questions.length);
+         newQuestions.push(questions[rand]);
+      }
+   } else { // Cut down questions to number specified in count.
+      for(i = 0; i < count; i++){
+         rand = Math.floor(Math.random() * questions.length);
+         newQuestions.push(questions[rand]);
+         questions.splice(rand, 1);
+      }
+   }
+
+   return {questions: newQuestions, message: message};
 };
 
 // Generate array of parts from numbers and operators
@@ -149,16 +159,28 @@ var generate = exports.generate = function(eq, callback){
    }
 };
 
-var equation = '[1][0][+][1,5][+][0..99]';
-var count = 10;
+var run = exports.run = function(equation, count){
+// NOTE: This is the call path. Use it for debugging.
+//   var parsedEquation = parse(equation);
+//   var parts = generate(parsedEquation);
+//   var builtQuestions = build(parts);
+//   var subsetQuestions = trim(builtQuestions, count);
 
-var parsedEquation = parse(equation);
-var parts = generate(parsedEquation);
-var builtQuestions = build(parts);
-var subsetQuestions = trim(builtQuestions, count);
+   return trim(build(generate(parse(equation))), count);
+};
 
-var z = 0;
-for(z = 0; z < builtQuestions.length; z++){
-   util.log(builtQuestions[z]);
-}
+//var equation = '[1][0][+][1,5][+][0..10]';
+//var count = 30;
+
+//eq = run(equation, count);
+
+//if(eq.message){
+//   util.log(eq.message);
+//   util.log(eq.message);
+//}
+
+//var z = 0;
+//for(z=0; z<eq.questions.length; z++){
+//   util.log(eq.questions[z]);
+//}
 
