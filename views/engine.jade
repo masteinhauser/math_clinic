@@ -32,9 +32,10 @@ table
       td= result.total
   p= result.message
   p Generated Questions:
-  ul
+  table
     each question in result.questions
-      li= question
+      tr
+        td= question + " = " + eval(question)
 - else
   p Let's try it with something easy:
   form(action=path+"/engine", method="post", id="engine")
