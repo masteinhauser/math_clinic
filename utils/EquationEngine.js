@@ -11,7 +11,7 @@ var parse = exports.parse = function(equation, callback){
    var i = 0;
 
 // Start to parser
-   util.log("Equation: "+ equation);
+//   util.log("Equation: "+ equation);
 
    // Match number: ranges, etc.
    var m = equation.match(/((?:\[[^\]]+\])+)/);
@@ -165,8 +165,8 @@ var run = exports.run = function(equation, count){
 //   var parts = generate(parsedEquation);
 //   var builtQuestions = build(parts);
 //   var subsetQuestions = trim(builtQuestions, count);
-
-   return trim(build(generate(parse(equation))), count);
+   var result = trim(build(generate(parse(equation))), count);
+   return {questions: result.questions, message: result.message, equation: equation, count: count};
 };
 
 //var equation = '[1][0][+][1,5][+][0..10]';
