@@ -1,10 +1,15 @@
 /*
- * GET about page.
+ * GET home page.
  */
+var config = require('../config');
 
 module.exports = function(app){
    app.get('/', function(req, res){
-      res.render('index.jade', { title: 'Math Clinic' });
+      res.render('home.jade', { title: 'Math Clinic' });
+   });
+
+   app.get(config.path+'/', function(req, res){
+      res.render('home.jade', { title: 'Math Clinic' });
    });
 };
 

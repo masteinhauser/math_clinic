@@ -1,6 +1,7 @@
 /**
  * Module dependencies.
  */
+var config = require('./config');
 var express = require('express');
 var app = module.exports = express.createServer();
 
@@ -8,6 +9,7 @@ var app = module.exports = express.createServer();
 app.configure(function(){
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
+  app.set('path', config.path);
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(express.cookieParser());
@@ -15,6 +17,12 @@ app.configure(function(){
   app.use(require('stylus').middleware({ src: __dirname + '/public' }));
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
+});
+
+app.dynamicHelpers({
+   path: function(){
+      return this.set('path');
+   }
 });
 
 app.configure('development', function(){
@@ -26,12 +34,12 @@ app.configure('production', function(){
 });
 
 // Configure Error Pages
-//app.use(function(req, res, next){
-//   res.render('404', {status: 404, url: req.url, title: 'Page Not Found'});
-//});
-//app.use(function(err, req, res, next){
-//   res.render('500', {status: err.status || 500, url: req.url, title: 'Internal Server Error'});
-//});
+app.use(function(req, res, next){
+   res.render('404.jade', {status: 404, url: req.url, title: 'Page Not Found'});
+});
+app.use(function(err, req, res, next){
+   res.render('500.jade', {status: err.status || 500, url: req.url, title: 'Internal Server Error'});
+});
 
 // Setup Mongoose
 
@@ -41,5 +49,5 @@ app.configure('production', function(){
 // Dynamically search for and load all routes in ./routes
 require('./routes')(app);
 
-app.listen(3000);
+app.listen(config.port);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

@@ -1,10 +1,11 @@
 /*
  * GET about page.
  */
+var config = require('../config');
 
 module.exports = function(app){
-   app.get('/about', function(req, res){
-      res.render('about.jade', { title: 'About Math Clinic' });
+   app.get(config.path+'/about', function(req, res){
+      res.render('about.jade', { title: 'Math Clinic - About' });
    });
 };
 
