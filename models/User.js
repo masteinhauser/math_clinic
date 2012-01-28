@@ -6,7 +6,8 @@ var Schema = mongo.Schema;
 var UserSchema = new Schema({
    username: String,
    fname: String,
-   lname: String
+   lname: String,
+   birth: Date
 });
 
 mongo.model('User', UserSchema);
@@ -16,15 +17,17 @@ exports.emptyUser = {
    "_id": "",
    username: "",
    fname: "",
-   lname: ""
+   lname: "",
+   birth: ""
 };
 
-exports.add = function(username, fname, lname, callback){
+exports.add = function(username, fname, lname, birth, callback){
    var newUser = new User();
 
    newUser.username = username;
    newUser.fname = fname;
    newUser.lname = lname;
+   newUser.birth = birth;
 
    newUser.save(function(err){
       if(err){
@@ -48,7 +51,7 @@ exports.del = function(id, callback){
   });
 };
 
-exports.edit = function(id, username, fname, lname, callback){
+exports.edit = function(id, username, fname, lname, birth, callback){
   exports.findUserById(id, function(err, doc){
     if(err){
       callback(err);
@@ -56,6 +59,7 @@ exports.edit = function(id, username, fname, lname, callback){
       doc.username = username || doc.username;
       doc.fname = fname || doc.fname;
       doc.lname = lname || doc.lname;
+      doc.birth = birth || doc.birth;
 
       doc.save(function(err){
         if(err){

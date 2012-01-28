@@ -8,6 +8,7 @@ var User = require('./User');
 var ClassSchema = new Schema({
    classname: String,
    school: String,
+   grade: String,
    teacher: User,
    students: [User]
 });
@@ -19,15 +20,17 @@ exports.emptyClass = {
    "_id": "",
    classname: "",
    school: "",
+   grade: "",
    teacher: User,
    students: [User]
 };
 
-exports.add = function(classname, school, teacher, students, callback){
+exports.add = function(classname, school, grade, teacher, students, callback){
    var newClass = new Class();
 
    newClass.classname = classname;
    newClass.school = school;
+   newClass.grade = grade;
    newClass.teacher = teacher;
    newClass.students = students;
 
@@ -53,13 +56,14 @@ exports.del = function(id, callback){
   });
 };
 
-exports.edit = function(classname, school, teacher, students, callback){
+exports.edit = function(classname, school, grade, teacher, students, callback){
   exports.findById(id, function(err, doc){
     if(err){
       callback(err);
     } else {
       doc.username = classname || doc.classname;
       doc.students = school || doc.school;
+      doc.grade = grade || doc.grade;
       doc.teacher = teacher || doc.teacher;
       doc.students = students || doc.students;
 
