@@ -12,6 +12,9 @@ var parse = exports.parse = function(equation, callback){
 
 // Start to parser
 //   util.log("Equation: "+ equation);
+   
+   // Clean up any spaces and remove them
+   equation = equation.replace(/[ \t\r\n]/g, '');
 
    // Match number: ranges, etc.
    var m = equation.match(/((?:\[[^\]]+\])+)/);
