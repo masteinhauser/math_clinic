@@ -38,7 +38,7 @@ var range = function(number, callback){
    var regLower = /\d+/;
    var regUpper = /\.{2,}\d+/;
    var lower = number.match(regLower)[0]; // Grab first match
-   var upper = number.match(regUpper)[0].replace('.','');
+   var upper = number.match(regUpper)[0].replace(/\.{2,}/g,'');
    var i = 0;
 
    for(i=lower; i<=upper; i++){
