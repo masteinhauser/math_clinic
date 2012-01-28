@@ -32,13 +32,17 @@ if(typeof(submit) != 'undefined')
       td= result.total
   p= result.message
   p Generated Questions:
-
+  // This is a hairy section of display code and formatting:
   table
     num = 0
     each question in result.questions
-      - if(num%5 == 0 || num==0)
-        tr
-      td= question + " = " + eval(question)
+      - if(num%5 == 0)
+          tr
+        td!= question.replace(/([\+\-\*\/])/ig, "\\$1").split(/\\/).join('</br>')
+          <br/>
+          != "&#151;&#151;"
+          <br/>
+          = eval(question)
       - num++
 
 else
