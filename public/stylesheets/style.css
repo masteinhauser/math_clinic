@@ -22,3 +22,6 @@ td.border {
   margin: 0;
   border-width: 1px 1px 0 0;
 }
+td.right {
+  text-align: right;
+}

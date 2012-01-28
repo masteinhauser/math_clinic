@@ -46,13 +46,16 @@ if(typeof(submit) != 'undefined')
       table
         num = 0
         row = Math.ceil(Math.sqrt(result.questions.length))
+        spaces = function(str, num){ return Array(num + 1).join(str) }
         each question in result.questions
           - if(num%row == 0)
               tr
-            td!= "&nbsp;" + question.replace(/([\+\-\*\/])/ig, "\\$1\&nbsp;").split(/\\/).join('</br>')
+            qParts = question.replace(/([\+\-\*\/])/ig, "\\$1").split(/\\/)
+            maxChars = qParts.sort(function(a, b){ return b.length - a.length })[0].length;
+            td.right!= qParts.join('</br>')
               <br/>
-              != "&#151;&#151;"
+              != spaces("&#150;", maxChars)
               <br/>
-              = "&nbsp;" + eval(question)
+              = eval(question)
           - num++
 
