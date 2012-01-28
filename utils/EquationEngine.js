@@ -95,7 +95,7 @@ var build = exports.build = function(eqParts){
 var trim = exports.trim = function(questions, count){
    var rand, i = 0, message = "";
    var newQuestions = [];
-
+   var total = questions.length;
 
    if(questions.length < count){
       message = "WARNING: Requested number of questions is larger than generated total. Randomly duplicating questions.";
@@ -111,7 +111,7 @@ var trim = exports.trim = function(questions, count){
       }
    }
 
-   return {questions: newQuestions, message: message};
+   return {questions: newQuestions, message: message, total: total};
 };
 
 // Generate array of parts from numbers and operators
@@ -166,7 +166,7 @@ var run = exports.run = function(equation, count){
 //   var builtQuestions = build(parts);
 //   var subsetQuestions = trim(builtQuestions, count);
    var result = trim(build(generate(parse(equation))), count);
-   return {questions: result.questions, message: result.message, equation: equation, count: count};
+   return {questions: result.questions, message: result.message, equation: equation, count: count, total: result.total};
 };
 
 //var equation = '[1][0][+][1,5][+][0..10]';
