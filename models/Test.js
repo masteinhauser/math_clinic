@@ -8,7 +8,7 @@ var Problem = require('./Problem');
 // Test/Worksheet Schema and declaration
 var TestSchema = new Schema({
    ts: {type: Date, default: Date.now },
-   user: User,
+   user: {type: Schema.ObjectId, ref: 'User'},
    problems: [Problem]
 });
 

@@ -1,0 +1,15 @@
+h1= title
+
+if(typeof(req) != 'undefined' && typeof(req.submit) != 'undefined')
+  p You answered in #{result.time} milliseconds!
+
+else
+  p Please Answer the question: 
+  p= ""
+  form(action=path+"/test", method="post")
+    p Answer:
+      input(type="text", name="answer")
+      input(type="hidden", name="start", value=new Date().valueOf())
+      input(type="hidden", name="question", value="")
+    p
+      input(type="submit", name="submit", value="Answer")

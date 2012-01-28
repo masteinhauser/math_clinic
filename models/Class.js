@@ -9,8 +9,8 @@ var ClassSchema = new Schema({
    classname: String,
    school: String,
    grade: String,
-   teacher: User,
-   students: [User]
+   teacher: {type: Schema.ObjectId, ref: 'User'},
+   students: [{ type: Schema.ObjectId, ref: 'User' }]
 });
 
 mongo.model('Class', ClassSchema);

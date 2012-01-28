@@ -3,12 +3,11 @@ var mongo = require('mongoose');
 var Schema = mongo.Schema;
 
 var QuestionHelper = require('./helpers/Question');
-var QuestionHelpep = require('./helpers/Question');
 
 // Question Schema and declaration
 var QuestionSchema = new Schema({
-   type: QuestionHelper.QuestionType,
-   level: QuestionHelper.QuestionLevel,
+   type: {type: String, enum: QuestionHelper.QuestionType},
+   level: {type: String, enum: QuestionHelper.QuestionLevel},
    equation: String,
    result: String
 });
