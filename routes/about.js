@@ -1,6 +1,7 @@
 /*
- * GET about page.
+ * about page.
  */
+
 
 module.exports = function(app){
    app.get('/about', function(req, res){

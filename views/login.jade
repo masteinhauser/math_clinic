@@ -1,0 +1,14 @@
+h1= title
+
+if(typeof(req) != 'undefined' && typeof(req.submit) != 'undefined')
+  p You have been logged in!
+
+else
+  p Please login: 
+  form(action=path+"/login", method="post")
+    p User:
+      input(type="email", name="user")
+    p Pass:
+      input(type="password", name="pass")
+    p
+      input(type="submit", name="submit", value="Login")

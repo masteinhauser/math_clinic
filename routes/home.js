@@ -1,5 +1,5 @@
 /*
- * GET home page.
+ * home page.
  */
 
 module.exports = function(app){
