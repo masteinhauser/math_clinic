@@ -5,7 +5,7 @@ p This is the Equation Engine.<br/>
   |It can be used to generate test questions from a mildly complex equation.
 
 p Everything must be within []!
-table
+table.border
   tr
     td Single Digit
     td [1]
@@ -18,8 +18,8 @@ table
   tr
     td Range of Numbers
     td [0..9]
-
-- if(typeof(submit) != 'undefined')
+<br/>
+if(typeof(submit) != 'undefined')
   table
     tr
       td Equation:
@@ -32,11 +32,16 @@ table
       td= result.total
   p= result.message
   p Generated Questions:
+
   table
+    num = 0
     each question in result.questions
-      tr
-        td= question + " = " + eval(question)
-- else
+      - if(num%5 == 0 || num==0)
+        tr
+      td= question + " = " + eval(question)
+      - num++
+
+else
   p Let's try it with something easy:
   form(action=path+"/engine", method="post", id="engine")
     p Equation:<br/>
