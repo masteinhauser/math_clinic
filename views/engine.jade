@@ -6,19 +6,19 @@ div(style="float: left; margin: 30px")
     |It can be used to generate test questions from a mildly complex equation.
 
   p Everything must be within []!
-    table
+    table.border
       tr
-        td Single Digit
-        td [1]
+        td.border Single Digit
+        td.border [1]
       tr
-        td Operators<br/>Generate for all listed
-        td [+-*/]
+        td.border Operators<br/>Generate for all listed
+        td.border [+-*/]
       tr
-        td Specific Numbers
-        td [1,3,5]
+        td.border Specific Numbers
+        td.border [1,3,5]
       tr
-        td Range of Numbers
-        td [0..9]
+        td.border Range of Numbers
+        td.border [0..9]
   p Let's try it with something easy:
   form(action=path+"/engine", method="post", id="engine")
     p Equation:<br/>
@@ -30,16 +30,16 @@ div(style="float: left; margin: 30px")
 
 if(typeof(submit) != 'undefined')
     div(style="margin-top: 50px")
-      table
+      table.border
         tr
-          td Equation:
-          td= result.equation
+          td.border Equation:
+          td.border= result.equation
         tr
-          td Count:
-          td= result.count
+          td.border Count:
+          td.border= result.count
         tr
-          td Total Generated:
-          td= result.total
+          td.border Total Generated:
+          td.border= result.total
       p= result.message
       p Generated Questions:
       // This is a hairy section of display code and formatting:
