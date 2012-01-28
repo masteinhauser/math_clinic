@@ -19,7 +19,14 @@ div(style="float: left; margin: 30px")
       tr
         td Range of Numbers
         td [0..9]
-  br
+  p Let's try it with something easy:
+  form(action=path+"/engine", method="post", id="engine")
+    p Equation:<br/>
+      input(type="text", name="eq", value="[1][0][+][1,3,5][+][0..9]")
+    p Count: (Number of questions to generate)<br/>
+      input(type="text", name="count", value="20")
+    p
+      input(type="submit", name="submit", value="Generate")
 
 if(typeof(submit) != 'undefined')
     div(style="margin-top: 50px")
@@ -48,13 +55,3 @@ if(typeof(submit) != 'undefined')
               = "&nbsp;" + eval(question)
           - num++
 
-else
-  div(style="margin-top: 50px")
-    p Let's try it with something easy:
-    form(action=path+"/engine", method="post", id="engine")
-      p Equation:<br/>
-        input(type="text", name="eq", value="[1][0][+][1,3,5][+][0..9]")
-      p Count: (Number of questions to generate)<br/>
-        input(type="text", name="count", value="20")
-      p
-        input(type="submit", name="submit", value="Generate")
