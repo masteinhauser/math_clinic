@@ -1,56 +1,60 @@
-h1= title
-p Welcome to #{title}
+div(style="float: left; margin: 30px")
+  h1= title
+  p Welcome to #{title}
 
-p This is the Equation Engine.<br/>
-  |It can be used to generate test questions from a mildly complex equation.
+  p This is the Equation Engine.<br/>
+    |It can be used to generate test questions from a mildly complex equation.
 
-p Everything must be within []!
-table.border
-  tr
-    td Single Digit
-    td [1]
-  tr
-    td Operators<br/>Generate for all listed
-    td [+-*/]
-  tr
-    td Specific Numbers
-    td [1,3,5]
-  tr
-    td Range of Numbers
-    td [0..9]
-<br/>
+  p Everything must be within []!
+    table
+      tr
+        td Single Digit
+        td [1]
+      tr
+        td Operators<br/>Generate for all listed
+        td [+-*/]
+      tr
+        td Specific Numbers
+        td [1,3,5]
+      tr
+        td Range of Numbers
+        td [0..9]
+  br
+
 if(typeof(submit) != 'undefined')
-  table
-    tr
-      td Equation:
-      td= result.equation
-    tr
-      td Count:
-      td= result.count
-    tr
-      td Total Generated:
-      td= result.total
-  p= result.message
-  p Generated Questions:
-  // This is a hairy section of display code and formatting:
-  table
-    num = 0
-    each question in result.questions
-      - if(num%5 == 0)
-          tr
-        td!= "&nbsp;" + question.replace(/([\+\-\*\/])/ig, "\\$1\&nbsp;").split(/\\/).join('</br>')
-          <br/>
-          != "&#151;&#151;"
-          <br/>
-          = "&nbsp;" + eval(question)
-      - num++
+    div(style="margin-top: 50px")
+      table
+        tr
+          td Equation:
+          td= result.equation
+        tr
+          td Count:
+          td= result.count
+        tr
+          td Total Generated:
+          td= result.total
+      p= result.message
+      p Generated Questions:
+      // This is a hairy section of display code and formatting:
+      table
+        num = 0
+        each question in result.questions
+          - if(num%5 == 0)
+              tr
+            td!= "&nbsp;" + question.replace(/([\+\-\*\/])/ig, "\\$1\&nbsp;").split(/\\/).join('</br>')
+              <br/>
+              != "&#151;&#151;"
+              <br/>
+              = "&nbsp;" + eval(question)
+          - num++
 
 else
-  p Let's try it with something easy:
-  form(action=path+"/engine", method="post", id="engine")
-    p Equation:<br/>
-      input(type="text", name="eq", value="[1][0][+][1,3,5][+][0..9]")
-    p Count: (Number of questions to generate)<br/>
-      input(type="text", name="count", value="20")
-    p
-      input(type="submit", name="submit", value="Generate")
+  div(style="margin-top: 50px")
+    p Let's try it with something easy:
+    form(action=path+"/engine", method="post", id="engine")
+      p Equation:<br/>
+        input(type="text", name="eq", value="[1][0][+][1,3,5][+][0..9]")
+      p Count: (Number of questions to generate)<br/>
+        input(type="text", name="count", value="20")
+      p
+        input(type="submit", name="submit", value="Generate")
