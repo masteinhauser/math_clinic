@@ -11,7 +11,7 @@ module.exports = function(app){
       var eq = require('../utils/EquationEngine');
       var result = eq.run(req.body.eq, req.body.count);
 
-      res.render('engine.jade', { title: 'Math Clinic - Equation Engine', submit: req.body.submit, result: result });
+      res.render('engine.jade', { req: req.body, title: 'Math Clinic - Equation Engine', submit: req.body.submit, result: result });
    });
 };
 

@@ -22,7 +22,7 @@ div(style="float: left; margin: 30px")
   p Let's try it with something easy:
   form(action=path+"/engine", method="post", id="engine")
     p Equation:<br/>
-      input(type="text", name="eq", value="[1][0][+][1,3,5][+][0..9]")
+      input(type="text", name="eq", value=req.eq || "[1][0][+][1,3,5][+][0..9]")
     p Count: (Number of questions to generate)<br/>
       input(type="text", name="count", value="20")
     p
@@ -45,8 +45,9 @@ if(typeof(submit) != 'undefined')
       // This is a hairy section of display code and formatting:
       table
         num = 0
+        row = Math.ceil(Math.sqrt(result.questions.length))
         each question in result.questions
-          - if(num%5 == 0)
+          - if(num%row == 0)
               tr
             td!= "&nbsp;" + question.replace(/([\+\-\*\/])/ig, "\\$1\&nbsp;").split(/\\/).join('</br>')
               <br/>
