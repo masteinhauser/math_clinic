@@ -10,7 +10,7 @@ module.exports = function(app){
    });
 
    app.post('/login',
-      passport.authenticate('local', { failureRedirect: '/login'}),
+      passport.authenticate('local', { failureRedirect: config.path+'/login'}),
       function(req, res){
          res.render('login.jade', { req: req, title: 'Math Clinic - Login' , result: {success: true, message: "Thanks for logging in!"}});
       }
