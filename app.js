@@ -3,6 +3,7 @@
  */
 var express = require('express');
 var mongo = require('mongoose');
+var passport = require('passport'), LocalStrategy = require('passport-local').Strategy;
 var MongoStore = require('connect-mongo');
 var db = require('./models/db');
 global.config = require('./config');
@@ -10,20 +11,22 @@ global.app = module.exports = express.createServer();
 
 // Configuration
 app.configure(function(){
-  app.set('views', __dirname + '/views');
-  app.set('view engine', 'jade');
-  app.set('path', config.path);
+  app.use(express.cookieParser());
   app.use(express.bodyParser());
   app.use(express.methodOverride());
-  app.use(express.cookieParser());
   app.use(express.session({
      store: new MongoStore({db: config.mongo.database, host: config.mongo.host, clear_interval: 14400}),
      secret: '08c0c045c37cb47793406f3056f1e96c',
      fingerprint: ''
   }));
-  app.use(require('stylus').middleware({ src: __dirname + '/public' }));
+  app.use(passport.initialize());
+  app.use(passport.session());
   app.use(app.router);
+  app.set('path', config.path);
   app.use(express.static(__dirname + '/public'));
+  app.use(require('stylus').middleware({ src: __dirname + '/public' }));
+  app.set('views', __dirname + '/views');
+  app.set('view engine', 'jade');
 });
 
 app.dynamicHelpers({
@@ -38,6 +41,34 @@ app.configure('development', function(){
 
 app.configure('production', function(){
   app.use(express.errorHandler());
+});
+
+// Authentication and Sessions
+passport.use(new LocalStrategy(
+   function(username, password, next){
+      User.findOne({
+         username: username
+      }, function(err, user){
+         if(err){
+            return next(err);
+         }
+         if(!user){
+            return next(null, false);
+         }
+         if(!User.util.validPassword(password, user.password)){
+            return next(null, false);
+         }
+         return next(null, user);
+      });
+   }
+));
+passport.serializeUser(function(user, next){
+   next(null, user.username);
+});
+passport.deserializeUser(function(id, next){
+   User.findOne(id, function(err, user){
+      next(err, user);
+   });
 });
 
 // Configure Error Pages

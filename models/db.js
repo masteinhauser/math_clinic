@@ -2,14 +2,33 @@ var util = require('util');
 var mongo = require('mongoose');
 var Schema = mongo.Schema;
 
-var dburl = 'mongodb://localhost/math_clinic';
-
 exports.connect = function(callback){
-  mongo.connect(dburl);
+   var dburl = 'mongodb://127.0.0.1/math_clinic';
+
+   var conn = mongo.connect(dburl, function(err){
+      if(err){
+         util.log(err);
+      }
+   });
+
+   console.log(mongo.connection.host);
+   console.log(mongo.connection.port);
+
+   mongo.connection.on("open", function(err){
+      if(err){
+         util.log(err);
+      } else {
+         util.log("Connected to Mongo@"+dburl);
+      }
+   });
+   mongo.connection.on("error", function(err){
+      util.log(err);
+   });
 };
 
 exports.disconnect = function(callback){
-  mongo.disconnect(callback);
+   util.log("Disconnected from Mongo!!!");
+   mongo.disconnect(callback);
 };
 
 exports.setup = function(callback){ 
