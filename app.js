@@ -22,7 +22,6 @@ app.configure(function(){
    app.use(passport.initialize());
    app.use(passport.session());
    app.use(app.router);
-   app.set('path', config.path);
    app.use(express.static(__dirname + '/public'));
    app.use(require('stylus').middleware({ src: __dirname + '/public' }));
    app.set('views', __dirname + '/views');
@@ -30,8 +29,8 @@ app.configure(function(){
 });
 
 app.dynamicHelpers({
-   path: function(){
-      return this.set('path');
+   path: function(req, res){
+      return config.path;
    },
    user: function(req, res){
       return req.user || {};
