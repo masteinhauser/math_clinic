@@ -11,14 +11,11 @@ exports.connect = function(callback){
       }
    });
 
-   console.log(mongo.connection.host);
-   console.log(mongo.connection.port);
-
    mongo.connection.on("open", function(err){
       if(err){
          util.log(err);
       } else {
-         util.log("Connected to Mongo@"+dburl);
+         util.log("Connected to Mongo@"+mongo.connection.host+":"+mongo.connection.port);
       }
    });
    mongo.connection.on("error", function(err){

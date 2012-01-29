@@ -8,7 +8,10 @@ html
   br
   #footer(style="float: left; clear: left")
     a(href=path+'/') Home | 
-    a(href=path+'/login') Login | 
+    if(user.username != null)
+      a(href=path+'/logout') Logout | 
+    else
+      a(href=path+'/login') Login | 
     a(href=path+'/test') Test | 
     a(href=path+'/about') About
     <br/>

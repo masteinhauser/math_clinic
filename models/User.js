@@ -3,7 +3,7 @@ var async = require('async');
 var mongo = require('mongoose');
 var Schema = mongo.Schema;
 var bcrypt = require('bcrypt');
-var userUtil = exports.util = require('../utils/User');
+var userUtil = require('../utils/User');
 
 // User Schema and declaration
 var UserSchema = new Schema({

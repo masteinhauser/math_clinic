@@ -11,27 +11,30 @@ global.app = module.exports = express.createServer();
 
 // Configuration
 app.configure(function(){
-  app.use(express.cookieParser());
-  app.use(express.bodyParser());
-  app.use(express.methodOverride());
-  app.use(express.session({
-     store: new MongoStore({db: config.mongo.database, host: config.mongo.host, clear_interval: 14400}),
-     secret: '08c0c045c37cb47793406f3056f1e96c',
-     fingerprint: ''
-  }));
-  app.use(passport.initialize());
-  app.use(passport.session());
-  app.use(app.router);
-  app.set('path', config.path);
-  app.use(express.static(__dirname + '/public'));
-  app.use(require('stylus').middleware({ src: __dirname + '/public' }));
-  app.set('views', __dirname + '/views');
-  app.set('view engine', 'jade');
+   app.use(express.cookieParser());
+   app.use(express.bodyParser());
+   app.use(express.methodOverride());
+   app.use(express.session({
+      store: new MongoStore({db: config.mongo.database, host: config.mongo.host, clear_interval: 14400}),
+      secret: '08c0c045c37cb47793406f3056f1e96c',
+      fingerprint: ''
+   }));
+   app.use(passport.initialize());
+   app.use(passport.session());
+   app.use(app.router);
+   app.set('path', config.path);
+   app.use(express.static(__dirname + '/public'));
+   app.use(require('stylus').middleware({ src: __dirname + '/public' }));
+   app.set('views', __dirname + '/views');
+   app.set('view engine', 'jade');
 });
 
 app.dynamicHelpers({
    path: function(){
       return this.set('path');
+   },
+   user: function(req, res){
+      return req.user || {};
    }
 });
 
@@ -55,10 +58,18 @@ passport.use(new LocalStrategy(
          if(!user){
             return next(null, false);
          }
-         if(!User.util.validPassword(password, user.password)){
-            return next(null, false);
-         }
-         return next(null, user);
+         var userUtil = require('./utils/User');
+         userUtil.validPassword(password, user.password, function(err, res){
+            if(err){
+               console.log("ERROR: "+err);
+            }
+            if(res){
+               return next(null, user);
+            } else {
+               console.log("bad password");
+               return next(null, false);
+            }
+         });
       });
    }
 ));
