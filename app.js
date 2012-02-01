@@ -30,6 +30,9 @@ app.configure(function(){
 });
 
 app.dynamicHelpers({
+   basepath: function(req, res){
+      return config.path || "";
+   },
    user: function(req, res){
       return req.user || {};
    }

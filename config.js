@@ -1,6 +1,6 @@
 exports.port = 3000;
-exports.path = '/math';
-//exports.path = '';
+//exports.path = '/math';
+exports.path = '';
 
 exports.mongo = {
    host: '127.0.0.1',
