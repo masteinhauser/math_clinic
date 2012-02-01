@@ -2,17 +2,17 @@
 html
   head
     title= title
-    link(rel='stylesheet', href=path+'/stylesheets/style.css')
+    link(rel='stylesheet', href='/stylesheets/style.css')
   body!= body
 
   br
   #footer(style="float: left; clear: left")
-    a(href=path+'/') Home | 
+    a(href='/') Home | 
     if(user.username != null)
-      a(href=path+'/logout') Logout | 
+      a(href='/logout') Logout | 
     else
-      a(href=path+'/login') Login | 
-    a(href=path+'/test') Test | 
-    a(href=path+'/about') About
-    <br/>
-    a(href=path+'/engine') Equation Engine
+      a(href='/login') Login | 
+    a(href='/test') Test | 
+    a(href='/about') About
+    <br/i>
+    a(href='/engine') Equation Engine

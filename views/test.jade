@@ -6,7 +6,7 @@ if(typeof(req) != 'undefined' && typeof(req.submit) != 'undefined')
 else
   p Please Answer the question: 
   p= ""
-  form(action=path+"/test", method="post")
+  form(action="/test", method="post")
     p Answer:
       input(type="text", name="answer")
       input(type="hidden", name="start", value=new Date().valueOf())

@@ -26,12 +26,10 @@ app.configure(function(){
    app.use(require('stylus').middleware({ src: __dirname + '/public' }));
    app.set('views', __dirname + '/views');
    app.set('view engine', 'jade');
+   app.set('basepath', config.path);
 });
 
 app.dynamicHelpers({
-   path: function(req, res){
-      return config.path;
-   },
    user: function(req, res){
       return req.user || {};
    }
