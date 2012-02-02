@@ -46,7 +46,7 @@ var range = function(number, callback){
       for(i=0; i<limit; i++){
          // Multiply the random number by upper if we're currently on an odd number, etc.
          // Upper + 1 gives a chance to actually get the upper number
-         num = Math.floor(Math.random() * (i%2? upper+1 : lower+1));
+         num = lower + parseInt((Math.random()*(upper - lower)+1), 10);
          range.push(num);
       }
    } else {
