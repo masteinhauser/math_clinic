@@ -144,7 +144,7 @@ var generate = exports.generate = function(eq, callback){
       switch(eq.length > 0){
          //Single
          case regNumber.test(eq[i]):
-            parts.push(eq[i]);
+            parts.push([eq[i]]);
             break;
          // Range
          case regRange.test(eq[i]):
