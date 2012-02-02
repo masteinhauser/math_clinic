@@ -1,16 +1,16 @@
 p User Information
 form(action=basepath+"/user", method="post")
-  p User: br
+  p User:  <br/>
     input(type="text", name="username", value=result.user.username)
-  p Pass: br
+  p Pass: <br/>
     input(type="password", name="password", value="")
-  p Role: br
+  p Role: <br/>
     input(type="text", name="role", value=result.user.role, readonly)
-  p First Name or Initial: br
+  p First Name or Initial: <br/>
     input(type="text", name="fname", value=result.user.fname)
-  p Last Name or Initial: br
+  p Last Name or Initial: <br/>
     input(type="text", name="lname", value=result.user.lname)
-  p Birthday: br
+  p Birthday: <br/>
     input(type="date", name="date", value=result.user.birthday)
     input(type="hidden", name="id", value=result.user._id)
   p
