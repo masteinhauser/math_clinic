@@ -37,8 +37,8 @@ var range = function(number, callback){
    var range = [];
    var regLower = /\d+/;
    var regUpper = /\.{2,}\d+/;
-   var lower = number.match(regLower)[0]; // Grab first match
-   var upper = number.match(regUpper)[0].replace(/\.{2,}/g,'');
+   var lower = Number(number.match(regLower)[0]); // Grab first match
+   var upper = Number(number.match(regUpper)[0].replace(/\.{2,}/g,''));
    var i = 0, num;
    var limit = 100; // Limit the number of possible answers in the range
 
@@ -46,9 +46,9 @@ var range = function(number, callback){
       for(i=0; i<limit; i++){
          // Multiply the random number by upper if we're currently on an odd number, etc.
          // Upper + 1 gives a chance to actually get the upper number
-         num = Math.floor(Math.random() * (i%2? upper+1 : lower));
+         num = Math.floor(Math.random() * (i%2? upper+1 : lower+1));
          range.push(num);
-      }   
+      }
    } else {
       for(i=lower; i<=upper; i++){
          range.push(i);
