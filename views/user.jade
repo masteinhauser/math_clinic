@@ -11,7 +11,8 @@ form(action=basepath+"/user", method="post")
   p Last Name or Initial: <br/>
     input(type="text", name="lname", value=result.user.lname)
   p Birthday: <br/>
-    input(type="date", name="date", value=result.user.birthday)
+    - var birth = new Date(result.user.birth)
+    input(type="date", name="date", value=(birth.getMonth()+1)+'/'+birth.getDate()+'/'+birth.getFullYear())
     input(type="hidden", name="id", value=result.user._id)
   p
     input(type="submit", name="submit", value="Edit")
