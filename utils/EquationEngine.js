@@ -12,7 +12,7 @@ var parse = exports.parse = function(equation, callback){
 
 // Start to parser
 //   util.log("Equation: "+ equation);
-   
+
    // Clean up any spaces and remove them
    equation = equation.replace(/[ \t\r\n]/g, '');
 
@@ -39,10 +39,19 @@ var range = function(number, callback){
    var regUpper = /\.{2,}\d+/;
    var lower = number.match(regLower)[0]; // Grab first match
    var upper = number.match(regUpper)[0].replace(/\.{2,}/g,'');
-   var i = 0;
+   var i = 0, num;
+   var limit = 100; // Limit the number of possible answers in the range
 
-   for(i=lower; i<=upper; i++){
-      range.push(i);
+   if(upper - lower > limit){
+      for(i=0; i<limit; i++){
+         // Multiply the random number by upper if we're currently on an odd number, etc.
+         // Upper + 1 gives a chance to actually get the upper number
+         num = Math.floor(Math.random() * (i%2? upper+1 : lower));
+      }   
+   } else {
+      for(i=lower; i<=upper; i++){
+         range.push(i);
+      }
    }
 
    if(callback){
