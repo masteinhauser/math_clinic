@@ -3,12 +3,15 @@ var async = require('async');
 var mongo = require('mongoose');
 var Schema = mongo.Schema;
 var bcrypt = require('bcrypt');
+
 var userUtil = require('../utils/User');
+var UserHelper = require('./helpers/User');
 
 // User Schema and declaration
 var UserSchema = new Schema({
    username: String,
    password: String,
+   role: {type: String, enum: UserHelper.UserType },
    fname: String,
    lname: String,
    birth: Date
@@ -19,12 +22,13 @@ var User = mongo.model('User', UserSchema);
 exports.emptyUser = {
    username: "",
    password: "",
+   role: UserHelper.UserType[0], // Defaults to lowest permission user type
    fname: "",
    lname: "",
    birth: ""
 };
 
-exports.add = function(username, password, fname, lname, birth, callback){
+exports.add = function(username, password, role, fname, lname, birth, callback){
 
    userUtil.genPassword(password, password, function(err, hash){
       if(err){
@@ -35,6 +39,7 @@ exports.add = function(username, password, fname, lname, birth, callback){
       var newUser = new User();
       newUser.username = username;
       newUser.password = hash;
+      newUser.role = role;
       newUser.fname = fname;
       newUser.lname = lname;
       newUser.birth = birth;
@@ -65,13 +70,14 @@ exports.del = function(id, callback){
   });
 };
 
-exports.edit = function(id, username, password, fname, lname, birth, callback){
+exports.edit = function(id, username, password, role, fname, lname, birth, callback){
   exports.findUserById(id, function(err, doc){
     if(err){
       callback(err);
     } else {
       doc.username = username || doc.username;
       doc.password = userUtil.genPassword(password) || doc.password;
+      doc.role = role || doc.role;
       doc.fname = fname || doc.fname;
       doc.lname = lname || doc.lname;
       doc.birth = birth || doc.birth;

@@ -10,14 +10,17 @@ html
       if(user.username != null)
         a(href=basepath+'/logout') Logout | 
         a(href=basepath+'/user') User | 
-        a(href=basepath+'/class') Class | 
-        a(href=basepath+'/questions') Questions | 
-        a(href=basepath+'/test') Test | 
+        a(href=basepath+'/test') Take Test | 
+        if(user.role === "teacher" || user.role === "admin")")
+          a(href=basepath+'/users') Users | 
+          a(href=basepath+'/classes') Classes | 
+          a(href=basepath+'/questions') Questions | 
+          a(href=basepath+'/tests') Tests | 
       else
         a(href=basepath+'/login') Login | 
-      a(href=basepath+'/about') About
+        a(href=basepath+'/about') About
       br
       a(href=basepath+'/engine') Equation Engine
-      
-    != body
+
+   != body
 

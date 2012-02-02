@@ -16,7 +16,7 @@ db.setup(function(err){
       throw error;
    }
 
-   User.add("myles", "pass", "Myles", "Steinhauser", "07/01/1990", function(err){
+   User.add("myles", "pass", "admin", "Myles", "Steinhauser", "07/01/1990", function(err){
       if(err){
          util.log("ERROR: "+err);
          return err;
