@@ -47,6 +47,7 @@ app.configure('production', function(){
 });
 
 // Authentication and Sessions
+global.auth = require('./utils/Auth');
 passport.use(new LocalStrategy(
    function(username, password, next){
       User.findOne({

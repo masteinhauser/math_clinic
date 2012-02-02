@@ -1,7 +1,6 @@
 /*
  * Test page.
  */
-var auth = require('../utils/Auth');
 
 module.exports = function(app){
    app.get('/test', auth.ensAuth, function(req, res){
