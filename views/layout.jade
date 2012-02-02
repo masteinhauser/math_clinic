@@ -3,16 +3,21 @@ html
   head
     title= title
     link(rel='stylesheet', href=basepath+'/stylesheets/style.css')
-  body!= body
+  body
+    #header
+      h1= title
+      a(href=basepath+'/') Home | 
+      if(user.username != null)
+        a(href=basepath+'/logout') Logout | 
+        a(href=basepath+'/user') User | 
+        a(href=basepath+'/class') Class | 
+        a(href=basepath+'/questions') Questions | 
+        a(href=basepath+'/test') Test | 
+      else
+        a(href=basepath+'/login') Login | 
+      a(href=basepath+'/about') About
+      br
+      a(href=basepath+'/engine') Equation Engine
+      
+    != body
 
-  br
-  #footer(style="float: left; clear: left")
-    a(href=basepath+'/') Home | 
-    if(user.username != null)
-      a(href=basepath+'/logout') Logout | 
-    else
-      a(href=basepath+'/login') Login | 
-    a(href=basepath+'/test') Test | 
-    a(href=basepath+'/about') About
-    <br/>
-    a(href=basepath+'/engine') Equation Engine
