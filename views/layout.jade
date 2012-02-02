@@ -10,8 +10,9 @@ html
       if(user.username != null)
         a(href=basepath+'/logout') Logout | 
         a(href=basepath+'/user') User | 
-        a(href=basepath+'/test') Take Test | 
+        a(href=basepath+'/test') Take Test
         if(user.role === "teacher" || user.role === "admin")
+          br
           a(href=basepath+'/users') Users | 
           a(href=basepath+'/classes') Classes | 
           a(href=basepath+'/questions') Questions | 
