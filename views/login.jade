@@ -5,8 +5,8 @@ else
   p Please login: 
   form(action=basepath+"/login", method="post")
     p User:
-      input(type="text", name="username")
+      input(type="text", name="username", value=config.guest.user)
     p Pass:
-      input(type="password", name="password")
+      input(type="password", name="password", value=config.guest.pass)
     p
       input(type="submit", name="submit", value="Login")

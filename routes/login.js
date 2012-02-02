@@ -3,6 +3,7 @@
  */
 var passport = require('passport');
 var util = require('util');
+var config = require('../config');
 
 module.exports = function(app){
    app.get('/login', function(req, res){
@@ -12,7 +13,7 @@ module.exports = function(app){
    app.post('/login',
       passport.authenticate('local', { failureRedirect: '/login'}),
       function(req, res){
-         res.render('login.jade', { req: req, title: 'Math Clinic - Login' , result: {success: true, message: "Thanks for logging in!"}});
+         res.render('login.jade', { req: req, title: 'Math Clinic - Login' , result: {success: true, message: "Thanks for logging in!"}, config: config });
       }
    );
 
