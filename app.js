@@ -26,6 +26,7 @@ app.configure(function(){
    app.use(require('stylus').middleware({ src: __dirname + '/public' }));
    app.set('views', __dirname + '/views');
    app.set('view engine', 'jade');
+   app.set('view options', {pretty: true});
    app.set('basepath', config.path);
 });
 

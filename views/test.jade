@@ -1,13 +1,19 @@
-if(typeof(req) != 'undefined' && typeof(req.submit) != 'undefined')
-  p You answered in #{result.time} milliseconds!
-
-else
-  p Please Answer the question: 
-  p= ""
-  form(action=basepath+"/test", method="post")
-    p Answer:
-      input(type="text", name="answer")
-      input(type="hidden", name="start", value=new Date().valueOf())
-      input(type="hidden", name="question", value="")
-    p
-      input(type="submit", name="submit", value="Answer")
+#test(data-role="page")
+  div(data-role="header")
+    h1= title
+  div(data-role="content")
+    if(typeof(req) != 'undefined' && typeof(req.submit) != 'undefined')
+      p You answered in #{result.time} milliseconds!
+    else
+      script(type='text/javascript')
+        var el = $('input[name=start]');
+        $('#test').on('pageshow', function(){ el.val(new Date().valueOf()); });
+      p Please Answer the question:
+      p= ""
+      form(name="test", action=basepath+"/test", method="post")
+        p Answer:
+          input(type="text", name="answer")
+          input(type="hidden", name="start")
+          input(type="hidden", name="question", value="")
+        p
+          input(type="submit", name="submit", value="Answer")

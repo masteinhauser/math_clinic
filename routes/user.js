@@ -12,7 +12,12 @@ module.exports = function(app){
             } else {
                result = {success: true, user: user};
             }
-            res.render('user.jade', { req: req, title: 'Math Clinic - User' , result: result });
+            res.render('user.jade', {
+               layout: false,
+               req: req,
+               title: 'Math Clinic - User' ,
+               result: result
+            });
          });
    });
    app.post('/user', auth.ensAuth, function(req, res){

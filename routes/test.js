@@ -13,7 +13,12 @@ module.exports = function(app){
          time: new Date().valueOf() - req.body.start
       };
 
-      res.render('test.jade', { req: req.body, title: 'Math Clinic - Test', result: result });
+      res.render('test.jade', {
+         layout: false,
+         req: req.body,
+         title: 'Math Clinic - Test',
+         result: result
+      });
    });
 };
 
