@@ -9,12 +9,13 @@
         $.post(url, data, function(){
           window.location = "#{basepath}"+"/";
         });
+        return false;
       });
     if(typeof(result) != 'undefined' && result.success == true)
       p You have been logged in!
     else
       p Please login:
-      form(id="login-form")
+      form(id="login-form", data-ajax="false")
         p User:
           input(type="text", name="username", value=config.guest.user)
         p Pass:
