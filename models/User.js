@@ -72,7 +72,7 @@ exports.edit = User.statics.edit = function edit(id, username, password, role, f
       callback(err);
    } else {
       var hash = null;
-      if(password !== null || password !== ""){
+      if(password !== null && password !== ""){
          userUtil.genPassword(password, password, function(err, hash){
             if(err){
                util.log("ERROR: "+err);
