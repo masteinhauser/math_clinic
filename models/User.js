@@ -72,17 +72,17 @@ exports.edit = User.statics.edit = function edit(id, username, password, role, f
       callback(err);
    } else {
       var hash = null;
-      if(password !== null){
+      if(password !== null || password !== ""){
          userUtil.genPassword(password, password, function(err, hash){
             if(err){
                util.log("ERROR: "+err);
                throw err;
             }
-            doc.password = hash || doc.password;
          });
       }
 
       doc.username = username || doc.username;
+      doc.password = hash || doc.password;
       doc.role = role || doc.role;
       doc.fname = fname || doc.fname;
       doc.lname = lname || doc.lname;
