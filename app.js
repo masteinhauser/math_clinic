@@ -55,11 +55,11 @@ global.conn = db.connect(function(err){
 });
 
 // Models
-global.User = require('./models/User').User;
-global.Class = require('./models/Class').Class;
-global.Problem = require('./models/Problem').Problem;
-global.Question = require('./models/Question').Question;
-global.Test = require('./models/Test').Test;
+global.User = require('./models/User');
+global.Class = require('./models/Class');
+global.Problem = require('./models/Problem');
+global.Question = require('./models/Question');
+global.Test = require('./models/Test');
 
 // Authentication and Sessions
 global.auth = require('./utils/Auth');

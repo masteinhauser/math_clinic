@@ -1,5 +1,4 @@
 var util = require('util');
-var async = require('async');
 var mongo = require('mongoose');
 var Schema = mongo.Schema;
 var bcrypt = require('bcrypt');
@@ -8,7 +7,7 @@ var userUtil = require('../utils/User');
 var UserHelper = require('./helpers/User');
 
 // User Schema and declaration
-var UserSchema = new Schema({
+var User = new Schema({
    username: String,
    password: String,
    role: {type: String, enum: UserHelper.UserType },
@@ -17,9 +16,7 @@ var UserSchema = new Schema({
    birth: Date
 });
 
-var User = exports.User = mongo.model('User', UserSchema);
-
-UserSchema.statics.emptyUser = {
+User.emptyUser = {
    username: "",
    password: "",
    role: UserHelper.UserType[0], // Defaults to lowest permission user type
@@ -28,8 +25,7 @@ UserSchema.statics.emptyUser = {
    birth: ""
 };
 
-UserSchema.statics.add = function(username, password, role, fname, lname, birth, callback){
-
+User.statics.add = function add(username, password, role, fname, lname, birth, callback){
    userUtil.genPassword(password, password, function(err, hash){
       if(err){
          util.log("ERROR: "+err);
@@ -58,7 +54,7 @@ UserSchema.statics.add = function(username, password, role, fname, lname, birth,
    });
 };
 
-UserSchema.statics.del = function(id, callback){
+User.statics.del = function del(id, callback){
   exports.findUserById(id, function(err, doc){
     if(err){
       callback(err);
@@ -70,13 +66,23 @@ UserSchema.statics.del = function(id, callback){
   });
 };
 
-UserSchema.statics.edit = function(id, username, password, role, fname, lname, birth, callback){
-  exports.findUserById(id, function(err, doc){
-    if(err){
+exports.edit = User.statics.edit = function edit(id, username, password, role, fname, lname, birth, callback){
+   User.findById(id, function(err, doc){
+   if(err){
       callback(err);
-    } else {
+   } else {
+      var hash = null;
+      if(password !== null){
+         userUtil.genPassword(password, password, function(err, hash){
+            if(err){
+               util.log("ERROR: "+err);
+               throw err;
+            }
+            doc.password = hash || doc.password;
+         });
+      }
+
       doc.username = username || doc.username;
-      doc.password = userUtil.genPassword(password) || doc.password;
       doc.role = role || doc.role;
       doc.fname = fname || doc.fname;
       doc.lname = lname || doc.lname;
@@ -84,21 +90,21 @@ UserSchema.statics.edit = function(id, username, password, role, fname, lname, b
 
       doc.save(function(err){
         if(err){
-          util.log('FATAL '+err);
-          callback(err);
+           util.log('FATAL '+err);
+           callback(err);
         } else {
-          callback(null);
+           callback(null);
         }
       });
     }
   });
 };
 
-UserSchema.statics.allUsers = function(callback){
+User.statics.allUsers = function(callback){
   User.find({}, callback);
 };
 
-UserSchema.statics.forAll = function(doEach, done){
+User.statics.forAll = function(doEach, done){
   User.find({}, function(err, docs){
     if(err){
       util.log('FATAL '+err);
@@ -113,7 +119,7 @@ UserSchema.statics.forAll = function(doEach, done){
   });
 };
 
-var findById = UserSchema.statics.findById = function(id, callback){
+var findById = User.statics.findById = function(id, callback){
   User.findOne({ _id: id }, function(err, doc){
     if(err){
       util.log('FATAL '+err);
@@ -123,7 +129,7 @@ var findById = UserSchema.statics.findById = function(id, callback){
   });
 };
 
-var findByUsername = UserSchema.statics.findByUsername = function(username, callback){
+var findByUsername = User.statics.findByUsername = function(username, callback){
   User.findOne({ username: username }, function(err, doc){
     if(err){
       util.log('FATAL '+err);
@@ -133,3 +139,4 @@ var findByUsername = UserSchema.statics.findByUsername = function(username, call
   });
 };
 
+var User = module.exports = mongo.model('User', User);
