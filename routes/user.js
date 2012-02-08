@@ -22,7 +22,7 @@ module.exports = function(app){
    });
    app.post('/user', auth.ensAuth, function(req, res){
       User.edit(req.body.id, req.body.username, null, null, req.body.fname, req.body.lname, req.body.birth, function(){});
-      res.redirect('/user');
+      res.redirect(basepath+'/user');
    });
 };
 
