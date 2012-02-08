@@ -10,7 +10,7 @@ module.exports = function(app){
    app.post('/test', auth.ensAuth, function(req, res){
       var result = { 
          correct: true,
-         time: new Date().valueOf() - req.body.start
+         time: req.body.finish - req.body.start
       };
 
       res.render('test.jade', {
