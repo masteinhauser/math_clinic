@@ -28,7 +28,7 @@ html
               li
                 a(href='#logout', data-panel="main") Logout
               li
-                a(href='#user', data-panel="main") User
+                a(href='/user', data-panel="main") User
               li
                 a(href='#test', data-panel="main") Take Test
               if(user.role === "teacher" || user.role === "admin")
@@ -52,7 +52,6 @@ html
       include home
       include login
       include logout
-      include user
       include test
       include about
       include engine

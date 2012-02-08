@@ -17,9 +17,9 @@ var UserSchema = new Schema({
    birth: Date
 });
 
-var User = mongo.model('User', UserSchema);
+var User = exports.User = mongo.model('User', UserSchema);
 
-exports.emptyUser = {
+UserSchema.statics.emptyUser = {
    username: "",
    password: "",
    role: UserHelper.UserType[0], // Defaults to lowest permission user type
@@ -28,7 +28,7 @@ exports.emptyUser = {
    birth: ""
 };
 
-exports.add = function(username, password, role, fname, lname, birth, callback){
+UserSchema.statics.add = function(username, password, role, fname, lname, birth, callback){
 
    userUtil.genPassword(password, password, function(err, hash){
       if(err){
@@ -58,7 +58,7 @@ exports.add = function(username, password, role, fname, lname, birth, callback){
    });
 };
 
-exports.del = function(id, callback){
+UserSchema.statics.del = function(id, callback){
   exports.findUserById(id, function(err, doc){
     if(err){
       callback(err);
@@ -70,7 +70,7 @@ exports.del = function(id, callback){
   });
 };
 
-exports.edit = function(id, username, password, role, fname, lname, birth, callback){
+UserSchema.statics.edit = function(id, username, password, role, fname, lname, birth, callback){
   exports.findUserById(id, function(err, doc){
     if(err){
       callback(err);
@@ -94,11 +94,11 @@ exports.edit = function(id, username, password, role, fname, lname, birth, callb
   });
 };
 
-exports.allUsers = function(callback){
+UserSchema.statics.allUsers = function(callback){
   User.find({}, callback);
 };
 
-exports.forAll = function(doEach, done){
+UserSchema.statics.forAll = function(doEach, done){
   User.find({}, function(err, docs){
     if(err){
       util.log('FATAL '+err);
@@ -113,7 +113,7 @@ exports.forAll = function(doEach, done){
   });
 };
 
-var findById = exports.findById = function(id, callback){
+var findById = UserSchema.statics.findById = function(id, callback){
   User.findOne({ _id: id }, function(err, doc){
     if(err){
       util.log('FATAL '+err);
@@ -123,7 +123,7 @@ var findById = exports.findById = function(id, callback){
   });
 };
 
-var findByUsername = exports.findByUsername = function(username, callback){
+var findByUsername = UserSchema.statics.findByUsername = function(username, callback){
   User.findOne({ username: username }, function(err, doc){
     if(err){
       util.log('FATAL '+err);

@@ -5,18 +5,18 @@
     p User Information
     form(action=basepath+"/user", method="post")
       p User:  <br/>
-//        input(type="text", name="username", value=result.user.username)
+        input(type="text", name="username", value=result.user.username)
       p Pass: <br/>
         input(type="password", name="password", value="")
       p Role: <br/>
-//        input(type="text", name="role", value=result.user.role, readonly)
+        input(type="text", name="role", value=result.user.role, readonly)
       p First Name or Initial: <br/>
-//        input(type="text", name="fname", value=result.user.fname)
+        input(type="text", name="fname", value=result.user.fname)
       p Last Name or Initial: <br/>
-//        input(type="text", name="lname", value=result.user.lname)
+        input(type="text", name="lname", value=result.user.lname)
       p Birthday: <br/>
-//        - var birth = new Date(result.user.birth)
-//        input(type="date", name="date", value=(birth.getMonth()+1)+'/'+birth.getDate()+'/'+birth.getFullYear())
-//        input(type="hidden", name="id", value=result.user._id)
+        - var birth = new Date(result.user.birth)
+        input(type="date", name="birth", value=(birth.getMonth()+1)+'/'+birth.getDate()+'/'+birth.getFullYear())
+        input(type="hidden", name="id", value=result.user._id)
       p
         input(type="submit", name="submit", value="Edit")

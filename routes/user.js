@@ -15,13 +15,13 @@ module.exports = function(app){
             res.render('user.jade', {
                layout: false,
                req: req,
-               title: 'Math Clinic - User' ,
+               title: 'Math Clinic - User',
                result: result
             });
          });
    });
    app.post('/user', auth.ensAuth, function(req, res){
-      User.edit();
+      User.edit(req.body.id, req.body.username, null, null, req.body.fname, req.body.lname, req.body.birth, function(){});
    });
 };
 

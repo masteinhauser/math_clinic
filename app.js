@@ -47,6 +47,20 @@ app.configure('production', function(){
   app.use(express.errorHandler());
 });
 
+// Setup Mongoose
+global.conn = db.connect(function(err){
+   if(err){
+      throw err;
+   }
+});
+
+// Models
+global.User = require('./models/User').User;
+global.Class = require('./models/Class').Class;
+global.Problem = require('./models/Problem').Problem;
+global.Question = require('./models/Question').Question;
+global.Test = require('./models/Test').Test;
+
 // Authentication and Sessions
 global.auth = require('./utils/Auth');
 passport.use(new LocalStrategy(
@@ -76,10 +90,10 @@ passport.use(new LocalStrategy(
    }
 ));
 passport.serializeUser(function(user, next){
-   next(null, user.username);
+   next(null, user.id);
 });
 passport.deserializeUser(function(id, next){
-   User.findOne(id, function(err, user){
+   User.findById(id, function(err, user){
       next(err, user);
    });
 });
@@ -91,20 +105,6 @@ app.use(function(req, res, next){
 app.use(function(err, req, res, next){
    res.render('500.jade', {status: err.status || 500, url: req.url, title: 'Internal Server Error'});
 });
-
-// Setup Mongoose
-global.conn = db.connect(function(err){
-   if(err){
-      throw err;
-   }
-});
-
-// Models
-global.User = mongo.model('User');
-global.Class = mongo.model('Class');
-global.Problem = mongo.model('Problem');
-global.Question = mongo.model('Question');
-global.Test = mongo.model('Test');
 
 // Routes
 // Dynamically search for and load all routes in ./routes
