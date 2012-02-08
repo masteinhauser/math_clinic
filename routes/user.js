@@ -2,7 +2,6 @@
  * User edit page.
  */
 var util = require('util');
-var config = require('../config');
 
 module.exports = function(app){
    app.get('/user', auth.ensAuth, function(req, res){
@@ -22,7 +21,7 @@ module.exports = function(app){
    });
    app.post('/user', auth.ensAuth, function(req, res){
       User.edit(req.body.id, req.body.username, null, null, req.body.fname, req.body.lname, req.body.birth, function(){});
-      res.redirect(basepath+'/user');
+      res.redirect(config.basepath+'/user');
    });
 };
 
