@@ -2,11 +2,19 @@
   div(data-role="header")
     h1= title
   div(data-role="content")
+    script(type='text/javascript')
+      $('#login-form').submit(function(){
+        var url = "#{basepath}/login";
+        var data = $('#login-form').serialize();
+        $.post(url, data, function(){
+          window.location="#{basepath}/";
+        });
+      });
     if(typeof(result) != 'undefined' && result.success == true)
       p You have been logged in!
     else
-      p Please login: 
-      form(action=basepath+"/login", method="post")
+      p Please login:
+      form(id="login-form")
         p User:
           input(type="text", name="username", value=config.guest.user)
         p Pass:

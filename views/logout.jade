@@ -1,0 +1,10 @@
+#logout(data-role="page")
+  div(data-role="header")
+    h1= title
+  div(data-role="content")
+    script(type='text/javascript')
+      var url = "#{basepath}"+"/logout";
+      $('#logout').on('pageshow', function(){$.get(url, function(){
+        window.location="#{basepath}"+"/";
+      })});
+    p You have been logged out!
