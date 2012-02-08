@@ -4,10 +4,10 @@
   div(data-role="content")
     script(type='text/javascript')
       $('#login-form').submit(function(){
-        var url = "#{basepath}/login";
+        var url = "#{basepath}"+"/login";
         var data = $('#login-form').serialize();
         $.post(url, data, function(){
-          window.location="#{basepath}/";
+          window.location = "#{basepath}"+"/";
         });
       });
     if(typeof(result) != 'undefined' && result.success == true)
