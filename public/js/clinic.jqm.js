@@ -30,13 +30,11 @@ Clinic.Test.Take = function(page, form){
          finish.val(new Date().valueOf());
          data = form.serializeArray();
 
-         console.log(data);
+         //TODO:
+         //Post form data to server
+         //move on to next question
+         //Timeout after 30 seconds, retry on next question submit
 
-         //TODO: Post form data to server, receive response, move on to next question
-        g
-        :q
-
-         
          e.preventDefault();
          e.stopPropagation();
       }
