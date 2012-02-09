@@ -1,0 +1,17 @@
+#test_take(data-role="page")
+  div(data-role="header")
+    h1= title
+  div(data-role="content")
+    if(typeof(req) != 'undefined' && typeof(req.submit) != 'undefined')
+      p You answered in #{result.time} milliseconds!
+    p Please Answer the question:
+    p= ""
+    form
+      p Answer:
+        input(type="text", name="answer")
+        input(type="hidden", name="start", value="test")
+        input(type="hidden", name="finish")
+        input(type="hidden", name="question", value="")
+      p
+        button(type="submit", name="submit")
+          |Answer

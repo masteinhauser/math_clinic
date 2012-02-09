@@ -11,7 +11,8 @@ html
     script(type='text/javascript', src=basepath+'/jqm/jquery.mobile.js')
     script(type='text/javascript', src=basepath+'/jqm/iscroll-wrapper.js')
     script(type='text/javascript', src=basepath+'/jqm/iscroll.js')
-    //-script(type='text/javascript', src=basepath+'/jqm/eventlog.js')
+    script(type='text/javascript', src=basepath+'/jqm/eventlog.js')
+    script(type='text/javascript', src=basepath+'/js/clinic.jqm.js')
   body
     // Menu Pages
     div(data-role='panel', data-id='menu', data-hash='crumbs', data-context='a#default')
@@ -30,7 +31,7 @@ html
               li
                 a(href='#{basepath}/user', data-panel="main") User
               li
-                a(href='#test', data-panel="main") Take Test
+                a(href='#{basepath}/test/take', data-panel="main") Take Test
               if(user.role === "teacher" || user.role === "admin")
                 li
                   a(href='#users', data-panel="main") Users
@@ -39,7 +40,7 @@ html
                 li
                   a(href='#questions', data-panel="main") Questions
                 li
-                  a(href='#tests', data-panel="main") Tests
+                  a(href='#{basepath}/test/create', data-panel="main") Create Test
             else
               li
                 a(href='#login', data-panel="main") Login
@@ -52,7 +53,6 @@ html
       include home
       include login
       include logout
-      include test
       include about
       include engine
 
