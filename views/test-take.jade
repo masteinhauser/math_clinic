@@ -1,4 +1,4 @@
-#test_take(data-role="page")
+#test-take(data-role="page")
   div(data-role="header")
     h1= title
   div(data-role="content")
@@ -6,12 +6,12 @@
       p You answered in #{result.time} milliseconds!
     p Please Answer the question:
     p= ""
-    form
+    form(id="test-take-form")
       p Answer:
         input(type="text", name="answer")
-        input(type="hidden", name="start", value="test")
+        input(type="hidden", name="start")
         input(type="hidden", name="finish")
-        input(type="hidden", name="question", value="")
+        input(type="hidden", name="question")
       p
         button(type="submit", name="submit")
           |Answer

@@ -11,28 +11,34 @@ var Clinic = {
       Create: {}
    }
 };
-Clinic.APPLICATION_URL = window.location.pathname.split('/')[1];
 
 Clinic.Test.Take = function(page, form){
-   console.log("Clinic.Test.Take: initialized");
-   var start, finish;
+   if(!form){
+      form = $(page).find('form');
+   }
+
+   var start, finish, data;
 
    var methods = {
+      url: "test/take",
       init: function(e){
-        console.log(e.type+" detected: ");
-        start = $('input[name=start]');
-        finish = $('input[name=finish]');
-        start.val(new Date().valueOf());
+         start = form.find('input[name=start]');
+         finish = form.find('input[name=finish]');
+         start.val(new Date().valueOf());
       },
       submit: function(e){
-         console.log(e.type+" detected: ");
-         var url = "#{basepath}"+"/test/take";
-         var data = form.serialize();
-        finish.val(new Date().valueOf());
+         finish.val(new Date().valueOf());
+         data = form.serializeArray();
 
-        //TODO: Post form data to server, receive response, move on to next question
-        e.preventDefault();
-        e.stopPropagation();
+         console.log(data);
+
+         //TODO: Post form data to server, receive response, move on to next question
+        g
+        :q
+
+         
+         e.preventDefault();
+         e.stopPropagation();
       }
    };
 
@@ -44,4 +50,6 @@ Clinic.Test.Take = function(page, form){
    return methods;
 };
 
-Clinic.Test.Take = new Clinic.Test.Take($('div#test_take'), $('div#test_take form'));
+$('div:jqmData(role="page")').live('pagebeforeshow',function(){
+   Clinic.Test.Take = Clinic.Test.Take($('div#test-take'), $('div#test-take form'));
+});
