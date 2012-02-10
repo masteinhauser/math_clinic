@@ -2,14 +2,10 @@
   div(data-role="header")
     h1= title
   div(data-role="content")
-    #left(style="float: left")
+    //-#left(style="float: left")
+    #left(style="float: left;")
       span.question
-      form(id="test-take-form")
-        input(type="number", id="answer", name="answer")
-        input(type="hidden", name="question")
-        button(type="submit")
-          |Answer
-    #right
+    #right(style="float: right")
       //- Numpad Code
       ul#numpad
         li.symbol
@@ -36,3 +32,8 @@
           span .
         li.symbol.delete
           span X
+    form(id="test-take-form")
+      input(type="number", id="answer", name="answer")
+      input(type="hidden", name="question")
+      button(type="submit")
+        |Answer

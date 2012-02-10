@@ -28,11 +28,13 @@ td.border {
 #left span.question {
   font-size: 3em;
 }
-/*  margin-left: auto
-  margin-right: auto*/
 .question {
   text-align: right;
+  margin: auto;
 }
 #answer {
   font-size: 3em;
+}
+div[data-role="page"] {
+  overflow: hidden;
 }
