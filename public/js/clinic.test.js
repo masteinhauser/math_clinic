@@ -19,15 +19,9 @@ Clinic.Test.Take = function(page, form){
    }
 
    // Array of Question objects to use for testing the student.
-   var Questions = [{
-      question: ""
-   }];
+   var Questions = [];
    // All of the answers the user has submitted while waiting for the server to accept.
-   var Answers = [{
-      question: "",
-      tries: "",
-      latency: ""
-   }];
+   var Answers = [];
    var start, finish, data;
    var question, answer;
    var button;
@@ -35,9 +29,15 @@ Clinic.Test.Take = function(page, form){
    var methods = {
       init: 1,
       url: "test/take",
+      index: 0,
       start: function(e){
-         page.find('span.question').html(Clinic.Util.formatQuestion("10+2", false));
-         page.find('input[name="question"]').val("10+2");
+         //TODO: Retrieve questions for this test from the server
+         Questions.push({question: "15+2", level: 1});
+         Questions.push({question: "10+2", level: 1});
+
+         form.find('input[name="answer"]').val("");
+         page.find('input[name="question"]').val(Questions[this.index].question);
+         page.find('span.question').html(Clinic.Util.formatQuestion(Questions[this.index].question, false));
          start = new Date().valueOf();
       },
       submit: function(e){
@@ -50,23 +50,25 @@ Clinic.Test.Take = function(page, form){
          }
 
          finish = new Date().valueOf();
-         //TODO: Add data to Answer, change page
-         // Clinic.util.changePage();
 
          response = form.find('#answer');
          if(data.answer != eval(data.question)){
-            console.log("Incorrect!");
             $(response).animateHighlight('#ff0000', 1000);
          }else{
-            console.log("Correct!");
             $(response).animateHighlight('#00ff00', 1000);
          }
+         //TODO: Change the page to follow question logic:
+         // Correct:   Display/change page, Load question info
+         // Incorrect: change page into error logic
+         // Clinic.util.changePage();
 
-         Answers.push(data);
+         Answers.push({
+            question: data.question,
+            latency: (finish - start)
+         });
 
          //TODO:
          //Post form data to server
-         //move on to next question
          //Timeout after 30 seconds, retry on next question submit
          $.ajax({
             url: this.url,
@@ -76,6 +78,7 @@ Clinic.Test.Take = function(page, form){
                Answers = []; // Clear submitted answers(stupid method)
             },
             error: function(){
+               //TODO: Display error icon
             }
          });
 
