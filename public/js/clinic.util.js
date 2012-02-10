@@ -56,6 +56,16 @@ Clinic.Util.updateListView = function(listview){
     listview.find("li:last").addClass("ui-corner-bottom");
 };
 
+Clinic.Util.formatQuestion= function(question, linebreak){
+   var spaces = function(str, num){ return Array(num + 1).join(str); };
+   var qParts = question.replace(/([\+\-\*\/])/ig, "\\$1").split(/\\/);
+   var maxChars = qParts.sort(function(a, b){ return b.length - a.length; })[0].length;
+
+   question = qParts.join('</br>');
+   question += "<br/>" + spaces("&#150;", maxChars);
+   return question;
+};
+
 $.fn.animateHighlight = function(highlightColor, duration) {
    var highlightBg = highlightColor || "#FFFF9C";
    var animateMs = duration || 1000;

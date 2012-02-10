@@ -1,5 +1,5 @@
 $(function(){
-	var write = $('#answer'),
+	var $write = $('#answer'),
 		shift = false,
 		capslock = false;
 	
@@ -26,15 +26,14 @@ $(function(){
 		
 		// Delete
 		if ($this.hasClass('delete')) {
-			var html = $write.html();
+			var val = $write.val();
 			
-			$write.html(html.substr(0, html.length - 1));
+			$write.val(val.substr(0, val.length - 1));
 			return false;
 		}
 		
 		// Special characters
 		if ($this.hasClass('symbol')){ character = $('span:visible', $this).html(); }
-      console.log("character: "+character);
 		if ($this.hasClass('space')){ character = ' '; }
 		if ($this.hasClass('tab')){ character = "\t"; }
 		if ($this.hasClass('return')){ character = "\n"; }
@@ -51,6 +50,6 @@ $(function(){
 		}
 		
 		// Add the character
-		write.val(write.val() + character);
+		$write.val($write.val() + character);
 	});
 });

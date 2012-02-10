@@ -21,7 +21,7 @@
 }
 #numpad li.zero,
 #numpad li.delete {
-  width: 87px;
+  width: 40px;
 }
 #numpad li.lastitem {
   margin-right: 0;

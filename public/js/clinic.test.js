@@ -36,6 +36,8 @@ Clinic.Test.Take = function(page, form){
       init: 1,
       url: "test/take",
       start: function(e){
+         page.find('span.question').html(Clinic.Util.formatQuestion("10+2", false));
+         page.find('input[name="question"]').val("10+2");
          start = new Date().valueOf();
       },
       submit: function(e){
@@ -51,13 +53,13 @@ Clinic.Test.Take = function(page, form){
          //TODO: Add data to Answer, change page
          // Clinic.util.changePage();
 
-         button = form.find('button');
+         response = form.find('#answer');
          if(data.answer != eval(data.question)){
             console.log("Incorrect!");
-            $(button).animateHighlight('#ff0000', 1000);
+            $(response).animateHighlight('#ff0000', 1000);
          }else{
             console.log("Correct!");
-            $(button).animateHighlight('#00ff00', 1000);
+            $(response).animateHighlight('#00ff00', 1000);
          }
 
          Answers.push(data);

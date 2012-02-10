@@ -57,7 +57,7 @@
                   tr
                 qParts = question.replace(/([\+\-\*\/])/ig, "\\$1").split(/\\/)
                 maxChars = qParts.sort(function(a, b){ return b.length - a.length })[0].length;
-                td.right!= qParts.join('</br>')
+                td.question!= qParts.join('</br>')
                   <br/>
                   != spaces("&#150;", maxChars)
                   <br/>

@@ -25,6 +25,14 @@ td.border {
   margin: 0;
   border-width: 1px 1px 0 0;
 }
-td.right {
+#left .question {
+  font-size: 3em;
+  margin-left: auto;
+  margin-right: auto;
+}
+.question {
   text-align: right;
+}
+#answer {
+  font-size: 3em;
 }

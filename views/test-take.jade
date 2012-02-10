@@ -2,14 +2,11 @@
   div(data-role="header")
     h1= title
   div(data-role="content")
-    #left
-      - var question = "2+2";
-      p What is <span id="question">#{question}</span>?
+    #left(style="float: left")
+      span.question
       form(id="test-take-form")
-        #fieldcontain
-          p Answer:
-            input(type="text", id="answer", name="answer")
-        input(type="hidden", name="question", value=question)
+        input(type="number", id="answer", name="answer")
+        input(type="hidden", name="question")
         button(type="submit")
           |Answer
     #right
@@ -37,3 +34,5 @@
           span 0
         li.symbol
           span .
+        li.symbol.delete
+          span X
