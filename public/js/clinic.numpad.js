@@ -51,6 +51,6 @@ $(function(){
 		}
 		
 		// Add the character
-		write.html(write.html() + character);
+		write.val(write.val() + character);
 	});
 });
