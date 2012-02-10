@@ -1,9 +1,9 @@
-$(function(){
-	var $write = $('#answer'),
+Clinic.Util.numpad = function(numpad, write){
+	var $write = $(write),
 		shift = false,
 		capslock = false;
 	
-	$('#numpad li').click(function(){
+	method = $(numpad).find('li').click(function(){
 		var $this = $(this),
          character = $this.html(); // If it's a lowercase letter, nothing happens to this variable
 
@@ -52,4 +52,6 @@ $(function(){
 		// Add the character
 		$write.val($write.val() + character);
 	});
-});
+
+   return method;
+};

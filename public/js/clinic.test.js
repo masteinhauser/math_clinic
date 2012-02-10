@@ -94,6 +94,7 @@ Clinic.Test.Take = function(page, form){
 
 // Initilize objects and bind to pages/forms/etc.
 $('div#test-take').live('pagebeforeshow',function(){
+   if(!Clinic.Util.numpad.init){ Clinic.Util.numpad = Clinic.Util.numpad($('#numpad'), $('#answer')); }
    if(!Clinic.Test.Take.init){ Clinic.Test.Take = Clinic.Test.Take($('div#test-take'), $('div#test-take form')); }
 });
 $('div#test-create').live('pagebeforeshow',function(){
