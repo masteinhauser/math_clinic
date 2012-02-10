@@ -2,14 +2,38 @@
   div(data-role="header")
     h1= title
   div(data-role="content")
-    if(typeof(req) != 'undefined' && typeof(req.submit) != 'undefined')
-      p You answered in #{result.time} milliseconds!
-    - var question = "2+2";
-    p What is <span id="question">#{question}</span>?
-    form(id="test-take-form")
-      #fieldcontain
-        p Answer:
-          input(type="text", name="answer")
-      input(type="hidden", name="question", value=question)
-      button(type="submit")
-        |Answer
+    #left
+      - var question = "2+2";
+      p What is <span id="question">#{question}</span>?
+      form(id="test-take-form")
+        #fieldcontain
+          p Answer:
+            input(type="text", id="answer", name="answer")
+        input(type="hidden", name="question", value=question)
+        button(type="submit")
+          |Answer
+    #right
+      //- Numpad Code
+      ul#numpad
+        li.symbol
+          span 1
+        li.symbol
+          span 2
+        li.symbol
+          span 3
+        li.symbol
+          span 4
+        li.symbol
+          span 5
+        li.symbol
+          span 6
+        li.symbol
+          span 7
+        li.symbol
+          span 8
+        li.symbol
+          span 9
+        li.symbol.zero
+          span 0
+        li.symbol
+          span .
