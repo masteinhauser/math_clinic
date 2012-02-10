@@ -85,7 +85,6 @@ Clinic.Test.Take = function(page, form){
    };
 
    // Set up bindings
-   page.live('pageshow', methods.start);
    form.live('submit', methods.submit);
    form.find('button').live('click', methods.submit);
 
@@ -93,10 +92,11 @@ Clinic.Test.Take = function(page, form){
 };
 
 // Initilize objects and bind to pages/forms/etc.
-$('div#test-take').live('pagebeforeshow',function(){
+$('div#test-take').live('pageshow',function(){
    if(!Clinic.Util.numpad.init){ Clinic.Util.numpad = Clinic.Util.numpad($('#numpad'), $('#answer')); }
    if(!Clinic.Test.Take.init){ Clinic.Test.Take = Clinic.Test.Take($('div#test-take'), $('div#test-take form')); }
+   Clinic.Test.Take.start();
 });
-$('div#test-create').live('pagebeforeshow',function(){
+$('div#test-create').live('pageshow',function(){
 //   if(!Clinic.Test.Create.init){ Clinic.Test.Create = Clinic.Test.Create($('div#test-create'), $('div#test-create form')); }
 });
