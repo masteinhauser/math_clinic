@@ -3,7 +3,7 @@
     h1= title
   div(data-role="content")
     p User Information
-    form(action=basepath+"/user", method="post")
+    form(action=basepath+"/user/edit", method="post")
       p User:  <br/>
         input(type="text", name="username", value=result.user.username)
       p Pass: <br/>

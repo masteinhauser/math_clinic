@@ -13,9 +13,6 @@ module.exports = function(app){
    });
 
    app.post('/test/take', auth.ensAuth, function(req, res){
-      console.log("Start: "+req.body.start);
-      console.log("Finish: "+req.body.finish);
-      console.log("Body: %j", req.body);
       var result = {
          correct: true,
          time: req.body.finish - req.body.start
@@ -30,10 +27,11 @@ module.exports = function(app){
    });
 
    app.get('/test/create', auth.ensAuth, function(req, res){
-      res.render('test-create.jade', { 
-         req: req, 
+      res.render('test-create.jade', {
+         req: req,
          layout: layout,
-         title: 'Math Clinic - Create Test' });
+         title: 'Math Clinic - Create Test' 
+      });
    });
 
    app.post('/test/create', auth.ensAuth, function(req, res){

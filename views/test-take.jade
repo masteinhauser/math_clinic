@@ -4,14 +4,12 @@
   div(data-role="content")
     if(typeof(req) != 'undefined' && typeof(req.submit) != 'undefined')
       p You answered in #{result.time} milliseconds!
-    p Please Answer the question:
-    p= ""
+    - var question = "2+2";
+    p What is <span id="question">#{question}</span>?
     form(id="test-take-form")
-      p Answer:
-        input(type="text", name="answer")
-        input(type="hidden", name="start")
-        input(type="hidden", name="finish")
-        input(type="hidden", name="question")
-      p
-        button(type="submit", name="submit")
-          |Answer
+      #fieldcontain
+        p Answer:
+          input(type="text", name="answer")
+      input(type="hidden", name="question", value=question)
+      button(type="submit")
+        |Answer

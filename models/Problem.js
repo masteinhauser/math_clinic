@@ -3,16 +3,13 @@ var mongo = require('mongoose');
 var Schema = mongo.Schema;
 
 // Problem Schema and declaration
-var ProblemSchema = new Schema({
+var Problem = new Schema({
    latency: Date,
    correct: Boolean,
    problem: String,
    answer: String,
    response: String
 });
-
-mongo.model('Problem', ProblemSchema);
-var Problem = mongo.model('Problem');
 
 exports.emptyProblem = {
    "_id": "",
@@ -105,3 +102,6 @@ var findById = exports.findById = function(id, callback){
     callback(null, doc);
   });
 };
+
+var Problem = module.exports = mongo.model('Problem', Problem);
+

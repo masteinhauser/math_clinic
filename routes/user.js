@@ -4,7 +4,7 @@
 var util = require('util');
 
 module.exports = function(app){
-   app.get('/user', auth.ensAuth, function(req, res){
+   app.get('/user/edit', auth.ensAuth, function(req, res){
          User.findById(req.user.id, function(err, user){
             if(err){
                result = {success: false, message: err};
@@ -19,9 +19,9 @@ module.exports = function(app){
             });
          });
    });
-   app.post('/user', auth.ensAuth, function(req, res){
+   app.post('/user/edit', auth.ensAuth, function(req, res){
       User.edit(req.body.id, req.body.username, null, null, req.body.fname, req.body.lname, req.body.birth, function(){});
-      res.redirect(config.path+'/user');
+      res.redirect(config.path+'/user/edit');
    });
 };
 
