@@ -1,0 +1,30 @@
+#header {
+  text-align: center;
+}
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+a {
+  color: #00b7ff;
+}
+td {
+  padding: 8px;
+}
+table.border,
+td.border {
+  border-color: #600;
+  border-style: solid;
+}
+table.border {
+  border-width: 0 0 1px 1px;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+td.border {
+  margin: 0;
+  border-width: 1px 1px 0 0;
+}
+td.right {
+  text-align: right;
+}
