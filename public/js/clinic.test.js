@@ -142,7 +142,7 @@ Clinic.Test.Complete = function(page){
             divAnswers.append('<p>Totals:<br/><strong>Questions: '+Questions.length+'<br/>Answers: '+Answers.length+'<br/>Total Correct: '+totalCorrect+'<br/>Total Latency: '+totalLatency+'<br/>Average Latency: '+(totalLatency/Answers.length)+'</strong></p>');
          }else{
             divAnswers.html('<h3>No Data Available</h3>');
-            divAnswers.append('<a href="#take-test">Take Test</a>');
+            divAnswers.append('<a href="/#take-test">Take Test</a>');
          }
       }
    };
