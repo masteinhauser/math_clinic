@@ -32,11 +32,13 @@ Clinic.Test.Take = function(page, form){
       load: function(callback){
          //console.log("Loading Data...");
          //TODO: Retrieve questions for this test from the server
-         Questions.push({question: "15+2", level: 2});
-         Questions.push({question: "10+2", level: 2});
-         Questions.push({question: "10+8", level: 2});
-
-         if(callback){ callback(); }
+         $.getJSON("questions/0", function(json){
+            // Iterates over each PIECE of data in the returned JSON.
+            $.each(json.questions, function(key, value){
+               Questions.push({question: value});
+            });
+            if(callback){ callback(); }
+         });
       },
       url: "test/take",
       index: 0,
@@ -48,8 +50,9 @@ Clinic.Test.Take = function(page, form){
          start = new Date().valueOf();
       },
       submit: function(e){
+         var correct;
          //console.log("Saving Question...");
-         console.log("Index: "+methods.index);
+         //console.log("Index: "+methods.index);
          data = Clinic.Util.serializeForm(form);
 
          if(data.answer === ''){
@@ -60,11 +63,6 @@ Clinic.Test.Take = function(page, form){
          }
 
          finish = new Date().valueOf();
-         Answers.push({
-            question: data.question,
-            answer: data.answer,
-            latency: (finish - start)
-         });
 
          //TODO: Change the page to follow question logic:
          // Correct:   Display/change page, Load question info
@@ -72,8 +70,9 @@ Clinic.Test.Take = function(page, form){
          response = form.find('#answer');
          if(data.answer != eval(data.question)){
             $(response).animateHighlight('#ff0000', 1000);
+            correct = false;
          }else{
-            var next;
+            correct = true;
             methods.index++;
             if(methods.index < Questions.length){
                $(response).animateHighlight('#00ff00', 1000, function(){
@@ -85,6 +84,13 @@ Clinic.Test.Take = function(page, form){
                });
             }
          }
+
+         Answers.push({
+            question: data.question,
+            answer: data.answer,
+            latency: (finish - start),
+            correct: correct
+         });
 
          //TODO:
          //Post form data to server
@@ -100,8 +106,6 @@ Clinic.Test.Take = function(page, form){
                //TODO: Display error icon
             }
          });*/
-
-         console.log("Answers["+Answers.length+"]: \n"+JSON.stringify(Answers));
 
          e.preventDefault();
          e.stopPropagation();
@@ -122,18 +126,23 @@ Clinic.Test.Complete = function(page){
    var methods = {
       init: 1,
       load: function(e){
-         var Answers = Clinic.Data.Answers;
+         var Answers = Clinic.Data.Answers, answer;
+         var Questions = Clinic.Data.Questions;
+         var totalLatency = 0, totalCorrect = 0;
 
          if(Answers){
-            console.log("Answers["+Answers.length+"]: \n"+JSON.stringify(Answers));
-
             table = divAnswers.html('<table></table>').find('table');
             table.append('<tr><th>Question</th><th>Answer</th><th>Latency(ms)</th></tr>');
             for(i = Answers.length-1; i>=0; i--){
-               table.append('<tr><td>'+Answers[i].question+'</td><td>'+Answers[i].answer+'</td><td>'+Answers[i].latency+'</td></tr>');
+               answer = Answers[i];
+               totalLatency += answer.latency;
+               if(answer.correct){ totalCorrect++; }
+               table.append('<tr><td>'+answer.question+'</td><td>'+answer.answer+'</td><td>'+answer.latency+'</td></tr>');
             }
+            divAnswers.append('<p>Totals:<br/><strong>Questions: '+Questions.length+'<br/>Answers: '+Answers.length+'<br/>Total Correct: '+totalCorrect+'<br/>Total Latency: '+totalLatency+'<br/>Average Latency: '+(totalLatency/Answers.length)+'</strong></p>');
          }else{
             divAnswers.html('<h3>No Data Available</h3>');
+            divAnswers.append('<a href="#take-test">Take Test</a>');
          }
       }
    };

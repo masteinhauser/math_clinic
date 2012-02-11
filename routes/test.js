@@ -13,17 +13,7 @@ module.exports = function(app){
    });
 
    app.post('/test/take', auth.ensAuth, function(req, res){
-      var result = {
-         correct: true,
-         time: req.body.finish - req.body.start
-      };
-
-      res.render('test-take.jade', {
-         req: req.body,
-         layout: layout,
-         title: 'Math Clinic - Take Test',
-         result: result
-      });
+      
    });
 
    app.get('/test/create', auth.ensAuth, function(req, res){

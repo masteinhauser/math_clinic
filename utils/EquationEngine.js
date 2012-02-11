@@ -179,21 +179,11 @@ var run = exports.run = function(equation, count){
 //   var builtQuestions = build(parts);
 //   var subsetQuestions = trim(builtQuestions, count);
    var result = trim(build(generate(parse(equation))), count);
+//   var z = 0;
+//   for(z=0; z<result.questions.length; z++){
+//      util.log(result.questions[z]);
+//   }
+//   console.log("Results: %j", result);
    return {questions: result.questions, message: result.message, equation: equation, count: count, total: result.total};
 };
-
-//var equation = '[1][0][+][1,5][+][0..10]';
-//var count = 30;
-
-//eq = run(equation, count);
-
-//if(eq.message){
-//   util.log(eq.message);
-//   util.log(eq.message);
-//}
-
-//var z = 0;
-//for(z=0; z<eq.questions.length; z++){
-//   util.log(eq.questions[z]);
-//}
 

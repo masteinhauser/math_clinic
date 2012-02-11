@@ -66,7 +66,7 @@ User.statics.del = function del(id, callback){
   });
 };
 
-exports.edit = User.statics.edit = function edit(id, username, password, role, fname, lname, birth, callback){
+User.statics.edit = function edit(id, username, password, role, fname, lname, birth, callback){
    User.findById(id, function(err, doc){
    if(err){
       callback(err);
