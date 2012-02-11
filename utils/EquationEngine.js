@@ -44,8 +44,6 @@ var range = function(number, callback){
 
    if(upper - lower > limit){
       for(i=0; i<limit; i++){
-         // Multiply the random number by upper if we're currently on an odd number, etc.
-         // Upper + 1 gives a chance to actually get the upper number
          num = lower + parseInt((Math.random()*(upper - lower)+1), 10);
          range.push(num);
       }
@@ -105,22 +103,43 @@ var build = exports.build = function(eqParts){
    return questions;
 };
 
-var trim = exports.trim = function(questions, count){
+var trim = exports.trim = function(questions, count, randomize){
    var rand, i = 0, message = "";
    var newQuestions = [];
    var total = questions.length;
+   count = count || total;
+   randomize = randomize || false;
+
+   if(questions.length === 0){
+      message = "ERROR: No questions generated in previous steps!!!";
+      return {questions: newQuestions, message: message, total: total};
+   }
 
    if(questions.length < count){
       message = "WARNING: Requested number of questions is larger than generated total. Randomly duplicating questions.";
       for(i = 0; i < count; i++){
-         rand = Math.floor(Math.random() * questions.length);
-         newQuestions.push(questions[rand]);
+         rand = parseInt((Math.random()*(questions.length+1)), 10);
+         if(typeof(questions[rand]) !== 'undefined' && questions[rand] !== null){
+            console.log("i = "+i+", questions["+rand+"]: "+questions[rand]);
+            newQuestions[i] = questions[rand];
+         }else{
+            i--;// Decrement the counter to re-run and pick again.
+         }
       }
    } else { // Cut down questions to number specified in count.
       for(i = 0; i < count; i++){
-         rand = Math.floor(Math.random() * questions.length);
-         newQuestions.push(questions[rand]);
-         questions.splice(rand, 1);
+         if(randomize){
+            rand = parseInt((Math.random()*(questions.length+1)), 10);
+            if(typeof(questions[rand]) !== 'undefined' && questions[rand] !== null){
+               console.log("i = "+i+", questions["+rand+"]: "+questions[rand]);
+               newQuestions[i] = (questions[rand]);
+               questions.splice(rand, 1);
+            }else{
+               i--;// Decrement the counter to re-run and pick again.
+            }
+         }else{
+            newQuestions.push(questions[i]);
+         }
       }
    }
 
@@ -172,17 +191,22 @@ var generate = exports.generate = function(eq, callback){
    }
 };
 
-var run = exports.run = function(equation, count){
+var run = exports.run = function(equation, count, randomize){
 // NOTE: This is the call path. Use it for debugging.
 //   var parsedEquation = parse(equation);
 //   var parts = generate(parsedEquation);
 //   var builtQuestions = build(parts);
 //   var subsetQuestions = trim(builtQuestions, count);
-   var result = trim(build(generate(parse(equation))), count);
-//   var z = 0;
-//   for(z=0; z<result.questions.length; z++){
-//      util.log(result.questions[z]);
-//   }
+   console.log("EE-Run options: ");
+   console.log("Equation: "+equation);
+   console.log("Count: "+count);
+   console.log("Randomize: "+randomize);
+
+   var result = trim(build(generate(parse(equation))), count, randomize);
+   var z = 0;
+   for(z=0; z<result.questions.length; z++){
+      util.log("questions["+z+"]: "+result.questions[z]);
+   }
 //   console.log("Results: %j", result);
    return {questions: result.questions, message: result.message, equation: equation, count: count, total: result.total};
 };

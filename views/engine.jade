@@ -25,11 +25,14 @@
       form(action=basepath+"/engine", method="post", id="engine")
         - eq = typeof(req) != 'undefined' ? req.eq : "[10][+-][1,3,5][+][0..9]"
         - count = typeof(req) != 'undefined' ? req.count : 20
+        - randomize = typeof(req) != 'undefined' ? req.randomize : false;
 
         p Equation:<br/>
           input(type="text", name="eq", value=eq)
         p Count: (Number of questions to generate)<br/>
           input(type="text", name="count", value=count)
+        p Randomize:
+          input(type="checkbox", name="randomize", value=randomize)
         p
           input(type="submit", name="submit", value="Generate")
 
@@ -50,7 +53,7 @@
           //- This is a hairy section of display code and formatting:
           table
             num = 0
-            row = Math.ceil(Math.sqrt(result.questions.length))
+            row = Math.ceil(Math.sqrt(result.questions.length*2))
             spaces = function(str, num){ return Array(num + 1).join(str) }
             each question in result.questions
               - if(num%row == 0)

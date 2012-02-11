@@ -12,7 +12,7 @@ module.exports = function(app){
 
    app.post('/engine', function(req, res){
       var eq = require('../utils/EquationEngine');
-      var result = eq.run(req.body.eq, req.body.count);
+      var result = eq.run(req.body.eq, req.body.count, req.body.randomize);
 
       res.render('engine.jade', {
          layout: false,
