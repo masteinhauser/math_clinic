@@ -76,11 +76,14 @@ Clinic.Test.Take = function(page, form){
             var next;
             methods.index++;
             if(methods.index < Questions.length){
-               next = methods.start();
+               $(response).animateHighlight('#00ff00', 1000, function(){
+                  methods.start();
+               });
             }else{
-               next = Clinic.Util.changePage('#test-complete');
+               $(response).animateHighlight('#00ff00', 1000, function(){
+                  Clinic.Util.changePage('#test-complete');
+               });
             }
-            $(response).animateHighlight('#00ff00', 1000, next);
          }
 
          //TODO:
