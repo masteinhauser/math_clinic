@@ -16,15 +16,14 @@ Clinic.Util.serializeForm = function(form){
    return obj;
 };
 
-Clinic.Util.changePage = function(page, transition, changeHash){
-    transition = transition || (transition = "slide");
-    changeHash = changeHash || (changeHash = "false");
+Clinic.Util.changePage = function(page, options){
+   if(!options){ options = {}; }
+   options.transition = options.transition || "slide";
+   options.changeHash = options.changeHash || "false";
+   options.allowSamePageTransition = options.allowSamePageTransition || "false";
 
-    // Change page using args we set.
-    $.mobile.changePage(page, {
-        transition: transition, 
-        changeHash: changeHash
-    });
+   // Change page using args we set.
+   $.mobile.changePage(page, options);
 };
 
 Clinic.Util.openDialog = function(message, title){
@@ -66,7 +65,7 @@ Clinic.Util.formatQuestion= function(question, linebreak){
    return question;
 };
 
-$.fn.animateHighlight = function(highlightColor, duration) {
+$.fn.animateHighlight = function(highlightColor, duration, callback) {
    var highlightBg = highlightColor || "#FFFF9C";
    var animateMs = duration || 1000;
    var originalBg = this.css("backgroundColor");
@@ -74,7 +73,10 @@ $.fn.animateHighlight = function(highlightColor, duration) {
       {backgroundColor: originalBg},
       {
          duration: animateMs,
-         complete: function(){ this.style.removeProperty('background-color'); }
+         complete: function(){
+            this.style.removeProperty('background-color');
+            if(callback){ callback(); }
+         }
       }
    );
 };

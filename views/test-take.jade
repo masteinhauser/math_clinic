@@ -1,6 +1,6 @@
 #test-take(data-role="page")
   div(data-role="header")
-    h1= title
+    h1 Math Clinic - Take Test
   div(data-role="content")
     #left(style="float: left;")
       span.question
@@ -31,8 +31,8 @@
           span .
         li.symbol.delete
           span X
-    form(id="test-take-form")
-      input(type="number", id="answer", name="answer")
+    form
+      input(type="number", id="answer", name="answer", autofocus="autofocus")
       input(type="hidden", name="question")
       button(type="submit")
         |Answer
