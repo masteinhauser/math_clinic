@@ -202,7 +202,7 @@ var run = exports.run = function(equation, count, randomize){
 //   console.log("Count: "+count);
 //   console.log("Randomize: "+randomize);
 
-//   var result = trim(build(generate(parse(equation))), count, randomize);
+   var result = trim(build(generate(parse(equation))), count, randomize);
 //   var z = 0;
 //   for(z=0; z<result.questions.length; z++){
 //      util.log("questions["+z+"]: "+result.questions[z]);
