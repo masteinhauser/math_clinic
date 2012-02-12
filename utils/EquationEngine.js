@@ -120,7 +120,7 @@ var trim = exports.trim = function(questions, count, randomize){
       for(i = 0; i < count; i++){
          rand = parseInt((Math.random()*(questions.length+1)), 10);
          if(typeof(questions[rand]) !== 'undefined' && questions[rand] !== null){
-            console.log("i = "+i+", questions["+rand+"]: "+questions[rand]);
+            // console.log("i = "+i+", questions["+rand+"]: "+questions[rand]);
             newQuestions[i] = questions[rand];
          }else{
             i--;// Decrement the counter to re-run and pick again.
@@ -131,7 +131,7 @@ var trim = exports.trim = function(questions, count, randomize){
          if(randomize){
             rand = parseInt((Math.random()*(questions.length+1)), 10);
             if(typeof(questions[rand]) !== 'undefined' && questions[rand] !== null){
-               console.log("i = "+i+", questions["+rand+"]: "+questions[rand]);
+               // console.log("i = "+i+", questions["+rand+"]: "+questions[rand]);
                newQuestions[i] = (questions[rand]);
                questions.splice(rand, 1);
             }else{
