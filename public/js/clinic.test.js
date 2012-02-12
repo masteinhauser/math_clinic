@@ -164,7 +164,21 @@ Clinic.Test.Complete = function(page){
             }
             divAnswers.append('<p>Totals:<br><strong>Questions Possible: '+Questions.length+'<br>Questions Asked: '+Clinic.Test.Take.index+'<br>Answers: '+Answers.length+'<br/>Total Correct: '+totalCorrect+'<br/>Total Latency: '+totalLatency+'<br>Average Latency: '+(totalLatency/Answers.length)+'</strong></p>');
 
-            graph = Flotr.draw(divGraph,  [ graphData ]);
+            graph = Flotr.draw(divGraph,
+               [{
+                  data: graphData,
+                  lines: {show: true},
+                  points: {show: true}
+               }],
+               {
+                  xaxis: {
+                     ticks: function(n){ var i, ticks = []; for(i=n.min; i<n.max; i++){ ticks.push([i, Answers[i].question]); } return ticks;},
+                     labelsAngle: 90,
+                     tickFormatter: function(n){ return n+1; },
+                     tickDecimals: 0
+                  }
+               }
+            );
          }else{
             divAnswers.html('<h3>No Data Available</h3>');
             divAnswers.append('<a href="#take-test">Take Test</a>');
