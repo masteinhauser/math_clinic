@@ -115,11 +115,11 @@ Clinic.Test.Take = function(page, form){
          //Post form data to server
          //Timeout after 30 seconds, retry post on next question submit
          $.ajax({
-            url: this.url,
+            url: methods.url,
             data: data,
             timeout: 30000,
             success: function(){
-               Answers = []; // Clear submitted answers(stupid method)
+               //Answers = []; // Clear submitted answers(stupid method)
             },
             error: function(){
                //TODO: Display error icon
@@ -140,8 +140,10 @@ Clinic.Test.Take = function(page, form){
 };
 
 Clinic.Test.Complete = function(page){
-   var i, table, divAnswers = $(page.find('div.answers'));
-   var css;
+   var i, table, css;
+   var divAnswers = $(page.find('div.answers')),
+       divGraph = document.getElementById('graph');
+   var graph, graphData = [];
 
    var methods = {
       init: 1,
@@ -153,13 +155,16 @@ Clinic.Test.Complete = function(page){
          if(Answers){
             table = divAnswers.html('<table></table>').find('table');
             table.append('<tr><th>Question</th><th>Answer</th><th>Latency(ms)</th></tr>');
-            for(i = Answers.length-1; i>=0; i--){
+            for(i = 0; i<Answers.length; i++){
                answer = Answers[i];
+               graphData.push([i, answer.latency]);
                totalLatency += answer.latency;
                if(answer.correct){ css='black'; totalCorrect++; } else { css='red'; }
-               table.append('<tr class='+css+'><td>'+answer.question+'</td><td>'+answer.answer+'</td><td>'+answer.latency+'</td></tr>');
+               table.append('<tr class='+css+'><td>'+(i+1)+". "+answer.question+'</td><td>'+answer.answer+'</td><td>'+answer.latency+'</td></tr>');
             }
-            divAnswers.append('<p>Totals:<br/><strong>Questions Possible: '+Questions.length+'<br/>Questions Asked: '+Clinic.Test.Take.index+'Answers: '+Answers.length+'<br/>Total Correct: '+totalCorrect+'<br/>Total Latency: '+totalLatency+'<br/>Average Latency: '+(totalLatency/Answers.length)+'</strong></p>');
+            divAnswers.append('<p>Totals:<br><strong>Questions Possible: '+Questions.length+'<br>Questions Asked: '+Clinic.Test.Take.index+'<br>Answers: '+Answers.length+'<br/>Total Correct: '+totalCorrect+'<br/>Total Latency: '+totalLatency+'<br>Average Latency: '+(totalLatency/Answers.length)+'</strong></p>');
+
+            graph = Flotr.draw(divGraph,  [ graphData ]);
          }else{
             divAnswers.html('<h3>No Data Available</h3>');
             divAnswers.append('<a href="#take-test">Take Test</a>');
