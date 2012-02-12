@@ -38,3 +38,6 @@ td.border {
 div[data-role="page"] {
   overflow: hidden;
 }
+.red {
+  color: #f00;
+}

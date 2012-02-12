@@ -122,6 +122,7 @@ Clinic.Test.Take = function(page, form){
 
 Clinic.Test.Complete = function(page){
    var i, table, divAnswers = $(page.find('div.answers'));
+   var css;
 
    var methods = {
       init: 1,
@@ -136,8 +137,8 @@ Clinic.Test.Complete = function(page){
             for(i = Answers.length-1; i>=0; i--){
                answer = Answers[i];
                totalLatency += answer.latency;
-               if(answer.correct){ totalCorrect++; }
-               table.append('<tr><td>'+answer.question+'</td><td>'+answer.answer+'</td><td>'+answer.latency+'</td></tr>');
+               if(answer.correct){ css='black'; totalCorrect++; } else { css='red'; }
+               table.append('<tr class='+css+'><td>'+answer.question+'</td><td>'+answer.answer+'</td><td>'+answer.latency+'</td></tr>');
             }
             divAnswers.append('<p>Totals:<br/><strong>Questions: '+Questions.length+'<br/>Answers: '+Answers.length+'<br/>Total Correct: '+totalCorrect+'<br/>Total Latency: '+totalLatency+'<br/>Average Latency: '+(totalLatency/Answers.length)+'</strong></p>');
          }else{
