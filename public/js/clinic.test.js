@@ -29,6 +29,9 @@ Clinic.Test.Take = function(page, form){
 
    var methods = {
       init: 1,
+      index: 0,
+      url: "test/take",
+      processing: 0, // Used internally to make sure a problem is only submitted once.
       load: function(callback){
          //console.log("Loading Data...");
          //TODO: Retrieve questions for this test from the server
@@ -40,16 +43,30 @@ Clinic.Test.Take = function(page, form){
             if(callback){ callback(); }
          });
       },
-      url: "test/take",
-      index: 0,
-      start: function(e){
+      start: function(event, timeout){
          //console.log("Starting Question...");
-         form.find('input[name="answer"]').val("");
+         form.find('input[name="answer"]').removeAttr("readonly").val("");
          form.find('input[name="question"]').val(Questions[methods.index].question);
          page.find('span.question').html(Clinic.Util.formatQuestion(Questions[methods.index].question, false));
          start = new Date().valueOf();
+         this.processing = 0;
+         if(timeout){ setTimeout(function(){ methods.error(); }, timeout); }
+      },
+      error: function(){
+         //console.log("Error Question...");
+         // Let everyone know we're processing something so submits are skipped.
+         methods.processing = 1;
+         // Allow normal question start, but with the same question
+         methods.start();
+         // We want to forcefully display the question and answer
+         form.find('input[name="answer"]').attr("readonly", "");
+         form.find('input[name="answer"]').val(eval(Questions[methods.index].question));
+         // Display for 5 seconds
+         setTimeout(function(){ methods.start(null, 5000); }, 4000);
       },
       submit: function(e){
+         if(methods.processing) { return false; }
+
          var correct;
          //console.log("Saving Question...");
          //console.log("Index: "+methods.index);
@@ -69,8 +86,10 @@ Clinic.Test.Take = function(page, form){
          // Incorrect: change page into error logic
          response = form.find('#answer');
          if(data.answer != eval(data.question)){
-            $(response).animateHighlight('#ff0000', 1000);
             correct = false;
+            $(response).animateHighlight('#ff0000', 1000, function(){
+               methods.error();
+            });
          }else{
             correct = true;
             methods.index++;
@@ -95,7 +114,7 @@ Clinic.Test.Take = function(page, form){
          //TODO:
          //Post form data to server
          //Timeout after 30 seconds, retry post on next question submit
-/*         $.ajax({
+         $.ajax({
             url: this.url,
             data: data,
             timeout: 30000,
@@ -105,7 +124,7 @@ Clinic.Test.Take = function(page, form){
             error: function(){
                //TODO: Display error icon
             }
-         });*/
+         });
 
          e.preventDefault();
          e.stopPropagation();
@@ -140,10 +159,10 @@ Clinic.Test.Complete = function(page){
                if(answer.correct){ css='black'; totalCorrect++; } else { css='red'; }
                table.append('<tr class='+css+'><td>'+answer.question+'</td><td>'+answer.answer+'</td><td>'+answer.latency+'</td></tr>');
             }
-            divAnswers.append('<p>Totals:<br/><strong>Questions: '+Questions.length+'<br/>Answers: '+Answers.length+'<br/>Total Correct: '+totalCorrect+'<br/>Total Latency: '+totalLatency+'<br/>Average Latency: '+(totalLatency/Answers.length)+'</strong></p>');
+            divAnswers.append('<p>Totals:<br/><strong>Questions Possible: '+Questions.length+'<br/>Questions Asked: '+Clinic.Test.Take.index+'Answers: '+Answers.length+'<br/>Total Correct: '+totalCorrect+'<br/>Total Latency: '+totalLatency+'<br/>Average Latency: '+(totalLatency/Answers.length)+'</strong></p>');
          }else{
             divAnswers.html('<h3>No Data Available</h3>');
-            divAnswers.append('<a href="/#take-test">Take Test</a>');
+            divAnswers.append('<a href="#take-test">Take Test</a>');
          }
       }
    };
