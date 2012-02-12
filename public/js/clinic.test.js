@@ -49,15 +49,15 @@ Clinic.Test.Take = function(page, form){
          form.find('input[name="question"]').val(Questions[methods.index].question);
          page.find('span.question').html(Clinic.Util.formatQuestion(Questions[methods.index].question, false));
          start = new Date().valueOf();
-         this.processing = 0;
+         methods.processing = 0;
          if(timeout){ setTimeout(function(){ methods.error(); }, timeout); }
       },
       error: function(){
          //console.log("Error Question...");
-         // Let everyone know we're processing something so submits are skipped.
-         methods.processing = 1;
          // Allow normal question start, but with the same question
          methods.start();
+         // Let everyone know we're processing something so submits are skipped.
+         methods.processing = 1;
          // We want to forcefully display the question and answer
          form.find('input[name="answer"]').attr("readonly", "");
          form.find('input[name="answer"]').val(eval(Questions[methods.index].question));
