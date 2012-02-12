@@ -197,16 +197,16 @@ var run = exports.run = function(equation, count, randomize){
 //   var parts = generate(parsedEquation);
 //   var builtQuestions = build(parts);
 //   var subsetQuestions = trim(builtQuestions, count);
-   console.log("EE-Run options: ");
-   console.log("Equation: "+equation);
-   console.log("Count: "+count);
-   console.log("Randomize: "+randomize);
+//   console.log("EE-Run options: ");
+//   console.log("Equation: "+equation);
+//   console.log("Count: "+count);
+//   console.log("Randomize: "+randomize);
 
-   var result = trim(build(generate(parse(equation))), count, randomize);
-   var z = 0;
-   for(z=0; z<result.questions.length; z++){
-      util.log("questions["+z+"]: "+result.questions[z]);
-   }
+//   var result = trim(build(generate(parse(equation))), count, randomize);
+//   var z = 0;
+//   for(z=0; z<result.questions.length; z++){
+//      util.log("questions["+z+"]: "+result.questions[z]);
+//   }
 //   console.log("Results: %j", result);
    return {questions: result.questions, message: result.message, equation: equation, count: count, total: result.total};
 };
