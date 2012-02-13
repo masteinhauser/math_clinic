@@ -184,7 +184,8 @@ Clinic.Test.Complete = function(page){
                   yaxis: {
                      title: "Time in Milliseconds"
                   },
-                  title: "Results of Test by Question"
+                  title: "Results of Test by Question",
+                  HtmlText: false
                }
             );
          }else{
