@@ -143,7 +143,7 @@ Clinic.Test.Take = function(page, form){
 };
 
 Clinic.Test.Complete = function(page){
-   var i, table, css;
+   var i, table, css, totalsHTML;
    var divAnswers = $(page.find('div.answers')),
        divGraph = document.getElementById('graph');
    var graph, graphData = [];
@@ -165,7 +165,8 @@ Clinic.Test.Complete = function(page){
                if(answer.correct){ css='black'; totalCorrect++; } else { css='red'; }
                table.append('<tr class='+css+'><td>'+(i+1)+". "+answer.question+'</td><td>'+answer.answer+'</td><td>'+answer.latency+'</td></tr>');
             }
-            divAnswers.append('<p>Totals:<br><strong>Questions Possible: '+Questions.length+'<br>Questions Asked: '+Clinic.Test.Take.index+'<br>Answers: '+Answers.length+'<br/>Total Correct: '+totalCorrect+'<br/>Total Latency: '+totalLatency+'<br>Average Latency: '+(totalLatency/Answers.length)+'</strong></p>');
+            totalsHTML = ('<p>Totals:<br><strong>Questions Possible: '+Questions.length+'<br>Questions Asked: '+Clinic.Test.Take.index+'<br>Answers: '+Answers.length+'<br/>Total Correct: '+totalCorrect+'<br/>Total Latency: '+totalLatency+'<br>Average Latency: '+(totalLatency/Answers.length)+'</strong></p>');
+            divAnswers.html(totalsHTML + divAnswers.html());
 
             graph = Flotr.draw(divGraph,
                [{
@@ -175,7 +176,6 @@ Clinic.Test.Complete = function(page){
                }],
                {
                   xaxis: {
-//                     noTicks: Answers.length,
                      min: 0,
                      max: Answers.length,
                      ticks: function(n){ var i, ticks = []; for(i=n.min; i<n.max; i++){ ticks.push([i, Answers[i].question]); } return ticks;}
