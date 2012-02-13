@@ -30,6 +30,8 @@ Clinic.Test.Take = function(page, form){
    var methods = {
       init: 1,
       index: 0,
+      timeout: null,
+      timeoutInterval: 5000, // 5 seconds
       url: "test/take",
       processing: 0, // Used internally to make sure a problem is only submitted once.
       load: function(callback){
@@ -50,9 +52,9 @@ Clinic.Test.Take = function(page, form){
          page.find('span.question').html(Clinic.Util.formatQuestion(Questions[methods.index].question, false));
          start = new Date().valueOf();
          methods.processing = 0;
-         if(timeout){ setTimeout(function(){ methods.error(); }, timeout); }
+         if(timeout){ clearTimeout(methods.timeout); methods.timeout = setTimeout(function(){ methods.error(5000); }, timeout); }
       },
-      error: function(){
+      error: function(timeout){
          //console.log("Error Question...");
          // Allow normal question start, but with the same question
          methods.start();
@@ -62,10 +64,11 @@ Clinic.Test.Take = function(page, form){
          form.find('input[name="answer"]').attr("readonly", "");
          form.find('input[name="answer"]').val(eval(Questions[methods.index].question));
          // Display for 5 seconds
-         setTimeout(function(){ methods.start(null, 5000); }, 4000);
+         methods.timeout = setTimeout(function(){ methods.start(null, timeout); }, 4000);
       },
       submit: function(e){
          if(methods.processing) { return false; }
+         clearTimeout(methods.timeout);
 
          var correct;
          //console.log("Saving Question...");
@@ -88,7 +91,7 @@ Clinic.Test.Take = function(page, form){
          if(data.answer != eval(data.question)){
             correct = false;
             $(response).animateHighlight('#ff0000', 1000, function(){
-               methods.error();
+               methods.error(methods.timeoutInterval);
             });
          }else{
             correct = true;
