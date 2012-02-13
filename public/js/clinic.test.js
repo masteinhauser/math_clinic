@@ -175,11 +175,12 @@ Clinic.Test.Complete = function(page){
                }],
                {
                   xaxis: {
-                     ticks: function(n){ var i, ticks = []; for(i=n.min; i<n.max; i++){ ticks.push([i, Answers[i].question]); } return ticks;},
-                     labelsAngle: 90,
-                     tickFormatter: function(n){ return n+1; },
-                     tickDecimals: 0
-                  }
+//                     noTicks: Answers.length,
+                     min: 0,
+                     max: Answers.length,
+                     ticks: function(n){ var i, ticks = []; for(i=n.min; i<n.max; i++){ ticks.push([i, Answers[i].question]); } return ticks;}
+                  },
+                  title: "Results of Test by Question"
                }
             );
          }else{

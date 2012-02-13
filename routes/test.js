@@ -6,10 +6,8 @@ module.exports = function(app){
    var layout = 'page.jade';
 
    app.get('/test/take', auth.ensAuth, function(req, res){
-      res.render('test-take.jade', {
-         req: req,
-         layout: layout,
-         title: 'Math Clinic - Take Test' });
+      var results = 
+      res.json(results);
    });
 
    app.post('/test/take', auth.ensAuth, function(req, res){
