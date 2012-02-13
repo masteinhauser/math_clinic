@@ -172,15 +172,15 @@ Clinic.Test.Complete = function(page){
                }],
                {
                   xaxis: {
-                     title: "Question Asked",
+                     title: 'Question Asked',
                      min: 0,
                      max: Answers.length,
                      ticks: function(n){ var i, ticks = []; for(i=n.min; i<n.max; i++){ ticks.push([i, Answers[i].question]); } return ticks;}
                   },
                   yaxis: {
-                     title: "Time in Milliseconds"
+                     title: 'Time in Milliseconds'
                   },
-                  title: "Results of Test by Question",
+                  title: 'Results of Test by Question',
                   HtmlText: false
                }
             );
