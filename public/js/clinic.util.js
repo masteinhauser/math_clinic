@@ -60,7 +60,14 @@ Clinic.Util.formatQuestion= function(question, linebreak){
    var qParts = question.replace(/([\+\-\*\/])/ig, "\\$1").split(/\\/);
    var maxCharsArray = qParts.slice(0); // Make a copy of the array so when we sort it, it doesn't mess up the equation.
    var maxChars = maxCharsArray.sort(function(a, b){ return b.length - a.length; })[0].length;
+   function padParts(){
+      var i;
+      for(i=0; i<qParts.length; i++){
+         qParts[i] = spaces("&nbsp;&nbsp;", maxChars-qParts[i].length) + qParts[i];
+      }
+   }
 
+   padParts();
    question = qParts.join('</br>');
    question += "<br/>" + spaces("&#150;", maxChars);
    return question;
