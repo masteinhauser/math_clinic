@@ -36,17 +36,10 @@ html
               li
                 a(href='#{basepath}/user/edit', data-panel="main") User
               li
-                //-a(href='#{basepath}/test/take', data-panel="main") Take Test
-                a(href='#test-take', data-panel="main") Take Test
+                a(href='#test-take', data-panel='main') Take Test
               if(user.role === "teacher" || user.role === "admin")
                 li
-                  a(href='#users', data-panel="main") Users
-                li
-                  a(href='#classes', data-panel="main") Classes
-                li
-                  a(href='#questions', data-panel="main") Questions
-                li
-                  a(href='#{basepath}/test/create', data-panel="main") Create Test
+                  a(href='#admin', data-panel='menu') Admin
             else
               li
                 a(href='#login', data-panel="main") Login
@@ -54,6 +47,22 @@ html
               a(href='#about', data-panel="main") About
             li
               a(href='#engine', data-panel="main") Equation Engine
+      if(user.role === "teacher" || user.role === "admin")
+        #admin(data-role='page', data-hash='false')
+          div(data-role='header')
+            h1 Admin
+          div(data-role='content')
+            ul(data-role='listview')
+              li(data-icon='arrow-l')
+                a(href='#main', data-panel='menu') Main Menu
+              li
+                a(href='#users', data-panel="main") Users
+              li
+                a(href='#classes', data-panel="main") Classes
+              li
+                a(href='#questions', data-panel="main") Questions
+              li
+                a(href='#{basepath}/test/create', data-panel="main") Create Test
     // Main Pages
     div(data-role='panel', data-id='main')
       include home
