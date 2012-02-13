@@ -3,13 +3,13 @@ var mongo = require('mongoose');
 var Schema = mongo.Schema;
 
 var User = require('./User');
-var Problem = require('./Problem');
+var Answer = require('./Answer');
 
 // Test/Worksheet Schema and declaration
 var TestSchema = new Schema({
    ts: {type: Date, default: Date.now },
    user: {type: Schema.ObjectId, ref: 'User'},
-   problems: [Problem]
+   answers: [Answer]
 });
 
 mongo.model('Test', TestSchema);
@@ -19,15 +19,15 @@ exports.emptyTest = {
    "_id": "",
    ts: "",
    user: "",
-   problems: [Problem]
+   answers: [Answer]
 }; 
 
-exports.add = function(user, problems, callback){
+exports.add = function(user, answers, callback){
    var newTest = new Test();
 
    newTest.ts = new Date();
    newTest.user = user;
-   newTest.problems = problems;
+   newTest.answers = answers;
 
    newTest.save(function(err){
       if(err){
@@ -51,14 +51,14 @@ exports.del = function(id, callback){
   });
 };
 
-exports.edit = function(ts, user, problems, callback){
+exports.edit = function(ts, user, answers, callback){
   exports.findById(id, function(err, doc){
     if(err){
       callback(err);
     } else {
       doc.ts = ts || doc.ts;
       doc.user = user || doc.user;
-      doc.problems = problems || doc.problems;
+      doc.answers = answers || doc.answers;
 
       doc.save(function(err){
         if(err){

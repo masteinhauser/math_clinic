@@ -34,7 +34,7 @@ exports.setup = function(callback){
 
 var User = require('./User');
 var Class = require('./Class');
-var Problem = require('./Problem');
+var Answer = require('./Answer');
 var Question = require('./Question');
 var Test = require('./Test');
 

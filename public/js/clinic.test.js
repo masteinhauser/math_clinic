@@ -84,9 +84,6 @@ Clinic.Test.Take = function(page, form){
 
          finish = new Date().valueOf();
 
-         //TODO: Change the page to follow question logic:
-         // Correct:   Display/change page, Load question info
-         // Incorrect: change page into error logic
          response = form.find('#answer');
          if(data.answer != eval(data.question)){
             correct = false;
@@ -135,7 +132,6 @@ Clinic.Test.Take = function(page, form){
    };
 
    // Set up bindings
-   page.live('pageshow', Clinic.Test.Take.start);
    form.live('submit', methods.submit);
    form.find('button').live('click', methods.submit);
 

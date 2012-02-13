@@ -57,7 +57,7 @@ global.conn = db.connect(function(err){
 // Models
 global.User = require('./models/User');
 global.Class = require('./models/Class');
-global.Problem = require('./models/Problem');
+global.Answer = require('./models/Answer');
 global.Question = require('./models/Question');
 global.Test = require('./models/Test');
 

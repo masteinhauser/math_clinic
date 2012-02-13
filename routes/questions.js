@@ -8,7 +8,7 @@ module.exports = function(app){
       //TODO: Lookup user and test by Id
       //grab equation and generate questions or something.
       var eq = require('../utils/EquationEngine');
-      Questions = eq.run("[10..19][+][0..9]", 100, true);
+      Questions = eq.run("[10..19][+][0..9]", 5, true);
 
       res.json(Questions);
    });
