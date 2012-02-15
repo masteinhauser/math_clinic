@@ -9,6 +9,7 @@ if((!navigator.userAgent.match(/iPhone/i)) || (!navigator.userAgent.match(/iPad/
 (function($){
    if(!window.Clinic){ window.Clinic = {}; }
    if(!Clinic.Questions){ Clinic.Questions = {}; }
+   if(!Clinic.Data){ Clinic.Data = {}; }
 })(jQuery);
 
 Clinic.Questions = function(page){
@@ -21,16 +22,20 @@ Clinic.Questions = function(page){
       url: "questions",
       load: function(callback){
          //console.log("Loading Data...");
-         var tbQuestions = page.find('table.questions');
-
          $.getJSON(methods.url, function(json){
-            tbQuestions.empty();
-            tbQuestions.append('<th>Equation</th><th>Type</th><th>Level</th>');
-            $.each(json.questions, function(iterator, question){
-               tbQuestions.append('<tr><td>'+question.equation+'</td><td>'+question.type+'</td><td>'+question.level+'</td></tr>');
-            });
+            Clinic.Data.AvailableQuestions = json.questions;
             if(callback){ callback(); }
          });
+      },
+      display: function(callback){
+         var tbQuestions = page.find('table.questions');
+
+         tbQuestions.empty();
+         tbQuestions.append('<th>Equation</th><th>Type</th><th>Level</th>');
+         $.each(Clinic.Data.AvailableQuestions, function(iterator, question){
+            tbQuestions.append('<tr><td>'+question.equation+'</td><td>'+question.type+'</td><td>'+question.level+'</td></tr>');
+         });
+         if(callback){ callback(); }
       }
    };
 
@@ -42,5 +47,5 @@ $('div#questions').live('pageshow',function(){
    var page = $('div#questions');
 
    if(!Clinic.Questions.init){ Clinic.Questions = Clinic.Questions(page); }
-   Clinic.Questions.load();
+   Clinic.Questions.load(Clinic.Questions.display);
 });

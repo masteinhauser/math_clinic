@@ -4,6 +4,10 @@
   div(data-role="content")
     #left(style="float: left;")
       span.question
+      form.equation
+        label(for='eq') Please Select an Equation
+        select(id='eq')
+        button(type="button") Take Test
     #right(style="float: right")
       //- Numpad Code
       ul#numpad
@@ -31,9 +35,8 @@
           span .
         li.symbol.delete
           span &#8592;
-    form
+    form.question
       input(type="number", id="answer", name="answer", autofocus="autofocus")
       input(type="hidden", name="question")
-      button(type="submit")
-        |Answer
+      button(type="submit") Answer
     a(href="#test-complete") Complete Test

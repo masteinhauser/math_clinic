@@ -34,10 +34,44 @@ Clinic.Test.Take = function(page, form){
       timeoutInterval: 5000, // 5 seconds
       url: "test/take",
       processing: 0, // Used internally to make sure a problem is only submitted once.
-      load: function(callback){
-         //console.log("Loading Data...");
+      choose: function(callback){
+         // Function to be called if we have or do not have Questions loaded.
+         function displayChoices(){
+            var choiceForm = page.find('form.equation');
+            var select = choiceForm.find('select#eq');
+            var options = [];
+
+            //console.log(Clinic.Data.AvailableQuestions);
+            // 1. List choices
+            $.each(Clinic.Data.AvailableQuestions, function(key, value){
+               options.push('<option value="'+key+'">'+value.equation+'</option>');
+            });
+            console.log(options.join(''));
+            select.append(options.join('')).selectmenu('refresh', true);
+            console.log(select.html());
+
+            // 2. capture selection
+            choiceForm.find('button').live('click', function(){
+               choiceForm.hide();
+               var testId = select.val();
+               // 3. callback to methods.load() to load questions from server
+               callback(testId);
+            });
+         }
+
+         // Load possible Questions from server
+         if(typeof Clinic.Data.AvailableQuestions === 'undefined' || Clinic.Data.AvailableQuestions.length === 0){
+            //TODO: Move this load function into utils or somewhere
+            Clinic.Questions = Clinic.Questions(null); // We need an object, even if we're not on that page.
+            Clinic.Questions.load(displayChoices);
+         }else{
+            displayChoices();
+         }
+      },
+      load: function(testId, callback){
+         console.log("Loading Data...\n"+testId);
          //TODO: Retrieve questions for this test from the server
-         $.getJSON("questions/0", function(json){
+         $.getJSON("questions/"+testId, function(json){
             // Iterates over each PIECE of data in the returned JSON.
             $.each(json.questions, function(key, value){
                Questions.push({question: value});
@@ -239,10 +273,11 @@ Clinic.Test.Create = function(page, form){
                preview.find('#eq').text(data.equation);
                preview.find('#total').text(data.total);
 
-               var tbQuestions = preview.find('table.questions');
+               var tbQuestions = preview.find('table.questions tbody');
                tbQuestions.empty();
-               var row = Math.ceil(Math.sqrt(data.questions.length*2));
+               var row = Math.ceil(Math.sqrt(data.questions.length));
                for(i=0; i<data.questions.length; i++){
+                  console.log('i%row = '+i%row);
                   if(i%row === 0){ tbQuestions.append('<tr>'); }
                   tbQuestions.append('<td>'+Clinic.Util.formatQuestion(data.questions[i])+'<br>'+eval(data.questions[i])+'</td>');
                   if(i%row === 0){ tbQuestions.append('</tr>'); }
@@ -269,14 +304,18 @@ Clinic.Test.Create = function(page, form){
 // Initilize objects and bind to pages/forms/etc.
 $('div#test-take').live('pageshow',function(){
    var page = $('div#test-take');
-   var form = $('div#test-take form');
+   var form = $('div#test-take form.question');
 
    if(!Clinic.Util.numpad.init){ Clinic.Util.numpad = Clinic.Util.numpad($('#numpad'), $('#answer')); }
    if(!Clinic.Test.Take.init){
       Clinic.Test.Take = Clinic.Test.Take(page, form);
-      Clinic.Test.Take.load(Clinic.Test.Take.start);
-   }else{
+   }
+   if(typeof Clinic.Data.Questions != 'undefined' && Clinic.Data.Questions.length > 0){
       Clinic.Test.Take.start();
+   }else{
+      Clinic.Test.Take.choose(function(testId){
+         Clinic.Test.Take.load(testId, Clinic.Test.Take.start);
+      });
    }
 });
 
@@ -288,5 +327,5 @@ $('div#test-complete').live('pageshow',function(){
 });
 
 $('div#test-create').live('pageshow',function(){
-   if(!Clinic.Test.Create.init){ Clinic.Test.Create = Clinic.Test.Create($('div#test-create'), $('div#test-create form')); }
+   if(!Clinic.Test.Create.init){ Clinic.Test.Create = Clinic.Test.Create($('div#test-create'), $('div#test-create form.question')); }
 });
