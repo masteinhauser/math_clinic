@@ -5,8 +5,10 @@
     #left(style="float: left;")
       span.question
       form.equation
-        label(for='eq') Please Select an Equation
-        select(id='eq')
+        label(for='eq') Select an Equation
+        select#eq
+        label(for='count') How Many Questions?
+        input#count(type="range", value="20", min="5", max="100", step="5")
         button(type="button") Take Test
     #right(style="float: right")
       //- Numpad Code

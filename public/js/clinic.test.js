@@ -38,7 +38,8 @@ Clinic.Test.Take = function(page, form){
          // Function to be called if we have or do not have Questions loaded.
          function displayChoices(){
             var choiceForm = page.find('form.equation');
-            var select = choiceForm.find('select#eq');
+            var equation = choiceForm.find('select#eq');
+            var count = choiceForm.find('input#count');
             var options = [];
 
             //console.log(Clinic.Data.AvailableQuestions);
@@ -46,16 +47,15 @@ Clinic.Test.Take = function(page, form){
             $.each(Clinic.Data.AvailableQuestions, function(key, value){
                options.push('<option value="'+key+'">'+value.equation+'</option>');
             });
-            console.log(options.join(''));
-            select.append(options.join('')).selectmenu('refresh', true);
-            console.log(select.html());
+            equation.append(options.join('')).selectmenu('refresh', true);
 
             // 2. capture selection
             choiceForm.find('button').live('click', function(){
                choiceForm.hide();
-               var testId = select.val();
+               var testId = equation.val();
+               var num = count.val();
                // 3. callback to methods.load() to load questions from server
-               callback(testId);
+               callback(testId, num);
             });
          }
 
@@ -68,10 +68,11 @@ Clinic.Test.Take = function(page, form){
             displayChoices();
          }
       },
-      load: function(testId, callback){
-         console.log("Loading Data...\n"+testId);
+      load: function(index, num, callback){
+//         console.log("Loading Data...\n"+testId);
+         var eq = Clinic.Data.AvailableQuestions[index].equation;
          //TODO: Retrieve questions for this test from the server
-         $.getJSON("questions/"+testId, function(json){
+         $.getJSON("questions/"+eq+'/'+num, function(json){
             // Iterates over each PIECE of data in the returned JSON.
             $.each(json.questions, function(key, value){
                Questions.push({question: value});
@@ -313,8 +314,8 @@ $('div#test-take').live('pageshow',function(){
    if(typeof Clinic.Data.Questions != 'undefined' && Clinic.Data.Questions.length > 0){
       Clinic.Test.Take.start();
    }else{
-      Clinic.Test.Take.choose(function(testId){
-         Clinic.Test.Take.load(testId, Clinic.Test.Take.start);
+      Clinic.Test.Take.choose(function(testId, num){
+         Clinic.Test.Take.load(testId, num, Clinic.Test.Take.start);
       });
    }
 });
