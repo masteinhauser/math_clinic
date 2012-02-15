@@ -18,7 +18,7 @@ Clinic.Questions = function(page){
 
    var methods = {
       init: 1,
-      url: "/questions",
+      url: "questions",
       load: function(callback){
          //console.log("Loading Data...");
          var tbQuestions = page.find('table.questions');

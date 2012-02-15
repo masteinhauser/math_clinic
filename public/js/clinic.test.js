@@ -199,7 +199,7 @@ Clinic.Test.Create = function(page, form){
       init: 1,
       create: function(e){
          //console.log("Start create");
-         var url = "/test/create/:eq/:type/:level";
+         var url = "test/create/:eq/:type/:level";
          var eq = form.find('input[name="eq"]').val();
          var type = "addition";
          var level = "easy";
@@ -222,7 +222,7 @@ Clinic.Test.Create = function(page, form){
       },
       generate: function(e){
          var i;
-         var url = "../questions/:eq/:count";
+         var url = "questions/:eq/:count";
          var eq = form.find('input[name="eq"]').val();
          var count = 20;
 
