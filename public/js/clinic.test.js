@@ -195,6 +195,57 @@ Clinic.Test.Complete = function(page){
 };
 
 Clinic.Test.Create = function(page, form){
+   var methods = {
+      init: 1,
+      create: function(e){
+         console.log("Start create");
+
+         e.preventDefault();
+         e.stopPropagation();
+      },
+      generate: function(e){
+         var i;
+         var url = "../questions/:eq/:count";
+         var eq = form.find('input[name="eq"]').val();
+         var count = 20;
+
+         console.log("Start generate");
+         $.ajax({
+            url: url.replace(':eq', eq).replace(':count', count),
+            dataType: 'json',
+            timeout: 30000,
+            success: function(data){
+               //Print out questions formatted, etc.
+               var preview = page.find('#preview');
+
+               preview.find('#eq').text(data.equation);
+               preview.find('#total').text(data.total);
+
+               var tbQuestions = preview.find('table.questions');
+               tbQuestions.empty();
+               var row = Math.ceil(Math.sqrt(data.questions.length*2));
+               for(i=0; i<data.questions.length; i++){
+                  if(i%row === 0){ tbQuestions.append('<tr>'); }
+                  tbQuestions.append('<td>'+Clinic.Util.formatQuestion(data.questions[i])+'<br>'+eval(data.questions[i])+'</td>');
+                  if(i%row === 0){ tbQuestions.append('</tr>'); }
+               }
+               preview.show();
+            },
+            error: function(){
+               //TODO: Display error message and icon
+            }
+         });
+
+         e.preventDefault();
+         e.stopPropagation();
+      }
+   };
+
+   // Set up bindings
+   form.find('button[name="generate"]').live('click', methods.generate);
+   form.find('button[name="create"]').live('click', methods.create);
+
+   return methods;
 };
 
 // Initilize objects and bind to pages/forms/etc.
@@ -219,5 +270,5 @@ $('div#test-complete').live('pageshow',function(){
 });
 
 $('div#test-create').live('pageshow',function(){
-//   if(!Clinic.Test.Create.init){ Clinic.Test.Create = Clinic.Test.Create($('div#test-create'), $('div#test-create form')); }
+   if(!Clinic.Test.Create.init){ Clinic.Test.Create = Clinic.Test.Create($('div#test-create'), $('div#test-create form')); }
 });
