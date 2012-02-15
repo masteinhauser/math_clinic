@@ -1,37 +1,25 @@
 /*
- * Test page.
+ * Test page and API.
  */
-
 module.exports = function(app){
-   var layout = 'page.jade';
-
-   app.get('/test/take', auth.ensAuth, function(req, res){
-      var results = 
-      res.json(results);
-   });
 
    app.post('/test/take', auth.ensAuth, function(req, res){
-      
+      //TODO: Write code to take the posted questions and insert them into the user's current test based on the test ID they send
    });
 
-   app.get('/test/create', auth.ensAuth, function(req, res){
-      res.render('test-create.jade', {
-         req: req,
-         layout: layout,
-         title: 'Math Clinic - Create Test'
+   app.post('/test/create/:eq/:type/:level', auth.ensAuth, function(req, res){
+      Question.add(req.params.type, req.params.level, req.params.eq, function(err){
+         var response;
+         if(err){
+            response = {success: false, err: err};
+         }
+
+         var question = Question.findByEquation(req.params.eq, function(err, question){
+            response = {success: true, err: err, question: question};
+            res.json(response);
+         });
       });
    });
 
-   app.post('/test/create', auth.ensAuth, function(req, res){
-      var eq = require('../utils/EquationEngine');
-      var result = eq.run(req.body.eq, 20, true);
-
-      res.render('test-create.jade', {
-         req: req.body,
-         layout: layout,
-         title: 'Math Clinic - Create Test',
-         result: result
-      });
-   });
 };
 

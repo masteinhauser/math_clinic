@@ -16,8 +16,9 @@ html
     //-script(type='text/javascript', src=basepath+'/jqm/eventlog.js')
     script(type='text/javascript', src=basepath+'/js/json2.js')
     script(type='text/javascript', src=basepath+'/js/clinic.util.js')
-    script(type='text/javascript', src=basepath+'/js/clinic.test.js')
     script(type='text/javascript', src=basepath+'/js/clinic.numpad.js')
+    script(type='text/javascript', src=basepath+'/js/clinic.test.js')
+    script(type='text/javascript', src=basepath+'/js/clinic.questions.js')
   body
     // Menu Pages
     div(data-role='panel', data-id='menu', data-hash='crumbs', data-context='a#default')
@@ -62,7 +63,7 @@ html
               li
                 a(href='#questions', data-panel="main") Questions
               li
-                a(href='#{basepath}/test/create', data-panel="main") Create Test
+                a(href='#test-create', data-panel="main") Create Test
     // Main Pages
     div(data-role='panel', data-id='main')
       include home
@@ -72,4 +73,7 @@ html
       include test-complete
       include about
       include engine
+      if(user.role === "teacher" || user.role === "admin")
+        include questions
+        include test-create
 

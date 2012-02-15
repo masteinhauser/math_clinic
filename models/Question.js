@@ -5,31 +5,25 @@ var Schema = mongo.Schema;
 var QuestionHelper = require('./helpers/Question');
 
 // Question Schema and declaration
-var QuestionSchema = new Schema({
+var Question = new Schema({
    type: {type: String, enum: QuestionHelper.QuestionType},
    level: {type: String, enum: QuestionHelper.QuestionLevel},
-   equation: String,
-   result: String
+   equation: String
 });
-
-mongo.model('Question', QuestionSchema);
-var Question = mongo.model('Question');
 
 exports.emptyQuestion = {
    "_id": "",
    type: "",
    level: "",
-   equation: "",
-   result: ""
+   equation: ""
 };
 
-exports.add = function(type, level, equation, result, callback){
+Question.statics.add = function add(type, level, equation, callback){
    var newQuestion = new Question();
 
    newQuestion.type = type;
    newQuestion.level = level;
    newQuestion.equation = equation;
-   newQuestion.result = result;
 
    newQuestion.save(function(err){
       if(err){
@@ -41,8 +35,8 @@ exports.add = function(type, level, equation, result, callback){
    });
 };
 
-exports.del = function(id, callback){
-  exports.findById(id, function(err, doc){
+Question.statics.del = function del(id, callback){
+  Question.findById(id, function(err, doc){
     if(err){
       callback(err);
     } else {
@@ -53,15 +47,14 @@ exports.del = function(id, callback){
   });
 };
 
-exports.edit = function(type, level, equation, result, callback){
-  exports.findById(id, function(err, doc){
+Question.statics.edit = function edit(type, level, equation, callback){
+  Question.findById(id, function(err, doc){
     if(err){
       callback(err);
     } else {
       doc.type = type || doc.type;
       doc.level = level || doc.level;
       doc.equation = equation || doc.equation;
-      doc.result = result || doc.result;
 
       doc.save(function(err){
         if(err){
@@ -75,11 +68,11 @@ exports.edit = function(type, level, equation, result, callback){
   });
 };
 
-exports.allQuestions = function(callback){
+Question.statics.findAll = function findAll(callback){
   Question.find({}, callback);
 };
 
-exports.forAll = function(doEach, done){
+Question.statics.forAll = function forAll(doEach, done){
   Question.find({}, function(err, docs){
     if(err){
       util.log('FATAL '+err);
@@ -94,7 +87,7 @@ exports.forAll = function(doEach, done){
   });
 };
 
-var findById = exports.findById = function(id, callback){
+Question.statics.findById = function findById(id, callback){
   Question.findOne({ _id: id }, function(err, doc){
     if(err){
       util.log('FATAL '+err);
@@ -103,3 +96,15 @@ var findById = exports.findById = function(id, callback){
     callback(null, doc);
   });
 };
+
+Question.statics.findByEquation = function findByEquation(eq, callback){
+  Question.findOne({ equation: eq }, function(err, doc){
+    if(err){
+      util.log('FATAL '+err);
+      callback(err, null);
+    }
+    callback(null, doc);
+  });
+};
+
+var Question = module.exports = mongo.model('Question', Question);

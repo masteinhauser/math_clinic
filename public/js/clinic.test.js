@@ -198,7 +198,24 @@ Clinic.Test.Create = function(page, form){
    var methods = {
       init: 1,
       create: function(e){
-         console.log("Start create");
+         //console.log("Start create");
+         var url = "/test/create/:eq/:type/:level";
+         var eq = form.find('input[name="eq"]').val();
+         var type = "addition";
+         var level = "easy";
+
+         $.ajax({
+            url: url.replace(':eq', eq).replace(':type', type).replace(':level', level),
+            type: 'POST',
+            dataType: 'json',
+            timeout: 30000,
+            success: function(data){
+               alert("Question added with equation: "+eq);
+            },
+            error: function(){
+               //TODO: Display error message and icon
+            }
+         });
 
          e.preventDefault();
          e.stopPropagation();
@@ -209,9 +226,10 @@ Clinic.Test.Create = function(page, form){
          var eq = form.find('input[name="eq"]').val();
          var count = 20;
 
-         console.log("Start generate");
+         //console.log("Start generate");
          $.ajax({
             url: url.replace(':eq', eq).replace(':count', count),
+            type: 'GET',
             dataType: 'json',
             timeout: 30000,
             success: function(data){

@@ -9,5 +9,6 @@ exports.QuestionType = [
 
 exports.QuestionLevel = [
    "easy",
-   "medium"
+   "medium",
+   "difficult"
 ];

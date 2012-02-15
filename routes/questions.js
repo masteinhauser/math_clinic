@@ -3,6 +3,13 @@
  */
 
 module.exports = function(app){
+
+   app.get('/questions', auth.ensAuth, function(req, res){
+      Question.findAll(function(err, docs){
+         res.json({err: err, questions: docs});
+      });
+   });
+
    app.get('/questions/:id', auth.ensAuth, function(req, res){
       var Questions = [];
       //TODO: Lookup user and test by Id
