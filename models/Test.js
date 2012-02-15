@@ -6,14 +6,11 @@ var User = require('./User');
 var Answer = require('./Answer');
 
 // Test/Worksheet Schema and declaration
-var TestSchema = new Schema({
+var Test = new Schema({
    ts: {type: Date, default: Date.now },
    user: {type: Schema.ObjectId, ref: 'User'},
    answers: [Answer]
 });
-
-mongo.model('Test', TestSchema);
-var Test = mongo.model('Test');
 
 exports.emptyTest = {
    "_id": "",
@@ -22,7 +19,7 @@ exports.emptyTest = {
    answers: [Answer]
 }; 
 
-exports.add = function(user, answers, callback){
+Test.statics.add = function add(user, answers, callback){
    var newTest = new Test();
 
    newTest.ts = new Date();
@@ -39,7 +36,7 @@ exports.add = function(user, answers, callback){
    });
 };
 
-exports.del = function(id, callback){
+Test.statics.del = function del(id, callback){
   exports.findById(id, function(err, doc){
     if(err){
       callback(err);
@@ -51,7 +48,7 @@ exports.del = function(id, callback){
   });
 };
 
-exports.edit = function(ts, user, answers, callback){
+Test.statics.edit = function edit(ts, user, answers, callback){
   exports.findById(id, function(err, doc){
     if(err){
       callback(err);
@@ -72,11 +69,11 @@ exports.edit = function(ts, user, answers, callback){
   });
 };
 
-exports.allTests = function(callback){
+Test.statics.findAll = function findAll(callback){
   Test.find({}, callback);
 };
 
-exports.forAll = function(doEach, done){
+Test.statics.forAll = function forAll(doEach, done){
   Test.find({}, function(err, docs){
     if(err){
       util.log('FATAL '+err);
@@ -91,7 +88,7 @@ exports.forAll = function(doEach, done){
   });
 };
 
-var findById = exports.findById = function(id, callback){
+Test.statics.findById = function findById(id, callback){
   Test.findOne({ _id: id }, function(err, doc){
     if(err){
       util.log('FATAL '+err);
@@ -100,3 +97,5 @@ var findById = exports.findById = function(id, callback){
     callback(null, doc);
   });
 };
+
+var Test = module.exports = mongo.model('Test', Test);

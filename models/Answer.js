@@ -2,34 +2,34 @@ var util = require('util');
 var mongo = require('mongoose');
 var Schema = mongo.Schema;
 
-// Problem Schema and declaration
-var Problem = new Schema({
+// Answer Schema and declaration
+var Answer = new Schema({
    latency: Date,
    correct: Boolean,
-   problem: String,
+   question: String,
    answer: String,
    response: String
 });
 
-exports.emptyProblem = {
+exports.emptyAnswer = {
    "_id": "",
    latency: "",
    correct: false,
-   problem: "",
+   question: "",
    answer: "",
    response: ""
 };
 
-exports.add = function(latency, correct, problem, answer, response, callback){
-   var newProblem = new Problem();
+Answer.statics.add = function add(latency, correct, question, answer, response, callback){
+   var newAnswer = new Answer();
 
-   newProblem.latency = latency;
-   newProblem.correct = correct;
-   newProblem.problem = problem;
-   newProblem.answer = answer;
-   newProblem.response = response;
+   newAnswer.latency = latency;
+   newAnswer.correct = correct;
+   newAnswer.question = question;
+   newAnswer.answer = answer;
+   newAnswer.response = response;
 
-   newProblem.save(function(err){
+   newAnswer.save(function(err){
       if(err){
          util.log('FATAL '+err);
          callback(err);
@@ -39,8 +39,8 @@ exports.add = function(latency, correct, problem, answer, response, callback){
    });
 };
 
-exports.del = function(id, callback){
-  exports.findById(id, function(err, doc){
+Answer.statics.del = function del(id, callback){
+  Answer.findById(id, function(err, doc){
     if(err){
       callback(err);
     } else {
@@ -51,14 +51,14 @@ exports.del = function(id, callback){
   });
 };
 
-exports.edit = function(latency, correct, problem, answer, response, callback){
-  exports.findById(id, function(err, doc){
+Answer.statics.edit = function edit(latency, correct, question, answer, response, callback){
+  Answer.findById(id, function(err, doc){
     if(err){
       callback(err);
     } else {
       doc.latency = latency || doc.latency;
       doc.correct = correct || doc.correct;
-      doc.problem = problem || doc.problem;
+      doc.question = question || doc.question;
       doc.answer = answer || doc.answer;
       doc.response = response || doc.response;
 
@@ -74,12 +74,12 @@ exports.edit = function(latency, correct, problem, answer, response, callback){
   });
 };
 
-exports.allProblems = function(callback){
-  Problem.find({}, callback);
+Answer.statics.findAll = function findAll(callback){
+  Answer.find({}, callback);
 };
 
-exports.forAll = function(doEach, done){
-  Problem.find({}, function(err, docs){
+Answer.statics.forAll = function forAll(doEach, done){
+  Answer.find({}, function(err, docs){
     if(err){
       util.log('FATAL '+err);
       done(err, null);
@@ -93,8 +93,8 @@ exports.forAll = function(doEach, done){
   });
 };
 
-var findById = exports.findById = function(id, callback){
-  Problem.findOne({ _id: id }, function(err, doc){
+Answer.statics.findById = function findById(id, callback){
+  Answer.findOne({ _id: id }, function(err, doc){
     if(err){
       util.log('FATAL '+err);
       callback(err, null);
@@ -103,5 +103,5 @@ var findById = exports.findById = function(id, callback){
   });
 };
 
-var Problem = module.exports = mongo.model('Problem', Problem);
+var Answer = module.exports = mongo.model('Answer', Answer);
 

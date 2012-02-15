@@ -5,16 +5,13 @@ var Schema = mongo.Schema;
 var User = require('./User');
 
 // Class Schema and declaration
-var ClassSchema = new Schema({
+var Class = new Schema({
    classname: String,
    school: String,
    grade: String,
    teacher: {type: Schema.ObjectId, ref: 'User'},
    students: [{ type: Schema.ObjectId, ref: 'User' }]
 });
-
-mongo.model('Class', ClassSchema);
-var Class = mongo.model('Class');
 
 exports.emptyClass = {
    "_id": "",
@@ -25,7 +22,7 @@ exports.emptyClass = {
    students: [User]
 };
 
-exports.add = function(classname, school, grade, teacher, students, callback){
+Class.statics.add = function add(classname, school, grade, teacher, students, callback){
    var newClass = new Class();
 
    newClass.classname = classname;
@@ -44,8 +41,8 @@ exports.add = function(classname, school, grade, teacher, students, callback){
    });
 };
 
-exports.del = function(id, callback){
-  exports.findById(id, function(err, doc){
+Class.statics.del = function del(id, callback){
+  Class.findById(id, function(err, doc){
     if(err){
       callback(err);
     } else {
@@ -56,8 +53,8 @@ exports.del = function(id, callback){
   });
 };
 
-exports.edit = function(classname, school, grade, teacher, students, callback){
-  exports.findById(id, function(err, doc){
+Class.statics.edit = function edit(classname, school, grade, teacher, students, callback){
+  Class.findById(id, function(err, doc){
     if(err){
       callback(err);
     } else {
@@ -79,11 +76,11 @@ exports.edit = function(classname, school, grade, teacher, students, callback){
   });
 };
 
-exports.allClasses = function(callback){
+Class.statics.findAll = function findAll(callback){
   Class.find({}, callback);
 };
 
-exports.forAll = function(doEach, done){
+Class.statics.forAll = function forAll(doEach, done){
   Class.find({}, function(err, docs){
     if(err){
       util.log('FATAL '+err);
@@ -98,7 +95,7 @@ exports.forAll = function(doEach, done){
   });
 };
 
-var findById = exports.findById = function(id, callback){
+Class.statics.findById = function findById(id, callback){
   Class.findOne({ _id: id }, function(err, doc){
     if(err){
       util.log('FATAL '+err);
@@ -107,3 +104,5 @@ var findById = exports.findById = function(id, callback){
     callback(null, doc);
   });
 };
+
+var Class = module.exports = mongo.model('Class', Class);
