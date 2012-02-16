@@ -4,8 +4,10 @@
 module.exports = function(app){
 
    // Capture the POSTed answer data and record it in the user's test
-   app.post('/test/take/', auth.ensAuth, function(req, res){
+   app.post('/test/take', auth.ensAuth, function(req, res){
+      console.log("Body: %j", JSON.parse(req.body.data));
       //TODO: Write code to take the posted questions and insert them into the user's current test based on the test ID they send
+      res.json('');
    });
 
    app.post('/test/create/:eq/:type/:level', auth.ensAuth, function(req, res){

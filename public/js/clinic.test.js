@@ -145,16 +145,22 @@ Clinic.Test.Take = function(page, form){
             latency: (finish - start),
             correct: correct
          });
+         var size = Answers.length;
+
+         // Convert the Answers object with the new answer for submission
+         data = JSON.stringify(Answers);
+         submitData = {data: data};
 
          //TODO:
          //Post form data to server
          //Timeout after 30 seconds, retry post on next question submit
          $.ajax({
             url: methods.url,
-            data: data,
+            type: 'POST',
+            data: submitData,
             timeout: 30000,
             success: function(){
-               //Answers = []; // Clear submitted answers(stupid method)
+               Answers.splice(0, size); // Clear submitted answers
             },
             error: function(){
                //TODO: Display error icon
