@@ -58,6 +58,20 @@ module.exports = function(app){
       res.redirect(config.path+'/user/edit');
    });
 
+   app.post('/user/del/:id?', auth.ensAuth, function(req, res){
+      var id;
+      if(req.params.id){
+         id = req.params.id;
+      }else if(req.body.id){
+         id = req.body.id;
+      }
+
+      // Disable changing the username, password, and role
+      User.del(id, function(err){
+         res.json({err: err});
+      });
+   });
+
    app.post('/user/add', auth.ensAuth, function(req, res){
       if(req.body.birth === ''){
          req.body.birth = new Date();

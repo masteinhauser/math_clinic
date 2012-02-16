@@ -328,7 +328,9 @@ $('div#test-take').live('pageshow',function(){
       Clinic.Test.Take = Clinic.Test.Take(page, form);
    }
    if(typeof Clinic.Data.Questions != 'undefined' && Clinic.Data.Questions.length > 0){
-      Clinic.Test.Take.start();
+      Clinic.Test.Take.choose(function(testId, num){
+         Clinic.Test.Take.load(testId, num, Clinic.Test.Take.start);
+      });
    }else{
       Clinic.Test.Take.choose(function(testId, num){
          Clinic.Test.Take.load(testId, num, Clinic.Test.Take.start);

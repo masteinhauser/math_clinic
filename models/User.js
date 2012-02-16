@@ -55,11 +55,11 @@ User.statics.add = function add(username, password, role, fname, lname, birth, c
 };
 
 User.statics.del = function del(id, callback){
-  exports.findUserById(id, function(err, doc){
+  User.findById(id, function(err, doc){
     if(err){
       callback(err);
     } else {
-      util.log(util.inspect(doc));
+      console.log("Removing User: %j", doc);
       doc.remove();
       callback(null);
     }

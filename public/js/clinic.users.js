@@ -38,10 +38,25 @@ Clinic.Users = function(page){
          if(callback){ callback(); }
       },
       edit: function(){
-         console.log("Edit: "+JSON.stringify(this.value));
+         var id = this.value;
+         Clinic.Util.changePage("user/edit/"+id);
       },
       del: function(){
-         console.log("Del: "+JSON.stringify(this.value));
+         var id = this.value;
+         var username;
+         $.each(Clinic.Data.Users, function(iterator, user){
+            if(user._id === id){
+               username = user.username;
+            }
+         });
+         $.post("user/del/"+id, function(data){
+            if(data.err === "" || data.err === null){
+               alert("User: "+username+" has been deleted.");
+            }else{
+               alert("Error while deleting "+username+".\nThe error was: "+data.err);
+            }
+            methods.load(methods.display);
+         });
       }
    };
 
