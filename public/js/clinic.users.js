@@ -33,11 +33,21 @@ Clinic.Users = function(page){
          table.empty();
          table.append('<th>Role</th><th>Username</th><th>First Name</th><th>Last Name</th><th>Birth Date</th>');
          $.each(Clinic.Data.Users, function(iterator, user){
-            table.append('<tr><td>'+user.role+'</td><td>'+user.username+'</td><td>'+user.fname+'</td><td>'+user.lname+'</td><td>'+new Date(user.birth).toLocaleDateString()+'</td></tr>');
+            table.append('<tr><td>'+user.role+'</td><td>'+user.username+'</td><td>'+user.fname+'</td><td>'+user.lname+'</td><td>'+new Date(user.birth).toLocaleDateString()+'</td><td><button class="edit" value="'+user._id+'">Edit</button></td><td><button class="del" value="'+user._id+'">Delete</button></td></tr>');
          });
          if(callback){ callback(); }
+      },
+      edit: function(){
+         console.log("Edit: "+JSON.stringify(this.value));
+      },
+      del: function(){
+         console.log("Del: "+JSON.stringify(this.value));
       }
    };
+
+   // Bind events
+   page.find('button.edit').live('click', methods.edit);
+   page.find('button.del').live('click', methods.del);
 
    return methods;
 };

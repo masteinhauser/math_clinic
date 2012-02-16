@@ -143,13 +143,20 @@ Clinic.Test.Take = function(page, form){
             question: data.question,
             answer: data.answer,
             latency: (finish - start),
-            correct: correct
+            correct: correct,
+            submitted: false
          });
-         var size = Answers.length;
 
          // Convert the Answers object with the new answer for submission
-         data = JSON.stringify(Answers);
-         submitData = {data: data};
+         var submitAnswers = [];
+         var submitAnswersPositions = [];
+         for(i=0; i<Answers.length; i++){
+            if(!Answers[i].submitted){
+               submitAnswers.push(Answers[i]);
+               submitAnswersPositions.push(i);
+            }
+         }
+         submitData = {data: JSON.stringify(submitAnswers)};
 
          //TODO:
          //Post form data to server
@@ -160,7 +167,11 @@ Clinic.Test.Take = function(page, form){
             data: submitData,
             timeout: 30000,
             success: function(){
-               Answers.splice(0, size); // Clear submitted answers
+               var curAnswerPos;
+               for(i=0; i<submitAnswersPositions.length; i++){
+                  curAnswerPos = submitAnswersPositions[i];
+                  Answers[curAnswerPos].submitted = true;
+               } // Clear submitted answers
             },
             error: function(){
                //TODO: Display error icon
@@ -284,7 +295,6 @@ Clinic.Test.Create = function(page, form){
                tbQuestions.empty();
                var row = Math.ceil(Math.sqrt(data.questions.length));
                for(i=0; i<data.questions.length; i++){
-                  console.log('i%row = '+i%row);
                   if(i%row === 0){ tbQuestions.append('<tr>'); }
                   tbQuestions.append('<td>'+Clinic.Util.formatQuestion(data.questions[i])+'<br>'+eval(data.questions[i])+'</td>');
                   if(i%row === 0){ tbQuestions.append('</tr>'); }

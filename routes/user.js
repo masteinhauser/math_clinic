@@ -62,6 +62,9 @@ module.exports = function(app){
       if(req.body.birth === ''){
          req.body.birth = new Date();
       }
+      if(typeof req.body.password === 'undefined' || req.body.password === ''){
+         req.body.password = '';
+      }
       User.add(req.body.username, req.body.password, req.body.role, req.body.fname, req.body.lname, req.body.birth, function(err, user){
          console.log("User: %j", user);
          res.redirect(config.path+'/user/edit/'+user._id);
