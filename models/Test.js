@@ -2,42 +2,95 @@ var util = require('util');
 var mongo = require('mongoose');
 var Schema = mongo.Schema;
 
-var User = require('./User');
-var Answer = require('./Answer');
+var User = require('mongoose').model('User');
+var Answer = require('mongoose').model('Answer');
+var UserSchema = require('./User').Schema;
+var AnswerSchema = require('./Answer').Schema;
 
 // Test/Worksheet Schema and declaration
 var Test = new Schema({
    ts: {type: Date, default: Date.now },
    user: {type: Schema.ObjectId, ref: 'User'},
-   answers: [Answer]
+   answers: {type: [AnswerSchema]}
 });
 
-exports.emptyTest = {
-   "_id": "",
-   ts: "",
-   user: "",
-   answers: [Answer]
-}; 
-
-Test.statics.add = function add(user, answers, callback){
+Test.statics.add = function(ts, user, callback){
    var newTest = new Test();
 
-   newTest.ts = new Date();
+   newTest.ts = ts || new Date();
    newTest.user = user;
-   newTest.answers = answers;
+   newTest.answers = [];
 
    newTest.save(function(err){
       if(err){
          util.log('FATAL '+err);
          callback(err);
       } else {
-         callback(null);
+         callback(null, newTest);
       }
    });
 };
 
-Test.statics.del = function del(id, callback){
-  exports.findById(id, function(err, doc){
+// ts = Timestamp of the current test
+// answers = Array of Answers from the client to append to the test
+Test.statics.addAnswers = function(ts, user, answers, callback){
+   var i;
+
+   Test.findByTimestamp(ts, user, function(err, doc){
+      console.log("Err: %j", err);
+      console.log("Doc: %j", doc);
+
+      if(doc === null){
+         Test.add(ts, user, function(err, doc){
+            console.log("Err: %j", err);
+            console.log("Doc: %j", doc);
+            if(!err){}
+               doc = Test.formatAndAddAnswers(answers, doc);
+
+               doc.save(function(err){
+                  if(err){
+                     util.log('FATAL '+err);
+                     callback(err);
+                  } else {
+                     console.log("Saved: %j", doc);
+                     callback(null);
+                  }
+               });
+            }
+         );
+      }else{
+         doc = Test.formatAndAddAnswers(answers, doc);
+
+         doc.save(function(err){
+            if(err){
+               util.log('FATAL '+err);
+               callback(err);
+            } else {
+               console.log("Saved: %j", doc);
+               callback(null);
+            }
+         });
+      }
+   });
+};
+
+Test.statics.formatAndAddAnswers = function(answers, doc){
+   var i, ans;
+
+   console.log("Pushing answers onto doc...");
+   for(i=0; i<answers.length; i++){
+      console.log("answers["+i+"]: %j", answers[i]);
+      ans = Answer.create(answers[i].latency, answers[i].correct, answers[i].question, answers[i].answer, "");
+      console.log("Answer: %j", ans);
+      doc.answers.push(ans);
+   }
+   console.log("done.");
+
+   return doc;
+};
+
+Test.statics.del = function(id, callback){
+  Test.findById(id, function(err, doc){
     if(err){
       callback(err);
     } else {
@@ -48,8 +101,8 @@ Test.statics.del = function del(id, callback){
   });
 };
 
-Test.statics.edit = function edit(ts, user, answers, callback){
-  exports.findById(id, function(err, doc){
+Test.statics.edit = function(ts, user, answers, callback){
+  Test.findById(id, function(err, doc){
     if(err){
       callback(err);
     } else {
@@ -69,11 +122,11 @@ Test.statics.edit = function edit(ts, user, answers, callback){
   });
 };
 
-Test.statics.findAll = function findAll(callback){
+Test.statics.findAll = function(callback){
   Test.find({}, callback);
 };
 
-Test.statics.forAll = function forAll(doEach, done){
+Test.statics.forAll = function(doEach, done){
   Test.find({}, function(err, docs){
     if(err){
       util.log('FATAL '+err);
@@ -88,8 +141,18 @@ Test.statics.forAll = function forAll(doEach, done){
   });
 };
 
-Test.statics.findById = function findById(id, callback){
+Test.statics.findById = function(id, callback){
   Test.findOne({ _id: id }, function(err, doc){
+    if(err){
+      util.log('FATAL '+err);
+      callback(err, null);
+    }
+    callback(null, doc);
+  });
+};
+
+Test.statics.findByTimestamp = function(ts, user, callback){
+  Test.findOne({ ts: ts, user: user}, function(err, doc){
     if(err){
       util.log('FATAL '+err);
       callback(err, null);

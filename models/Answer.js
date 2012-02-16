@@ -3,8 +3,8 @@ var mongo = require('mongoose');
 var Schema = mongo.Schema;
 
 // Answer Schema and declaration
-var Answer = new Schema({
-   latency: Date,
+var Answer = exports.Schema = new Schema({
+   latency: String,
    correct: Boolean,
    question: String,
    answer: String,
@@ -12,7 +12,6 @@ var Answer = new Schema({
 });
 
 exports.emptyAnswer = {
-   "_id": "",
    latency: "",
    correct: false,
    question: "",
@@ -20,8 +19,13 @@ exports.emptyAnswer = {
    response: ""
 };
 
-Answer.statics.add = function add(latency, correct, question, answer, response, callback){
+Answer.statics.create = function(latency, correct, question, answer, response, callback){
    var newAnswer = new Answer();
+
+   console.log("latency: %j", latency);
+   console.log("correct: %j", correct);
+   console.log("question: %j", question);
+   console.log("answer: %j", answer);
 
    newAnswer.latency = latency;
    newAnswer.correct = correct;
@@ -29,26 +33,12 @@ Answer.statics.add = function add(latency, correct, question, answer, response, 
    newAnswer.answer = answer;
    newAnswer.response = response;
 
-   newAnswer.save(function(err){
-      if(err){
-         util.log('FATAL '+err);
-         callback(err);
-      } else {
-         callback(null);
-      }
-   });
-};
-
-Answer.statics.del = function del(id, callback){
-  Answer.findById(id, function(err, doc){
-    if(err){
-      callback(err);
-    } else {
-      util.log(util.inspect(doc));
-      doc.remove();
-      callback(null);
-    }
-  });
+   console.log("newAnswer: %j", newAnswer);
+   if(callback){
+      callback(newAnswer);
+   }else{
+      return newAnswer;
+   }
 };
 
 Answer.statics.edit = function edit(latency, correct, question, answer, response, callback){

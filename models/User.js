@@ -7,7 +7,7 @@ var userUtil = require('../utils/User');
 var UserHelper = require('./helpers/User');
 
 // User Schema and declaration
-var User = new Schema({
+var User = exports.Schema = new Schema({
    username: String,
    password: String,
    role: {type: String, enum: UserHelper.UserType },

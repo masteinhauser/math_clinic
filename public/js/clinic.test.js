@@ -32,7 +32,7 @@ Clinic.Test.Take = function(page, form){
       index: 0,
       timeout: null,
       timeoutInterval: 5000, // 5 seconds
-      url: "test/take",
+      url: "test/take/:ts",
       processing: 0, // Used internally to make sure a problem is only submitted once.
       choose: function(callback){
          // Function to be called if we have or do not have Questions loaded.
@@ -163,7 +163,7 @@ Clinic.Test.Take = function(page, form){
          //Post form data to server
          //Timeout after 30 seconds, retry post on next question submit
          $.ajax({
-            url: methods.url,
+            url: methods.url.replace(':ts', sessionStorage.getItem('testTimestamp')),
             type: 'POST',
             data: submitData,
             timeout: 30000,
@@ -330,11 +330,21 @@ $('div#test-take').live('pageshow',function(){
    }
    if(typeof Clinic.Data.Questions != 'undefined' && Clinic.Data.Questions.length > 0){
       Clinic.Test.Take.choose(function(testId, num){
-         Clinic.Test.Take.load(testId, num, Clinic.Test.Take.start);
+         Clinic.Test.Take.load(testId, num, function(){
+            if(sessionStorage.getItem('testTimestamp') === null){
+               sessionStorage.setItem('testTimestamp', new Date().valueOf());
+            }
+            Clinic.Test.Take.start();
+         });
       });
    }else{
       Clinic.Test.Take.choose(function(testId, num){
-         Clinic.Test.Take.load(testId, num, Clinic.Test.Take.start);
+         Clinic.Test.Take.load(testId, num, function(){
+            if(sessionStorage.getItem('testTimestamp') === null){
+               sessionStorage.setItem('testTimestamp', new Date().valueOf());
+            }
+            Clinic.Test.Take.start();
+         });
       });
    }
 });
