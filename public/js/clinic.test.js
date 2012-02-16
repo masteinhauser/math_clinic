@@ -328,5 +328,5 @@ $('div#test-complete').live('pageshow',function(){
 });
 
 $('div#test-create').live('pageshow',function(){
-   if(!Clinic.Test.Create.init){ Clinic.Test.Create = Clinic.Test.Create($('div#test-create'), $('div#test-create form.question')); }
+   if(!Clinic.Test.Create.init){ Clinic.Test.Create = Clinic.Test.Create($('div#test-create'), $('div#test-create form#create')); }
 });

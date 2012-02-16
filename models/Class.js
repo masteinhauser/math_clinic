@@ -9,7 +9,7 @@ var Class = new Schema({
    classname: String,
    school: String,
    grade: String,
-   teacher: {type: Schema.ObjectId, ref: 'User'},
+   teachers: [{type: Schema.ObjectId, ref: 'User'}],
    students: [{ type: Schema.ObjectId, ref: 'User' }]
 });
 
@@ -18,17 +18,17 @@ exports.emptyClass = {
    classname: "",
    school: "",
    grade: "",
-   teacher: User,
+   teachers: [User],
    students: [User]
 };
 
-Class.statics.add = function add(classname, school, grade, teacher, students, callback){
+Class.statics.add = function(classname, school, grade, teachers, students, callback){
    var newClass = new Class();
 
    newClass.classname = classname;
    newClass.school = school;
    newClass.grade = grade;
-   newClass.teacher = teacher;
+   newClass.teachers = teachers;
    newClass.students = students;
 
    newClass.save(function(err){
@@ -41,7 +41,7 @@ Class.statics.add = function add(classname, school, grade, teacher, students, ca
    });
 };
 
-Class.statics.del = function del(id, callback){
+Class.statics.del = function(id, callback){
   Class.findById(id, function(err, doc){
     if(err){
       callback(err);
@@ -53,7 +53,7 @@ Class.statics.del = function del(id, callback){
   });
 };
 
-Class.statics.edit = function edit(classname, school, grade, teacher, students, callback){
+Class.statics.edit = function(classname, school, grade, teachers, students, callback){
   Class.findById(id, function(err, doc){
     if(err){
       callback(err);
@@ -61,7 +61,7 @@ Class.statics.edit = function edit(classname, school, grade, teacher, students, 
       doc.username = classname || doc.classname;
       doc.students = school || doc.school;
       doc.grade = grade || doc.grade;
-      doc.teacher = teacher || doc.teacher;
+      doc.teachers = teachers || doc.teachers;
       doc.students = students || doc.students;
 
       doc.save(function(err){
@@ -76,11 +76,11 @@ Class.statics.edit = function edit(classname, school, grade, teacher, students, 
   });
 };
 
-Class.statics.findAll = function findAll(callback){
+Class.statics.findAll = function(callback){
   Class.find({}, callback);
 };
 
-Class.statics.forAll = function forAll(doEach, done){
+Class.statics.forAll = function(doEach, done){
   Class.find({}, function(err, docs){
     if(err){
       util.log('FATAL '+err);
@@ -95,7 +95,7 @@ Class.statics.forAll = function forAll(doEach, done){
   });
 };
 
-Class.statics.findById = function findById(id, callback){
+Class.statics.findById = function(id, callback){
   Class.findOne({ _id: id }, function(err, doc){
     if(err){
       util.log('FATAL '+err);

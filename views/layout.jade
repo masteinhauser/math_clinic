@@ -19,6 +19,8 @@ html
     script(type='text/javascript', src=basepath+'/js/clinic.numpad.js')
     script(type='text/javascript', src=basepath+'/js/clinic.test.js')
     script(type='text/javascript', src=basepath+'/js/clinic.questions.js')
+    if(user.role === "teacher" || user.role === "admin")
+      script(type='text/javascript', src=basepath+'/js/clinic.users.js')
   body
     // Menu Pages
     div(data-role='panel', data-id='menu', data-hash='crumbs', data-context='a#default')
@@ -31,6 +33,10 @@ html
           ul(data-role="listview")
             li
               a(href='#home', data-panel="main") Home
+            li
+              a(href='#about', data-panel="main") About
+            li
+              a(href='#engine', data-panel="main") Equation Engine
             if(user.id != null)
               li
                 a(href='#logout', data-panel="main") Logout
@@ -44,10 +50,6 @@ html
             else
               li
                 a(href='#login', data-panel="main") Login
-            li
-              a(href='#about', data-panel="main") About
-            li
-              a(href='#engine', data-panel="main") Equation Engine
       if(user.role === "teacher" || user.role === "admin")
         #admin(data-role='page', data-hash='false')
           div(data-role='header')
@@ -74,6 +76,7 @@ html
       include about
       include engine
       if(user.role === "teacher" || user.role === "admin")
-        include questions
-        include test-create
+        include admin/users
+        include admin/questions
+        include admin/test-create
 

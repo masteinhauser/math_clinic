@@ -29,6 +29,7 @@ User.statics.add = function add(username, password, role, fname, lname, birth, c
    userUtil.genPassword(password, password, function(err, hash){
       if(err){
          util.log("ERROR: "+err);
+         callback(err);
          throw err;
       }
 
@@ -42,13 +43,12 @@ User.statics.add = function add(username, password, role, fname, lname, birth, c
 
       util.log('Trying to save...');
       newUser.save(function(err){
-         console.log('Saved: ', newUser);
          if(err){
             util.log('FATAL '+err);
             callback(err);
          } else {
             console.log('Saved %j', newUser);
-            callback();
+            callback(err, newUser);
          }
       });
    });
@@ -100,7 +100,7 @@ User.statics.edit = function edit(id, username, password, role, fname, lname, bi
   });
 };
 
-User.statics.allUsers = function(callback){
+User.statics.findAll = function(callback){
   User.find({}, callback);
 };
 
@@ -119,7 +119,7 @@ User.statics.forAll = function(doEach, done){
   });
 };
 
-var findById = User.statics.findById = function(id, callback){
+User.statics.findById = function(id, callback){
   User.findOne({ _id: id }, function(err, doc){
     if(err){
       util.log('FATAL '+err);
@@ -129,7 +129,7 @@ var findById = User.statics.findById = function(id, callback){
   });
 };
 
-var findByUsername = User.statics.findByUsername = function(username, callback){
+User.statics.findByUsername = function(username, callback){
   User.findOne({ username: username }, function(err, doc){
     if(err){
       util.log('FATAL '+err);

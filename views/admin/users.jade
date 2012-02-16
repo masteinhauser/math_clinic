@@ -1,0 +1,22 @@
+#users(data-role="page")
+  div(data-role="header")
+    h1 Math Clinic - Users
+  div(data-role="content")
+    div(data-role='collapsible')
+      h3 Add User
+      form(action=basepath+"/user/add", method="post")
+        p User:  <br/>
+          input(type="text", name="username", value='')
+        p Pass: <br/>
+          input(type="password", name="password", value='')
+        p Role: <br/>
+          input(type="text", name="role", value='')
+        p First Name or Initial: <br/>
+          input(type="text", name="fname", value='')
+        p Last Name or Initial: <br/>
+          input(type="text", name="lname", value='')
+        p Birthday: <br/>
+          input(type="date", name="birth", vaue='')
+        p
+          input(type="submit", name="submit", value="Add")
+    table.users

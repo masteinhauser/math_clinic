@@ -3,7 +3,8 @@
  */
 module.exports = function(app){
 
-   app.post('/test/take', auth.ensAuth, function(req, res){
+   // Capture the POSTed answer data and record it in the user's test
+   app.post('/test/take/', auth.ensAuth, function(req, res){
       //TODO: Write code to take the posted questions and insert them into the user's current test based on the test ID they send
    });
 
