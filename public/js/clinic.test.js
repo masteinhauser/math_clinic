@@ -44,6 +44,7 @@ Clinic.Test.Take = function(page, form){
 
             //console.log(Clinic.Data.AvailableQuestions);
             // 1. List choices
+            equation.empty();
             $.each(Clinic.Data.AvailableQuestions, function(key, value){
                options.push('<option value="'+key+'">'+value.equation+'</option>');
             });
