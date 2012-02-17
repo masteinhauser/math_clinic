@@ -69,8 +69,8 @@ html
                 a(href='#questions', data-panel="main") Questions
               li
                 a(href='#test-create', data-panel="main") Create Test
-              li
-                a(href='#test-view-admin', data-panel="main") View Tests
+              //li
+              //  a(href='#test-view-admin', data-panel="main") View Tests
     // Main Pages
     div(data-role='panel', data-id='main')
       include home
@@ -86,5 +86,5 @@ html
         include admin/users
         include admin/questions
         include admin/test-create
-        include admin/test-view-admin
+        //-include admin/test-view-admin
 
