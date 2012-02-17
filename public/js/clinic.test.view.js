@@ -33,7 +33,7 @@ Clinic.Test.View.User = function(page){
          var table = answers.append('<table></table>').find('table');
          $.each(json.test, function(iterator, test){
             latency = [];
-            table.append('<th>User</th><th>Timestamp</th>');
+            table.append('<th>User ID</th><th>Timestamp</th>');
             table.append('<tr><td>'+test.user+'</td><td>'+test.ts+'</td></tr>');
             table.append('<tr><th>Correct</th><th>latency</th><th>Equation</th><th>Answer</th></tr>');
             $.each(test.answers, function(iterator, answer){
