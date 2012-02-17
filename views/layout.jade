@@ -18,17 +18,18 @@ html
     script(type='text/javascript', src=basepath+'/js/clinic.util.js')
     script(type='text/javascript', src=basepath+'/js/clinic.numpad.js')
     script(type='text/javascript', src=basepath+'/js/clinic.test.js')
+    script(type='text/javascript', src=basepath+'/js/clinic.test.view.js')
     script(type='text/javascript', src=basepath+'/js/clinic.questions.js')
     if(user.role === "teacher" || user.role === "admin")
       script(type='text/javascript', src=basepath+'/js/clinic.users.js')
   body
     // Menu Pages
     div(data-role='panel', data-id='menu', data-hash='crumbs', data-context='a#default')
-      // Start of first page 
+      // Start of first page
       #main(data-role='page', data-hash='false')
         div(data-role='header')
           h1 Menu
-        // header 
+        // header
         div(data-role='content')
           ul(data-role="listview")
             li
@@ -44,6 +45,8 @@ html
                 a(href='#{basepath}/user/edit', data-panel="main") User
               li
                 a(href='#test-take', data-panel='main') Take Test
+              li
+                a(href='#test-view-user', data-panel='main') View Tests
               if(user.role === "teacher" || user.role === "admin")
                 li
                   a(href='#admin', data-panel='menu') Admin
@@ -66,17 +69,22 @@ html
                 a(href='#questions', data-panel="main") Questions
               li
                 a(href='#test-create', data-panel="main") Create Test
+              li
+                a(href='#test-view-admin', data-panel="main") View Tests
     // Main Pages
     div(data-role='panel', data-id='main')
       include home
       include login
       include logout
-      include test-take
-      include test-complete
       include about
       include engine
+      if(user.id != null)
+        include test-take
+        include test-complete
+        include test-view-user
       if(user.role === "teacher" || user.role === "admin")
         include admin/users
         include admin/questions
         include admin/test-create
+        include admin/test-view-admin
 
