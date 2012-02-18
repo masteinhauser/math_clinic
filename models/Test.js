@@ -162,7 +162,7 @@ Test.statics.findByTimestamp = function(ts, user, callback){
 };
 
 Test.statics.findByUserId = function(user, callback){
-  Test.find({ user: user}, function(err, docs){
+  Test.find({ user: user}, null, {sort:{ts: -1}}, function(err, docs){
     if(err){
       util.log('FATAL '+err);
       callback(err, null);
