@@ -36,6 +36,7 @@ Clinic.Users = function(page){
             table.append('<tr><td>'+user.role+'</td><td>'+user.username+'</td><td>'+user.fname+'</td><td>'+user.lname+'</td><td>'+new Date(user.birth).toLocaleDateString()+'</td><td><button class="edit" value="'+user._id+'">Edit</button></td><td><button class="del" value="'+user._id+'">Delete</button></td></tr>');
          });
          if(callback){ callback(); }
+         page.trigger('create');
       },
       edit: function(){
          var id = this.value;

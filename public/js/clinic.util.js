@@ -55,7 +55,7 @@ Clinic.Util.updateListView = function(listview){
     listview.find("li:last").addClass("ui-corner-bottom");
 };
 
-Clinic.Util.formatQuestion= function(question, linebreak){
+Clinic.Util.formatQuestion = function(question, linebreak){
    var spaces = function(str, num){ return Array(num + 1).join(str); };
    var qParts = question.replace(/([\+\-\*\/])/ig, "\\$1").split(/\\/);
    var maxCharsArray = qParts.slice(0); // Make a copy of the array so when we sort it, it doesn't mess up the equation.
@@ -71,6 +71,68 @@ Clinic.Util.formatQuestion= function(question, linebreak){
    question = qParts.join('</br>');
    question += "<br/>" + spaces("&#150;", maxChars);
    return question;
+};
+
+// Iterates over an array of tables, extracting data to build a CSV file which it then opens as a download
+// Source found and modified from Flotr2: downloadCSV()
+Clinic.Util.downloadCSV = function(tables, options, link){
+   // Download vars
+   window.URL = window.webkitURL || window.URL;
+   window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
+   var prevLink, a = document.createElement('a');
+   if(link){
+      prevLink = link.attr('href');
+   }
+   if(prevLink){
+      window.URL.revokeObjectURL(prevLink.href);
+      link.innerHTML = '';
+   }
+
+   var bb = new BlobBuilder();
+
+   // CSV generation specific vars
+   var MIME_TYPE = 'text/csv';
+   var csv = '', i, j, row, col,
+       newline = '\r\n'; // \r\n'
+
+   // Set default options:
+   if(!options){ options = {}; }
+//   options.separator = encodeURIComponent(options.separator || ',');
+//   options.decimalSeparator = encodeURIComponent(options.decimalSeparator || '.');
+   options.separator = options.separator || ',';
+   options.decimalSeparator = options.decimalSeparator || '.';
+
+   if (options.decimalSeparator === options.csvFileSeparator) {
+      throw "The decimal separator is the same as the column separator ("+options.decimalSeparator+")";
+   }
+
+   // Iterate the given table, extracting data
+   $.each(tables, function(iterator, table){
+      for(i=0, row; row = table.rows[i]; i++) {
+         for(j=0, col; col = row.cells[j]; j++) {
+            csv += '"'+col.innerText+'"' + options.separator;
+            bb.append('"'+col.innerText+'"' + options.separator);
+         }
+         csv += newline;
+         bb.append(newline);
+      }
+   });
+
+   if(link){
+      a.download = "Test.csv";
+      a.href = window.URL.createObjectURL(bb.getBlob(MIME_TYPE));
+      a.textContent = 'Download Ready';
+      $.data(a, 'downloadurl', [MIME_TYPE, link.download, link.href].join(':'));
+      link.html(a);
+   }else{
+      // Trigger the browser to download the file
+      if ($.browser.msie && $.browser.version.substr(0,1)<9) {
+         csv = csv.replace(new RegExp(separator, 'g'), decodeURIComponent(separator)).replace(/%0A/g, '\n').replace(/%0D/g, '\r');
+         window.open().document.write(csv);
+      }else{
+         window.open('data:'+MIME_TYPE+','+csv);
+      }
+   }
 };
 
 $.fn.animateHighlight = function(highlightColor, duration, callback) {

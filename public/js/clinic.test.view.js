@@ -28,13 +28,13 @@ Clinic.Test.View.User = function(page){
       display: function(json, callback){
          var answers = page.find('div.answers');
          var latency = [];
-         var css;
+         var css, table;
 
          answers.empty();
-         var table = answers.append('<table class="view"></table>').find('table');
          $.each(json.test, function(iterator, test){
+            table = $(answers.append('<table class="view"></table>').find('table')[iterator]);
             latency = [];
-            table.append('<tr><th>User</th><th>Name</th><th colspan="2">Test Timestamp</th></tr>');
+            table.append('<tr><th>User</th><th>Name</th><th colspan="2">Test Timestamp</th><th><button class="download">Download CSV</button><a class="output"></a></th></tr>');
             timestamp = new Date(test.ts).toLocaleDateString();
             timestamp += ' '+new Date(test.ts).toLocaleTimeString();
             table.append('<tr><td>'+json.user.username+'</td><td>'+json.user.name+'</td><td colspan="2">'+timestamp+'</td></tr>');
@@ -44,7 +44,7 @@ Clinic.Test.View.User = function(page){
                if(answer.correct){ css='black'; } else { css='red'; }
                table.append('<tr class="'+css+'"><td>'+answer.question+'</td><td>'+answer.answer+'</td><td>'+answer.latency+'</td><td>'+answer.correct+'</td></tr>');
             });
-            table.append('<tr><td>&nbsp;</td></tr>');
+            answers.append('<br>');
             //Clinic.Test.View.User.graph(test.answers, latency);
          });
          if(callback){ callback(json); }
@@ -72,8 +72,20 @@ Clinic.Test.View.User = function(page){
                HtmlText: false
             }
          );
+      },
+      download: function(e){
+         var el = $(this);
+         var link = el.siblings('a.output');
+         console.log('Downloading Test...');
+//         Clinic.Util.downloadCSV(el.closest('table'), null);
+         link.val(Clinic.Util.downloadCSV(el.closest('table'), null, link));
+
+         el.trigger('refresh');
       }
    };
+
+   // Bind to events
+   $('.download').live('click', methods.download);
 
    return methods;
 };
