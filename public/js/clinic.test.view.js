@@ -28,17 +28,19 @@ Clinic.Test.View.User = function(page){
       display: function(json, callback){
          var answers = page.find('div.answers');
          var latency = [];
+         var css;
 
          answers.empty();
          var table = answers.append('<table></table>').find('table');
          $.each(json.test, function(iterator, test){
             latency = [];
-            table.append('<tr><th>User ID</th><th>Timestamp</th></tr>');
-            table.append('<tr><td>'+test.user+'</td><td>'+test.ts+'</td></tr>');
-            table.append('<tr><th>Correct</th><th>latency</th><th>Equation</th><th>Answer</th></tr>');
+            table.append('<tr><th colspan="2">User ID</th><th colspan="2">Timestamp</th></tr>');
+            table.append('<tr><td colspan="2">'+test.user+'</td><td colspan="2">'+test.ts+'</td></tr>');
+            table.append('<tr><th>Equation</th><th>Answer</th><th>latency</th><th>Correct</th></tr>');
             $.each(test.answers, function(iterator, answer){
                latency.push([iterator, answer.latency]);
-               table.append('<tr><td>'+answer.correct+'</td><td>'+answer.latency+'</td><td>'+answer.question+'</td><td>'+answer.answer+'</td></tr>');
+               if(answer.correct){ css='black'; } else { css='red'; }
+               table.append('<tr class="'+css+'"><td>'+answer.question+'</td><td>'+answer.answer+'</td><td>'+answer.latency+'</td><td>'+answer.correct+'</td></tr>');
             });
             //Clinic.Test.View.User.graph(test.answers, latency);
          });
