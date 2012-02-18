@@ -43,7 +43,6 @@ module.exports = function(app){
    // Capture the POSTed answer data and record it in the user's test based on timestamp and user id
    app.post('/test/take/:id', auth.ensAuth, function(req, res){
       var data = JSON.parse(req.body.data);
-      console.log("Body: %j", data);
       Test.addAnswers(req.params.id, req.user.id, data, function(err){
          res.json({err: err});
       });

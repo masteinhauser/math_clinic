@@ -44,6 +44,7 @@ Clinic.Test.View.User = function(page){
                if(answer.correct){ css='black'; } else { css='red'; }
                table.append('<tr class="'+css+'"><td>'+answer.question+'</td><td>'+answer.answer+'</td><td>'+answer.latency+'</td><td>'+answer.correct+'</td></tr>');
             });
+            table.append('<tr><td>&nbsp;</td></tr>');
             //Clinic.Test.View.User.graph(test.answers, latency);
          });
          if(callback){ callback(json); }

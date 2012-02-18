@@ -37,22 +37,15 @@ Test.statics.addAnswers = function(ts, user, answers, callback){
    var i;
 
    Test.findByTimestamp(ts, user, function(err, doc){
-      console.log("Err: %j", err);
-      console.log("Doc: %j", doc);
-
       if(doc === null){
          Test.add(ts, user, function(err, doc){
-            console.log("Err: %j", err);
-            console.log("Doc: %j", doc);
             if(!err){}
                doc = Test.formatAndAddAnswers(answers, doc);
-
                doc.save(function(err){
                   if(err){
                      util.log('FATAL '+err);
                      callback(err);
                   } else {
-                     console.log("Saved: %j", doc);
                      callback(null);
                   }
                });
@@ -60,13 +53,11 @@ Test.statics.addAnswers = function(ts, user, answers, callback){
          );
       }else{
          doc = Test.formatAndAddAnswers(answers, doc);
-
          doc.save(function(err){
             if(err){
                util.log('FATAL '+err);
                callback(err);
             } else {
-               console.log("Saved: %j", doc);
                callback(null);
             }
          });
@@ -77,14 +68,10 @@ Test.statics.addAnswers = function(ts, user, answers, callback){
 Test.statics.formatAndAddAnswers = function(answers, doc){
    var i, ans;
 
-   console.log("Pushing answers onto doc...");
    for(i=0; i<answers.length; i++){
-      console.log("answers["+i+"]: %j", answers[i]);
       ans = Answer.create(answers[i].latency, answers[i].correct, answers[i].question, answers[i].answer, "");
-      console.log("Answer: %j", ans);
       doc.answers.push(ans);
    }
-   console.log("done.");
 
    return doc;
 };
