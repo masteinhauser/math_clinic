@@ -29,12 +29,14 @@ module.exports = function(app){
       }
 
       Test.findByUserId(id, function(err, test){
-         if(err){
-            result = {err: err};
-         } else {
-            result = {err: err, test: test};
-         }
-         res.json(result);
+         User.findById(test[0].user, function(err, user){
+            if(err){
+               result = {err: err};
+            } else {
+               result = {err: err, test: test, user:{username: user.username, name: user.fname+' '+user.lname}};
+            }
+            res.json(result);
+         });
       });
    });
 

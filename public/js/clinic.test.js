@@ -297,7 +297,7 @@ Clinic.Test.Create = function(page, form){
                var row = Math.ceil(Math.sqrt(data.questions.length));
                for(i=0; i<data.questions.length; i++){
                   if(i%row === 0){ tbQuestions.append('<tr>'); }
-                  tbQuestions.append('<td>'+Clinic.Util.formatQuestion(data.questions[i])+'<br>'+eval(data.questions[i])+'</td>');
+                  tbQuestions.append('<td class="generate">'+Clinic.Util.formatQuestion(data.questions[i])+'<br>'+eval(data.questions[i])+'</td>');
                   if(i%row === 0){ tbQuestions.append('</tr>'); }
                }
                preview.show();

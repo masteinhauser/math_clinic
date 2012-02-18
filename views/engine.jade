@@ -49,16 +49,16 @@
           p= result.message
           p Generated Questions:
           //- This is a hairy section of display code and formatting:
-          table
+          table.generate
             num = 0
             row = Math.ceil(Math.sqrt(result.questions.length*2))
             spaces = function(str, num){ return Array(num + 1).join(str) }
             each question in result.questions
               - if(num%row == 0)
-                  tr
+                  tr.generate
                 qParts = question.replace(/([\+\-\*\/])/ig, "\\$1").split(/\\/)
                 maxChars = qParts.sort(function(a, b){ return b.length - a.length })[0].length;
-                td.question!= qParts.join('</br>')
+                td.question.generate!= qParts.join('</br>')
                   <br/>
                   != spaces("&#150;", maxChars)
                   <br/>

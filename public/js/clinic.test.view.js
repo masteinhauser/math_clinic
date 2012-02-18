@@ -31,11 +31,13 @@ Clinic.Test.View.User = function(page){
          var css;
 
          answers.empty();
-         var table = answers.append('<table></table>').find('table');
+         var table = answers.append('<table class="view"></table>').find('table');
          $.each(json.test, function(iterator, test){
             latency = [];
-            table.append('<tr><th colspan="2">User ID</th><th colspan="2">Timestamp</th></tr>');
-            table.append('<tr><td colspan="2">'+test.user+'</td><td colspan="2">'+test.ts+'</td></tr>');
+            table.append('<tr><th>User</th><th>Name</th><th colspan="2">Test Timestamp</th></tr>');
+            timestamp = new Date(test.ts).toLocaleDateString();
+            timestamp += ' '+new Date(test.ts).toLocaleTimeString();
+            table.append('<tr><td>'+json.user.username+'</td><td>'+json.user.name+'</td><td colspan="2">'+timestamp+'</td></tr>');
             table.append('<tr><th>Equation</th><th>Answer</th><th>latency</th><th>Correct</th></tr>');
             $.each(test.answers, function(iterator, answer){
                latency.push([iterator, answer.latency]);
