@@ -97,8 +97,6 @@ Clinic.Util.downloadCSV = function(tables, options, link){
 
    // Set default options:
    if(!options){ options = {}; }
-//   options.separator = encodeURIComponent(options.separator || ',');
-//   options.decimalSeparator = encodeURIComponent(options.decimalSeparator || '.');
    options.separator = options.separator || ',';
    options.decimalSeparator = options.decimalSeparator || '.';
 
@@ -110,6 +108,11 @@ Clinic.Util.downloadCSV = function(tables, options, link){
    $.each(tables, function(iterator, table){
       for(i=0, row; row = table.rows[i]; i++) {
          for(j=0, col; col = row.cells[j]; j++) {
+            if(!options.filename){
+               if(col.tagName === "TH"){
+                  options.filename = "Test-"+table.rows[i+1].cells[0].innerText+'-'+(table.rows[i+1].cells[1].innerText).replace(/ /g, '_')+'_'+(table.rows[i+1].cells[2].innerText).replace(/ /g, '_')+'.csv';
+               }
+            }
             csv += '"'+col.innerText+'"' + options.separator;
             bb.append('"'+col.innerText+'"' + options.separator);
          }
@@ -121,7 +124,7 @@ Clinic.Util.downloadCSV = function(tables, options, link){
 //   console.log("Browser: "+JSON.stringify($.browser) + ", Version: "+$.browser.version);
 
    if(link){
-      a.download = "Test.csv";
+      a.download = options.filename || "Download.csv";
       a.href = window.URL.createObjectURL(bb.getBlob(MIME_TYPE));
       a.textContent = 'Download Ready';
       $.data(a, 'downloadurl', [MIME_TYPE, link.download, link.href].join(':'));
