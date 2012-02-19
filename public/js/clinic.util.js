@@ -113,6 +113,7 @@ Clinic.Util.downloadCSV = function(tables, options, link){
                   options.filename = "Test-"+table.rows[i+1].cells[0].innerText+'-'+(table.rows[i+1].cells[1].innerText).replace(/ /g, '_')+'_'+(table.rows[i+1].cells[2].innerText).replace(/ /g, '_')+'.csv';
                }
             }
+            if(col.innerText.indexOf("Download") != -1){ continue; }
             csv += '"'+col.innerText+'"' + options.separator;
             bb.append('"'+col.innerText+'"' + options.separator);
          }
@@ -127,7 +128,7 @@ Clinic.Util.downloadCSV = function(tables, options, link){
       a.download = options.filename || "Download.csv";
       a.href = window.URL.createObjectURL(bb.getBlob(MIME_TYPE));
       a.textContent = 'Download Ready';
-      $.data(a, 'downloadurl', [MIME_TYPE, link.download, link.href].join(':'));
+      $.data(a, 'downloadurl', [MIME_TYPE, a.download, a.href].join(':'));
       link.html(a);
    }else{
       // Trigger the browser to download the file

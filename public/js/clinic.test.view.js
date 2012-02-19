@@ -35,11 +35,11 @@ Clinic.Test.View.User = function(page){
             var calc = json.calc[iterator];
             timestamp = new Date(test.ts).toLocaleDateString();
             timestamp += ' '+new Date(test.ts).toLocaleTimeString();
-            div = $(answers.append('<div data-role="collapsible"></div>').find('div')[iterator]);
+            div = $(answers.append('<div id="'+iterator+'" class="test" data-role="collapsible"></div>').find('div')[iterator]);
             div.append('<h3>'+json.user.name+'<br>'+timestamp+'</h3>');
-            table = div.append('<table class="view"></table>');
+            table = div.append('<table class="view"></table>').find('table');
             latency = [];
-            table.append('<tr><th>User</th><th>Name</th><th colspan="2">Test Timestamp</th><th><button class="download">Download CSV</button><a class="output"></a></th></tr>');
+            table.append('<tr><th>User</th><th>Name</th><th colspan="2">Test Timestamp</th><th></th></tr>');
             table.append('<tr><td>'+json.user.username+'</td><td>'+json.user.name+'</td><td colspan="2">'+timestamp+'</td></tr>');
             table.append('<tr style="display: none;"></tr>');
             table.append('<tr><th>Equation</th><th>Answer</th><th>latency</th><th>Correct</th></tr>');
@@ -49,8 +49,8 @@ Clinic.Test.View.User = function(page){
                table.append('<tr class="'+css+'"><td>'+answer.question+'</td><td>'+answer.answer+'</td><td>'+answer.latency+'</td><td>'+answer.correct+'</td></tr>');
             });
             table.append('<tr></tr>');
-            table.append('<tr><th>Totals:</th></tr>');
-            table.append('<tr><td>Correct:</td><td>'+calc.numCorrect+'</td></tr>');
+            table.append('<tr><th colspan="2">Totals:</th><th colspan="2"><button class="download">Download CSV</button></th></tr>');
+            table.append('<tr><td>Correct:</td><td>'+calc.numCorrect+'</td><td colspan="2"><a class="output"></a></td></tr>');
             table.append('<tr><td>Digits Per Minute:</td><td>'+calc.digitsPerMinute+'</td></tr>');
             table.append('<tr><td>Average Latency:</td><td>'+calc.avgLatency+'</td></tr>');
             table.append('<tr><td>Total Latency:</td><td>'+calc.totalLatency+'</td></tr>');
@@ -85,11 +85,10 @@ Clinic.Test.View.User = function(page){
          );
       },
       download: function(e){
-         var el = $(this);
-         var link = el.siblings('a.output');
-         console.log('Downloading Test...');
+         var el = $(this).closest('div.test');
+         var link = el.find('a.output');
 //         Clinic.Util.downloadCSV(el.closest('table'), null);
-         link.val(Clinic.Util.downloadCSV(el.closest('table'), null, link));
+         link.val(Clinic.Util.downloadCSV(el.find('table'), null, link));
 
          el.trigger('refresh');
       }
