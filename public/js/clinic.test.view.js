@@ -33,11 +33,13 @@ Clinic.Test.View.User = function(page){
          answers.empty();
          $.each(json.test, function(iterator, test){
             var calc = json.calc[iterator];
-            table = $(answers.append('<table class="view"></table>').find('table')[iterator]);
-            latency = [];
-            table.append('<tr><th>User</th><th>Name</th><th colspan="2">Test Timestamp</th><th><button class="download">Download CSV</button><a class="output"></a></th></tr>');
             timestamp = new Date(test.ts).toLocaleDateString();
             timestamp += ' '+new Date(test.ts).toLocaleTimeString();
+            div = $(answers.append('<div data-role="collapsible"></div>').find('div')[iterator]);
+            div.append('<h3>'+json.user.name+'<br>'+timestamp+'</h3>');
+            table = div.append('<table class="view"></table>');
+            latency = [];
+            table.append('<tr><th>User</th><th>Name</th><th colspan="2">Test Timestamp</th><th><button class="download">Download CSV</button><a class="output"></a></th></tr>');
             table.append('<tr><td>'+json.user.username+'</td><td>'+json.user.name+'</td><td colspan="2">'+timestamp+'</td></tr>');
             table.append('<tr style="display: none;"></tr>');
             table.append('<tr><th>Equation</th><th>Answer</th><th>latency</th><th>Correct</th></tr>');
@@ -55,6 +57,7 @@ Clinic.Test.View.User = function(page){
             answers.append('<br>');
             //Clinic.Test.View.User.graph(test.answers, latency);
          });
+         $(answers).trigger('create');
          if(callback){ callback(json); }
       },
       graph: function(answers, latency){
