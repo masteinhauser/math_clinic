@@ -32,6 +32,7 @@ Clinic.Test.View.User = function(page){
 
          answers.empty();
          $.each(json.test, function(iterator, test){
+            var calc = json.calc[iterator];
             table = $(answers.append('<table class="view"></table>').find('table')[iterator]);
             latency = [];
             table.append('<tr><th>User</th><th>Name</th><th colspan="2">Test Timestamp</th><th><button class="download">Download CSV</button><a class="output"></a></th></tr>');
@@ -45,6 +46,12 @@ Clinic.Test.View.User = function(page){
                if(answer.correct){ css='black'; } else { css='red'; }
                table.append('<tr class="'+css+'"><td>'+answer.question+'</td><td>'+answer.answer+'</td><td>'+answer.latency+'</td><td>'+answer.correct+'</td></tr>');
             });
+            table.append('<tr></tr>');
+            table.append('<tr><th>Totals:</th></tr>');
+            table.append('<tr><td>Correct:</td><td>'+calc.numCorrect+'</td></tr>');
+            table.append('<tr><td>Digits Per Minute:</td><td>'+calc.digitsPerMinute+'</td></tr>');
+            table.append('<tr><td>Average Latency:</td><td>'+calc.avgLatency+'</td></tr>');
+            table.append('<tr><td>Total Latency:</td><td>'+calc.totalLatency+'</td></tr>');
             answers.append('<br>');
             //Clinic.Test.View.User.graph(test.answers, latency);
          });

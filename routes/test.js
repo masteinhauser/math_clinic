@@ -1,6 +1,8 @@
 /*
  * Test page and API.
  */
+var Util = require('../utils/Util');
+
 module.exports = function(app){
 
    // Returns ALL tests, should be modified to limit to the current "class"/permissions
@@ -29,11 +31,45 @@ module.exports = function(app){
       }
 
       Test.findByUserId(id, function(err, test){
+         var calc = [];
          User.findById(test[0].user, function(err, user){
+            var i, j, k, answer;
+            var digits, question, totalDigits;
+            var totalLatency;
+            var numCorrect;
+
+            for(i=0; i<test.length; i++){
+               calc[i] = {};
+               digits = 0;
+               totalDigits = 0;
+               totalLatency = 0;
+               numCorrect = 0;
+
+               for(j=0; j<test[i].answers.length; j++){
+                  answer = test[i].answers[j];
+                  totalLatency += Number(answer.latency);
+                  if(answer.correct){
+                     numCorrect++;
+                     totalDigits += answer.answer.length;
+                  }else{
+                     question = eval(answer.question);
+                     digits = 0;
+                     for(k=0; k<answer.answer.length && k<question.length; k++){
+                        digits += (question[k] === answer.answer[k]? 1 : 0);
+                     }
+                     totalDigits += digits;
+                  }
+               }
+               calc[i].digitsPerMinute = Util.round(totalDigits / (totalLatency/60000), 2);
+               calc[i].avgLatency = Util.round(totalLatency / test[i].answers.length, 2);
+               calc[i].totalLatency = totalLatency;
+               calc[i].numCorrect = numCorrect;
+            }
+
             if(err){
                result = {err: err};
             } else {
-               result = {err: err, test: test, user:{username: user.username, name: user.fname+' '+user.lname}};
+               result = {err: err, test: test, calc: calc, user:{username: user.username, name: user.fname+' '+user.lname}};
             }
             res.json(result);
          });
