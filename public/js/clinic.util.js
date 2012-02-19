@@ -113,7 +113,7 @@ Clinic.Util.downloadCSV = function(tables, options, link){
                   options.filename = "Test-"+table.rows[i+1].cells[0].innerText+'-'+(table.rows[i+1].cells[1].innerText).replace(/ /g, '_')+'_'+(table.rows[i+1].cells[2].innerText).replace(/ /g, '_')+'.csv';
                }
             }
-            if(col.innerText.indexOf("Download") != -1){ continue; }
+            if(col.innerText.indexOf("Download") != -1 || col.innerText.indexOf("Generate") != -1){ continue; }
             csv += '"'+col.innerText+'"' + options.separator;
             bb.append('"'+col.innerText+'"' + options.separator);
          }
