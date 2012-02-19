@@ -1,6 +1,7 @@
 /**
  * Module dependencies.
  */
+var fs = require('fs');
 var express = require('express');
 var mongo = require('mongoose');
 var passport = require('passport'), LocalStrategy = require('passport-local').Strategy;
@@ -110,5 +111,15 @@ app.use(function(err, req, res, next){
 // Dynamically search for and load all routes in ./routes
 require('./routes')(app);
 
+// Configure system monitoring and logging
+process.on('uncaughtException', function (err) {
+   console.log('Caught exception: ' + err);
+});
+
 app.listen(config.port);
-console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+console.log("Express server with PID:%d listening on port %d in %s mode", process.pid, app.address().port, app.settings.env);
+
+var pidFile = fs.createWriteStream('/tmp/math_clinic.pid');
+pidFile.once('open', function(fd){
+   pidFile.write(process.pid);
+});
