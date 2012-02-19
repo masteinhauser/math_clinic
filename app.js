@@ -111,13 +111,17 @@ app.use(function(err, req, res, next){
 // Dynamically search for and load all routes in ./routes
 require('./routes')(app);
 
-// Configure system monitoring and logging
-process.on('uncaughtException', function (err) {
-   console.log('Caught exception: ' + err);
-});
-
 app.listen(config.port);
 console.log("Express server with PID:%d listening on port %d in %s mode", process.pid, app.address().port, app.settings.env);
+
+// Configure system monitoring and logging
+var logFile = fs.createWriteStream('/tmp/math_clinic.log');
+logFile.once('open', function(fd){
+   logFile.write("Express server with PID:"+process.pid+" listening on port "+app.address().port+" in "+app.settings.env+" mode");
+   process.on('uncaughtException', function (err) {
+      logFile.write('Caught exception: ' + err);
+   });
+});
 
 var pidFile = fs.createWriteStream('/tmp/math_clinic.pid');
 pidFile.once('open', function(fd){
