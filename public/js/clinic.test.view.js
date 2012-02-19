@@ -36,7 +36,8 @@ Clinic.Test.View.User = function(page){
             timestamp = new Date(test.ts).toLocaleDateString();
             timestamp += ' '+new Date(test.ts).toLocaleTimeString();
             div = $(answers.append('<div id="'+iterator+'" class="test" data-role="collapsible"></div>').find('div')[iterator]);
-            div.append('<h3>'+json.user.name+'<br>'+timestamp+'</h3>');
+            //div.append('<h3>'+json.user.name+'<br>'+timestamp+'</h3>');
+            div.append('<h3>'+timestamp+'</h3>');
             table = div.append('<table class="view"></table>').find('table');
             latency = [];
             table.append('<tr><th>User</th><th>Name</th><th colspan="2">Test Timestamp</th><th></th></tr>');
