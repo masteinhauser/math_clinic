@@ -118,6 +118,8 @@ Clinic.Util.downloadCSV = function(tables, options, link){
       }
    });
 
+//   console.log("Browser: "+JSON.stringify($.browser) + ", Version: "+$.browser.version);
+
    if(link){
       a.download = "Test.csv";
       a.href = window.URL.createObjectURL(bb.getBlob(MIME_TYPE));

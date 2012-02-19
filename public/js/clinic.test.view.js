@@ -38,6 +38,7 @@ Clinic.Test.View.User = function(page){
             timestamp = new Date(test.ts).toLocaleDateString();
             timestamp += ' '+new Date(test.ts).toLocaleTimeString();
             table.append('<tr><td>'+json.user.username+'</td><td>'+json.user.name+'</td><td colspan="2">'+timestamp+'</td></tr>');
+            table.append('<tr style="display: none;"></tr>');
             table.append('<tr><th>Equation</th><th>Answer</th><th>latency</th><th>Correct</th></tr>');
             $.each(test.answers, function(iterator, answer){
                latency.push([iterator, answer.latency]);
