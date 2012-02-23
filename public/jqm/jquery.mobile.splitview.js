@@ -5,7 +5,7 @@
     if($.support.touch){
       $('html').addClass('touch');
     }
-    var $query = $.mobile.media('screen and (min-width: 480px)') && ($.mobile.media('(-webkit-max-device-pixel-ratio: 1.2)') || $.mobile.media('max--moz-device-pixel-ratio: 1.2)'));
+    var $query = $.mobile.media('screen and (min-width: 480px)') && ($.mobile.media('(-webkit-max-device-pixel-ratio: 1.2)') || $.mobile.media('(max--moz-device-pixel-ratio: 1.2)'));
     $.support.splitview = ($query || ($.mobile.browser.ie && $(this).width() >= 480)) && $.mobile.ajaxEnabled;
     if ($.support.splitview) {
       $('html').addClass('splitview');
@@ -521,7 +521,7 @@
 
       //DONE: pageshow binding for scrollview - now using IScroll4! hell yeah!
       $('div:jqmData(role="page")').live('pagebeforeshow.scroll', function(event, ui){
-        // if ($.support.touch) {
+        if ($.support.touch && !$.support.touchOverflow) {
 
           var $page = $(this),
               $scrollArea = $page.find('div:jqmData(role="content")');
@@ -536,7 +536,7 @@
           //TODO: if too many pages are in the DOM that have iscroll on, this might slow down the browser significantly, 
           //in which case we'll need to destroy() the iscroll as the page hides. 
           $scrollArea.iscroll();
-        // }
+        }
       });
 
       //data-hash 'crumbs' handler

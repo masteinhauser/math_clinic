@@ -72,6 +72,7 @@ div[data-id="main"] {
     left:0;
     right:0;
     overflow:auto;
+    -webkit-overflow-scrolling:touch;
     z-index:1;
   }
 }
