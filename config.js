@@ -8,6 +8,6 @@ exports.mongo = {
 };
 
 exports.guest = {
-   user: 'myles',
-   pass: 'pass'
+   user: '',
+   pass: ''
 };
