@@ -70,9 +70,11 @@ passport.use(new LocalStrategy(
          username: username
       }, function(err, user){
          if(err){
+            console.log("Err: "+err);
             return next(err);
          }
          if(!user){
+            console.log("No user found for: "+username);
             return next(null, false);
          }
          var userUtil = require('./utils/User');
@@ -81,6 +83,7 @@ passport.use(new LocalStrategy(
                console.log("ERROR: "+err);
             }
             if(res){
+               console.log("User found for: "+username);
                return next(null, user);
             } else {
                console.log("bad password");

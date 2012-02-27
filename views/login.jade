@@ -3,16 +3,18 @@
     h1= title
   div(data-role="content")
     script(type='text/javascript')
-      $('#login-form').submit(function(){
+      $('#login-form').live('submit', function(e){
         var url = "#{basepath}"+"/login";
         var data = $('#login-form').serialize();
         $.post(url, data, function(){
           window.location = "#{basepath}"+"/";
         });
+        e.stopPropagation();
+        e.preventDefault();
         return false;
       });
     p Please login:
-    form(id="login-form", data-ajax="false")
+    form#login-form
       p User:
         input(type="text", name="username", value=config.guest.user)
       p Pass:
