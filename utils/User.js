@@ -22,8 +22,7 @@ var genPassword = exports.genPassword = function(cleartext, confirm, callback){
       if(err){
          return callback(err);
       }
-      //return bcrypt.hash(cleartext, salt, function(err, hash){
-      return bcrypt.hash("pass", salt, function(err, hash){
+      return bcrypt.hash(cleartext, salt, function(err, hash){
          if(err){
             return callback(err);
          }

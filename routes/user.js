@@ -53,8 +53,12 @@ module.exports = function(app){
          id = req.user.id;
       }
 
-      // Disable changing the username, password, and role
-      User.edit(id, null, null, null, req.body.fname, req.body.lname, req.body.birth, function(){});
+      if(typeof req.body.password === 'undefined' || req.body.password === ''){
+         req.body.password = null;
+      }
+
+      // Disable changing the username
+      User.edit(id, null, req.body.password, req.body.role, req.body.fname, req.body.lname, req.body.birth, function(){});
       res.redirect(config.path+'/user/edit');
    });
 
@@ -66,21 +70,25 @@ module.exports = function(app){
          id = req.body.id;
       }
 
-      // Disable changing the username, password, and role
       User.del(id, function(err){
          res.json({err: err});
       });
    });
 
    app.post('/user/add', auth.ensAuth, function(req, res){
+      if(req.body.role === ''){
+         req.body.role = 'student';
+      }
       if(req.body.birth === ''){
          req.body.birth = new Date();
       }
       if(typeof req.body.password === 'undefined' || req.body.password === ''){
-         req.body.password = '';
+         console.log('Error with Pass: '+req.body.password);
+         req.body.password = 'pass';
       }
+      console.log('Pass: '+req.body.password);
       User.add(req.body.username, req.body.password, req.body.role, req.body.fname, req.body.lname, req.body.birth, function(err, user){
-         console.log("User: %j", user);
+         console.log("Added User: %j", user);
          res.redirect(config.path+'/user/edit/'+user._id);
       });
    });
