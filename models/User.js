@@ -72,30 +72,45 @@ User.statics.edit = function edit(id, username, password, role, fname, lname, bi
       callback(err);
    } else {
       var hash = null;
-      if(password !== null && password !== ""){
+      if(password !== null && password !== "" && password != doc.password){
          userUtil.genPassword(password, password, function(err, hash){
             if(err){
                util.log("ERROR: "+err);
                throw err;
             }
+
+            doc.username = username || doc.username;
+            doc.password = hash;
+            doc.role = role || doc.role;
+            doc.fname = fname || doc.fname;
+            doc.lname = lname || doc.lname;
+            doc.birth = birth || doc.birth;
+
+            doc.save(function(err){
+              if(err){
+                 util.log('FATAL '+err);
+                 callback(err);
+              } else {
+                 callback(null);
+              }
+            });
+         });
+      }else{
+         doc.username = username || doc.username;
+         doc.role = role || doc.role;
+         doc.fname = fname || doc.fname;
+         doc.lname = lname || doc.lname;
+         doc.birth = birth || doc.birth;
+
+         doc.save(function(err){
+           if(err){
+              util.log('FATAL '+err);
+              callback(err);
+           } else {
+              callback(null);
+           }
          });
       }
-
-      doc.username = username || doc.username;
-      doc.password = hash || doc.password;
-      doc.role = role || doc.role;
-      doc.fname = fname || doc.fname;
-      doc.lname = lname || doc.lname;
-      doc.birth = birth || doc.birth;
-
-      doc.save(function(err){
-        if(err){
-           util.log('FATAL '+err);
-           callback(err);
-        } else {
-           callback(null);
-        }
-      });
     }
   });
 };
