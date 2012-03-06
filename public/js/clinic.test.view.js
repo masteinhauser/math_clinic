@@ -18,6 +18,7 @@ Clinic.Test.View.User = function(page){
 
    var methods = {
       init: 1,
+      loaded: 0,
       url: "test/:type/:id",
       load: function(type, id, callback){
          console.log("Loading Data...\ntype: "+type+"\nid: "+id);
@@ -31,6 +32,12 @@ Clinic.Test.View.User = function(page){
          var css, table;
 
          answers.empty();
+         if(json.err){
+            // No results found, display error message
+            answers.html('<h3>'+json.err+'</h3>');
+            if(callback){ callback(json); }
+            return;
+         }
          $.each(json.test, function(iterator, test){
             var calc = json.calc[iterator];
             timestamp = new Date(test.ts).toLocaleDateString();
@@ -59,6 +66,7 @@ Clinic.Test.View.User = function(page){
             //Clinic.Test.View.User.graph(test.answers, latency);
          });
          $(answers).trigger('create');
+
          if(callback){ callback(json); }
       },
       graph: function(answers, latency){
@@ -106,9 +114,15 @@ $('div#test-view-user').live('pageshow',function(){
    var page = $('div#test-view-user');
 
    if(!Clinic.Test.View.User.init){ Clinic.Test.View.User = Clinic.Test.View.User(page); }
-   Clinic.Test.View.User.load('user', '', function(json){
-      Clinic.Test.View.User.display(json);
-   });
+   if(!Clinic.Test.View.User.loaded){
+      Clinic.Test.View.User.load('user', '', function(json){
+         Clinic.Test.View.User.display(json);
+      });
+   }
+});
+
+$('div#test-view-user').live('pageshow',function(){
+   Clinic.Test.View.User.loaded = 0;
 });
 
 $('div#test-view-admin').live('pageshow',function(){

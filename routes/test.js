@@ -32,7 +32,17 @@ module.exports = function(app){
 
       Test.findByUserId(id, function(err, test){
          var calc = [];
+         if(err){
+            res.json({err: err});
+         }else if(test.length === 0){
+            res.json({err: 'No results found!'});
+         }
+
          User.findById(test[0].user, function(err, user){
+            if(err){
+               res.json({err: err});
+            }
+
             var i, j, k, answer;
             var digits, question, totalDigits;
             var totalLatency;
@@ -66,12 +76,7 @@ module.exports = function(app){
                calc[i].numCorrect = numCorrect;
             }
 
-            if(err){
-               result = {err: err};
-            } else {
-               result = {err: err, test: test, calc: calc, user:{username: user.username, name: user.fname+' '+user.lname}};
-            }
-            res.json(result);
+            res.json({err: err, test: test, calc: calc, user:{username: user.username, name: user.fname+' '+user.lname}});
          });
       });
    });

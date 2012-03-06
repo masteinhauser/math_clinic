@@ -33,7 +33,7 @@ Clinic.Users = function(page){
          table.empty();
          table.append('<th>Role</th><th>Username</th><th>First Name</th><th>Last Name</th><th>Birth Date</th>');
          $.each(Clinic.Data.Users, function(iterator, user){
-            table.append('<tr><td>'+user.role+'</td><td>'+user.username+'</td><td>'+user.fname+'</td><td>'+user.lname+'</td><td>'+new Date(user.birth).toLocaleDateString()+'</td><td><button class="edit" value="'+user._id+'">Edit</button></td><td><button class="del" value="'+user._id+'">Delete</button></td></tr>');
+            table.append('<tr><td>'+user.role+'</td><td>'+user.username+'</td><td>'+user.fname+'</td><td>'+user.lname+'</td><td>'+new Date(user.birth).toLocaleDateString()+'</td><td><button class="edit" value="'+user._id+'">Edit</button></td><td><button class="del" value="'+user._id+'">Delete</button></td><td><button class="tests" value="'+user._id+'">Tests</button></td></tr>');
          });
          if(callback){ callback(); }
          page.trigger('create');
@@ -58,12 +58,25 @@ Clinic.Users = function(page){
             }
             methods.load(methods.display);
          });
+      },
+      tests: function(){
+         var id = this.value;
+         var page = $('div#test-view-user');
+
+         if(!Clinic.Test.View.User.init){ Clinic.Test.View.User = Clinic.Test.View.User(page); }
+         Clinic.Test.View.User.load('user', id, function(json){
+            Clinic.Test.View.User.display(json);
+         });
+
+         Clinic.Test.View.User.loaded = 1;
+         Clinic.Util.changePage("#test-view-user");
       }
    };
 
    // Bind events
    page.find('button.edit').live('click', methods.edit);
    page.find('button.del').live('click', methods.del);
+   page.find('button.tests').live('click', methods.tests);
 
    return methods;
 };
