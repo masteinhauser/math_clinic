@@ -59,6 +59,7 @@ Clinic.Test.View.User = function(page){
             table.append('<tr></tr>');
             table.append('<tr><th colspan="2">Totals:</th><th colspan="2"><button class="download">Generate CSV</button><a class="output"></a></th></tr>');
             table.append('<tr><td>Correct:</td><td>'+calc.numCorrect+'</td><td colspan="2"></td></tr>');
+            table.append('<tr><td>Incorrect:</td><td>'+(test.answers.length - calc.numCorrect)+'</td><td colspan="2"></td></tr>');
             table.append('<tr><td>Digits Per Minute:</td><td>'+calc.digitsPerMinute+'</td></tr>');
             table.append('<tr><td>Average Latency:</td><td>'+calc.avgLatency+'</td></tr>');
             table.append('<tr><td>Total Latency:</td><td>'+calc.totalLatency+'</td></tr>');
