@@ -6,6 +6,9 @@ var util = require('util');
 module.exports = function(app){
 
    app.get('/users', auth.ensAuth, function(req, res){
+      // Get UserTypes from Mongo helper
+      var UserType = require('../models/helpers/User').UserType;
+
       var i;
       User.findAll(function(err, docs){
          for(i = 0; i<docs.length; i++){
@@ -81,6 +84,8 @@ module.exports = function(app){
    app.post('/user/add', auth.ensAuth, function(req, res){
       if(req.body.role === ''){
          req.body.role = 'student';
+      }else{
+         req.body.role = req.body.role.toLowerCase();
       }
       if(req.body.birth === ''){
          req.body.birth = new Date();
