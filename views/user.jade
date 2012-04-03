@@ -9,7 +9,10 @@
       p Pass: <br/>
         input(type="password", name="password", value="")
       p Role: <br/>
-        input(type="text", name="role", value=result.user.role, readonly)
+        if(user.role === "admin")
+          input(type="text", name="role", value=result.user.role)
+        else
+          input(type="text", name="role", value=result.user.role, readonly)
       p First Name or Initial: <br/>
         input(type="text", name="fname", value=result.user.fname)
       p Last Name or Initial: <br/>
