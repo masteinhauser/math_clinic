@@ -28,11 +28,14 @@ module.exports = function(app){
          id = req.user.id;
       }
 
+      // Get UserTypes from Mongo helper
+      var UserType = require('../models/helpers/User').UserType;
+
       User.findById(id, function(err, user){
          if(err){
             result = {success: false, message: err};
          } else {
-            result = {success: true, user: user};
+            result = {success: true, user: user, UserTypes: UserType};
          }
          res.render('user.jade', {
             layout: false,

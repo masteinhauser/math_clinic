@@ -10,7 +10,13 @@
         input(type="password", name="password", value="")
       p Role: <br/>
         if(user.role === "admin")
-          input(type="text", name="role", value=result.user.role)
+          select(type="text", name="role", value=result.user.role)
+           - var items = result.UserTypes
+               each item in items
+                  if(item == result.user.role)
+                     option(selected)= item
+                  else
+                     option= item
         else
           input(type="text", name="role", value=result.user.role, readonly)
       p First Name or Initial: <br/>
