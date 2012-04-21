@@ -42,6 +42,8 @@ Clinic.Test.Take = function(page, form){
             var count = choiceForm.find('input#count');
             var options = [];
 
+            choiceForm.show();
+
             //console.log(Clinic.Data.AvailableQuestions);
             // 1. List choices
             equation.empty();
@@ -74,6 +76,7 @@ Clinic.Test.Take = function(page, form){
          var eq = Clinic.Data.AvailableQuestions[index].equation;
          //TODO: Retrieve questions for this test from the server
          $.getJSON("questions/"+eq+'/'+num, function(json){
+            Questions = [];
             // Iterates over each PIECE of data in the returned JSON.
             $.each(json.questions, function(key, value){
                Questions.push({question: value});
@@ -81,8 +84,19 @@ Clinic.Test.Take = function(page, form){
             if(callback){ callback(); }
          });
       },
+      reset: function(callback){
+         methods.index = 0;
+         Questions = [];
+         Answers = [];
+         page.find('span.question').show()
+         page.find('span.question').html('')
+         form.find('#answer').val('')
+         form.show()
+         page.find('span.complete').hide()
+         if(callback){ callback(); }
+      },
       start: function(event, timeout){
-         //console.log("Starting Question...");
+         console.log("Starting Question...");
          form.find('input[name="answer"]').removeAttr("readonly").val("");
          form.find('input[name="question"]').val(Questions[methods.index].question);
          page.find('span.question').html(Clinic.Util.formatQuestion(Questions[methods.index].question, false));
@@ -135,7 +149,17 @@ Clinic.Test.Take = function(page, form){
                });
             }else{
                $(response).animateHighlight('#00ff00', 1000, function(){
-                  Clinic.Util.changePage('#test-complete');
+                  // Don't automatically advance due to kids seeing scores.
+                  //Clinic.Util.changePage('#test-complete');
+
+                  // Simply tell them they have completed the test
+                  page.find('span.question').hide()
+                  form.hide()
+                  page.find('span.complete').show()
+                  // Block any other answer submissions
+                  methods.processing = 1;
+                  // Reset internal test info as this test has been completed.
+                  sessionStorage.setItem('testTimestamp', null);
                });
             }
          }
@@ -328,22 +352,24 @@ $('div#test-take').live('pageshow',function(){
    if(!Clinic.Test.Take.init){
       Clinic.Test.Take = Clinic.Test.Take(page, form);
    }
-   if(typeof Clinic.Data.Questions != 'undefined' && Clinic.Data.Questions.length > 0){
-      Clinic.Test.Take.choose(function(testId, num){
-         Clinic.Test.Take.load(testId, num, function(){
-            if(sessionStorage.getItem('testTimestamp') === null){
-               sessionStorage.setItem('testTimestamp', new Date().valueOf());
-            }
-            Clinic.Test.Take.start();
-         });
-      });
+   // If this is not a "new" test
+   if(sessionStorage.getItem('testTimestamp') != 'null' && typeof Clinic.Data.Questions != "undefined" && Clinic.Data.Questions.length > 0){
+      // Something may have crashed, so they need to be able to "Reset" this test.
+      //confirm('');
+
+         //Clinic.Test.Take.choose(function(testId, num){
+            //Clinic.Test.Take.load(testId, num, function(){
+               Clinic.Test.Take.start();
+            //});
+         //});
+   // This is a "new" test
    }else{
-      Clinic.Test.Take.choose(function(testId, num){
-         Clinic.Test.Take.load(testId, num, function(){
-            if(sessionStorage.getItem('testTimestamp') === null){
+      Clinic.Test.Take.reset(function(){
+         Clinic.Test.Take.choose(function(testId, num){
+            Clinic.Test.Take.load(testId, num, function(){
                sessionStorage.setItem('testTimestamp', new Date().valueOf());
-            }
-            Clinic.Test.Take.start();
+               Clinic.Test.Take.start();
+            });
          });
       });
    }

@@ -3,6 +3,8 @@
     h1 Math Clinic - Take Test
   div(data-role="content")
     #left(style="float: left")
+      span.complete(style="display:none")
+        h1(style="color:green") Test Completed!
       span.question
       form.equation
         label(for='eq') Select an Equation
@@ -41,4 +43,4 @@
       input(type="number", id="answer", name="answer", autofocus="autofocus")
       input(type="hidden", name="question")
       button(type="submit") Answer
-    a(href="#test-complete") Complete Test
+    //a(href="#test-complete", style="position:absolute; bottom: 10px; left: 10px") Complete Test
